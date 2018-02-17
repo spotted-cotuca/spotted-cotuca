@@ -4195,7 +4195,7 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
-node-fetch@^1.0.1:
+node-fetch@^1.0.1, node-fetch@^1.5.3:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
   dependencies:
@@ -6627,3 +6627,9 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
+
+yawp@^1.0.37:
+  version "1.0.37"
+  resolved "https://registry.yarnpkg.com/yawp/-/yawp-1.0.37.tgz#6192a92fa6c3b5b9b379f54bf0a1dc10a7452777"
+  dependencies:
+    node-fetch "^1.5.3"
