@@ -59,5 +59,11 @@ hr
 
 .changeStatus
 {
+  cursor: pointer;
   margin-right: 30px;
+}
+
+.date
+{
+  font-size: 0.6em;
 }

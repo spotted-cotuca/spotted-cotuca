@@ -15,7 +15,7 @@ class App extends Component
       c.baseUrl('http://new-spotted-cotuca.appspot.com/api');
     });
     
-    yawp('/spots/pending').list(l => this.setState({spots: l}));
+    this.selectSpots()
   };
 
   state =
@@ -23,6 +23,11 @@ class App extends Component
     spots: []  
   }
   
+  selectSpots()
+  {
+    yawp('/spots/pending').list(l => this.setState({spots: l}));
+  }
+
   printSpots()
   {
     let spotsDivs =[];
@@ -38,6 +43,10 @@ class App extends Component
   {
     return (
       <div className="spotBox"> 
+        <p className="date">
+          { spot.date }
+        </p>
+       
         { "\"" + spot.message + "\"" } 
         
         <hr/>
@@ -52,10 +61,12 @@ class App extends Component
 
   approveSpot(id)
   {
+    yawp(id).put("approve").then(() => this.selectSpots());
   }
 
   rejectSpot(id)
   {
+    yawp(id).put("reject").then(() => this.selectSpots());
   }
 
   render() 
