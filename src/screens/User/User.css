@@ -1,0 +1,100 @@
+body
+{
+  background-color: #555;
+  font-size: 16px;
+}
+
+@media (max-width: 1024px)
+{
+  body
+  {
+    font-size: 12px;
+  }
+}
+
+.App
+{
+  text-align: center;
+}
+
+.App-header
+{
+  background-color: #222;
+  height: 10vh;
+  padding: 20px;
+  color: white;
+}
+
+.App-title
+{  
+  font-size: 2em;
+}
+
+.content
+{
+  margin-left: auto;
+  margin-right: auto;
+  width: 40vw;
+}
+
+@media (max-width: 1024px)
+{
+  .content
+  {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80vw;
+  }
+}
+
+.presentation
+{
+  margin-top: 25px;
+  margin-bottom: 40px;
+  color: white;
+  font-size: 1.4em;
+}
+
+textarea
+{
+  padding: 10px;
+  font-size: 1em;
+  resize: none;
+  width: 85%;
+  height: 140px;
+  margin-bottom: 20px;
+}
+
+.btn
+{
+  width: 89%;
+  
+  display: inline-block;
+  color: #fff;
+  background-color: #007bff;
+  
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  
+  border: 1px solid #007bff;
+  border-radius: 0.3rem;
+  
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn:hover 
+{
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.btn:focus
+{
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
