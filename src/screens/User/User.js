@@ -14,7 +14,18 @@ class User extends Component
     yawp.config(function (c) {
       c.baseUrl('http://new-spotted-cotuca.appspot.com/api');
     });
-  };
+  }
+  
+  componentDidMount()
+  {
+    document.title = "Spotted Cotuca";
+  }
+  
+  sendSpot()
+  {
+    let textArea = document.getElementById("message");
+    yawp('/spots').create({ message: textArea.value }).then(() => textArea.value = "");
+  }
 
   render() 
   {
@@ -29,11 +40,11 @@ class User extends Component
             Olá! Esse é o novo método de mandar spots no COTUCA :). Basta mandar a mensagem no campo abaixo e esperar ser aprovada por um de nossos administradores, para que ela seja postada no nosso Facebook oficial (nome da página) e no nosso twitter (@dospotted). Boa sorte com os crushes!
           </div>
           
-          <textarea maxLength="280"></textarea>
+          <textarea maxLength="280" id="message"></textarea>
           
           <br/>
           
-          <button className="btn btn-primary">Enviar Spot</button>
+          <button className="btn btn-primary" onClick={() => this.sendSpot()}>Enviar Spot</button>
         </div>
       </div>
     );

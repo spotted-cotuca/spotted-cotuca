@@ -17,6 +17,11 @@ class Admin extends Component
     
     this.selectSpots()
   };
+  
+  componentDidMount() 
+  {
+    document.title = "Spotted Cotuca";
+  }
 
   state =
   {
