@@ -1,5 +1,52 @@
-body {
+body
+{
+  background-color: #DF7070;
+  font-size: 16px;
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Segoe UI";
+}
+
+@media (max-width: 1024px)
+{
+  body
+  {
+    font-size: 12px;
+  }
+}
+
+.App
+{
+  text-align: center;
+}
+
+.App-header
+{
+  background-color: #7C0606;
+  height: auto;
+  padding: 20px;
+  color: white;
+}
+
+.App-title
+{  
+  font-size: 2em;
+  margin: 0;
+}
+
+.content
+{
+  margin-left: auto;
+  margin-right: auto;
+  width: 40vw;
+}
+
+@media (max-width: 1024px)
+{
+  .content
+  {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80vw;
+  }
 }

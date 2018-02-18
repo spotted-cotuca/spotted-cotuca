@@ -1,52 +1,3 @@
-body
-{
-  background-color: #555;
-  font-size: 16px;
-}
-
-@media (max-width: 1024px)
-{
-  body
-  {
-    font-size: 12px;
-  }
-}
-
-.App
-{
-  text-align: center;
-}
-
-.App-header
-{
-  background-color: #222;
-  height: 10vh;
-  padding: 20px;
-  color: white;
-}
-
-.App-title
-{  
-  font-size: 2em;
-}
-
-.content
-{
-  margin-left: auto;
-  margin-right: auto;
-  width: 40vw;
-}
-
-@media (max-width: 1024px)
-{
-  .content
-  {
-    margin-left: auto;
-    margin-right: auto;
-    width: 80vw;
-  }
-}
-
 .presentation
 {
   margin-top: 25px;
@@ -63,6 +14,7 @@ textarea
   width: 85%;
   height: 140px;
   margin-bottom: 20px;
+  font-family: "Segoe UI";
 }
 
 .btn
@@ -71,14 +23,14 @@ textarea
   
   display: inline-block;
   color: #fff;
-  background-color: #007bff;
+  background-color: #D9230F;
   
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
   
-  border: 1px solid #007bff;
+  border: 1px solid #D9230F;
   border-radius: 0.3rem;
   
   padding: 0.5rem 1rem;
@@ -90,11 +42,19 @@ textarea
 
 .btn:hover 
 {
-  background-color: #0069d9;
-  border-color: #0062cc;
+  background-color: #b51d0d;
+  border-color: #a91b0c;
 }
 
 .btn:focus
 {
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
+          box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
+  outline: 0;
+}
+
+.letter
+{
+  width: 80px;
+  margin-bottom: 10px;
 }

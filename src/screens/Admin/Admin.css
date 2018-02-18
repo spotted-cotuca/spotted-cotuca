@@ -1,46 +1,6 @@
-body
-{
-  background-color: #555;
-}
-
 hr
 {
   margin: 20px 0 20px 0;
-}
-
-.App
-{
-  text-align: center;
-}
-
-.App-header
-{
-  background-color: #222;
-  height: 10vh;
-  padding: 20px;
-  color: white;
-}
-
-.App-title
-{  
-  font-size: 2em;
-}
-
-.content
-{
-  margin-left: auto;
-  margin-right: auto;
-  width: 40vw;
-}
-
-@media (max-width: 1024px)
-{
-  .content
-  {
-    margin-left: auto;
-    margin-right: auto;
-    width: 80vw;
-  }
 }
 
 .spotBox
