@@ -6,8 +6,16 @@
   font-size: 1.4em;
 }
 
+h1
+{
+  font-size: 1.4em;
+  font-weight: 500;
+}
+
 textarea
 {
+  border: 2px solid #D9230F;
+  border-radius: 1rem;
   padding: 10px;
   font-size: 1em;
   resize: none;
@@ -15,6 +23,22 @@ textarea
   height: 140px;
   margin-bottom: 20px;
   font-family: "Segoe UI";
+  outline: 0;
+}
+
+textarea:focus
+{
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
+          box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
+}
+
+@media (max-width: 1024px)
+{
+  textarea
+  {
+    font-size: 1.4em;
+    height: 110px;
+  }
 }
 
 .btn

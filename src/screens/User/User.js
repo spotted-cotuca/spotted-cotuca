@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+import Alert from 'react-s-alert';
 import yawp from 'yawp';
+
 import './User.css';
 import '../../index.css';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 
 import letterIcon from '../../imgs/letter.png';
 
@@ -24,7 +28,23 @@ class User extends Component
   sendSpot()
   {
     let textArea = document.getElementById("message");
-    yawp('/spots').create({ message: textArea.value }).then(() => textArea.value = "");
+    
+    if (textArea.value != "")
+      yawp('/spots').create({ message: textArea.value }).then(() => 
+        { 
+          textArea.value = "";
+          Alert.success(<h1>Sua mensagem foi enviada, agora é só esperar!</h1>, {
+              position: 'bottom-right',
+              effect: 'scale',
+              timeout: 6000
+          });
+        });
+    else
+      Alert.error(<h1>Se você não escrever nada, não tem como o crush te notar!</h1>, {
+            position: 'bottom-right',
+            effect: 'scale',
+            timeout: 6000
+        });
   }
 
   render() 
@@ -46,6 +66,8 @@ class User extends Component
           <br/>
           
           <button className="btn btn-primary" onClick={() => this.sendSpot()}>Enviar Spot</button>
+          
+          <Alert stack={{limit: 3}} />
         </div>
       </div>
     );
