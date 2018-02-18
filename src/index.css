@@ -5,6 +5,9 @@ body
   margin: 0;
   padding: 0;
   font-family: "Segoe UI";
+  overflow-x: hidden;
+  
+  background-image: url("imgs/bg.png");
 }
 
 @media (max-width: 1024px)
@@ -13,6 +16,12 @@ body
   {
     font-size: 12px;
   }
+}
+
+a
+{
+  text-decoration: none;
+  color: white;
 }
 
 .App
@@ -29,9 +38,10 @@ body
 }
 
 .App-title
-{  
+{
   font-size: 2em;
   margin: 0;
+  margin-bottom: 5px;
 }
 
 .content
@@ -47,6 +57,6 @@ body
   {
     margin-left: auto;
     margin-right: auto;
-    width: 80vw;
+    width: 100vw;
   }
 }

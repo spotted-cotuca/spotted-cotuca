@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
-import './Admin.css';
 
-import approveIcon from '../../imgs/approve.png';
-import rejectIcon from '../../imgs/reject.png';
+import '../../index.css';
+import './Home.css';
 
-class Admin extends Component 
+import letterIcon from '../../imgs/letter.png';
+import messageIcon from '../../imgs/message.png';
+
+class User extends Component 
 {
   constructor(props)
   {
@@ -16,21 +18,21 @@ class Admin extends Component
     });
     
     this.selectSpots();
-  };
+  }
   
-  componentDidMount() 
+  componentDidMount()
   {
     document.title = "Spotted Cotuca";
   }
-
+  
   state =
   {
     spots: []  
   }
-  
+
   selectSpots()
   {
-    yawp('/spots/pending').list(l => this.setState({spots: l}));
+    yawp('/spots/approved').list(l => this.setState({spots: l}));
   }
 
   printSpots()
@@ -46,32 +48,26 @@ class Admin extends Component
 
   createSpotBox(spot)
   {
+    let date = new Date(spot.date);
+    
+    let d = date.getDate();
+    let m = date.getMonth() + 1;
+    
+    let h = date.getHours();
+    let min = date.getMinutes();
+    
     return (
       <div className="spotBox"> 
         <p className="date">
-          { spot.date }
+          { 
+            (d > 9 ? '' : '0') + d + '/' + (m > 9 ? '' : '0') + m + '/' + date.getFullYear() + ' - ' +
+            (h > 9 ? '' : '0') + h + 'h' + (min > 9 ? '' : '0') + min
+          }
         </p>
        
         { "\"" + spot.message + "\"" } 
-        
-        <hr/>
-        
-        <div className="spotBoxFooter">
-          <img alt="approve" className="changeStatus" src={ approveIcon } onClick={ () => this.approveSpot(spot.id) }></img>
-          <img alt="reject" className="changeStatus" src={ rejectIcon } onClick={ () => this.rejectSpot(spot.id) }></img>
-        </div>
       </div>
     );
-  }
-
-  approveSpot(id)
-  {
-    yawp(id).put("approve").then(() => this.selectSpots());
-  }
-
-  rejectSpot(id)
-  {
-    yawp(id).put("reject").then(() => this.selectSpots());
   }
 
   render() 
@@ -79,17 +75,18 @@ class Admin extends Component
     return (
       <div className="App">
         <header className="App-header">
+          {/*<img className="letter" src={ letterIcon } alt="letter"></img>*/}
           <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
         </header>
         
         <div className="content">
-          {
-            this.printSpots()
-          }
+          { this.printSpots() }
         </div>
+        
+        <a href="./send"><img className="sendSpot" src={ messageIcon }/></a>
       </div>
     );
   }
 }
 
-export default Admin;
+export default User;

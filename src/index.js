@@ -7,12 +7,11 @@ import {
   Switch
 } from 'react-router-dom';
 
+import Home from './screens/Home/Home';
 import Admin from './screens/Admin/Admin';
 import User from './screens/User/User';
 import NotFound from './screens/NotFound/NotFound';
 import registerServiceWorker from './registerServiceWorker';
-
-import './index.css';
 
 class Main extends React.Component
 {
@@ -21,7 +20,8 @@ class Main extends React.Component
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={User}/>
+          <Route exact path="/" component={Home}/>
+          <Route path="/send" component={User}/>
           <Route path="/admin" component={Admin}/>
           <Route component={NotFound}/>
         </Switch>

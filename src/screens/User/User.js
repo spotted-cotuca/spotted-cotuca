@@ -52,8 +52,8 @@ class User extends Component
     return (
       <div className="App">
         <header className="App-header">
-          <img className="letter" src={ letterIcon } alt="letter"></img>
-          <h1 className="App-title">Spotted Cotuca</h1>
+          {/*<img className="letter" src={ letterIcon } alt="letter"></img>*/}
+          <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
         </header>
         
         <div className="content">
