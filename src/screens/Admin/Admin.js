@@ -5,6 +5,21 @@ import './Admin.css';
 import approveIcon from '../../imgs/approve.png';
 import rejectIcon from '../../imgs/reject.png';
 
+import $ from 'jquery';
+import * as firebase from 'firebase';
+import * as firebaseui from 'firebaseui';
+
+var config = 
+{
+    apiKey: "AIzaSyAwEx4ct_nKPYIhFBpfB7RMfSIHFme9ais",
+    authDomain: "new-spotted-cotuca.firebaseapp.com",
+    databaseURL: "https://new-spotted-cotuca.firebaseio.com",
+    projectId: "new-spotted-cotuca",
+    storageBucket: "new-spotted-cotuca.appspot.com",
+    messagingSenderId: "319156712141"
+};
+firebase.initializeApp(config);
+
 class Admin extends Component 
 {
   constructor(props)
@@ -16,6 +31,14 @@ class Admin extends Component
     });
     
     this.selectSpots();
+    
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) 
+          user.getIdToken().then(this.checkAuth);
+      else 
+          console.error('No user, mate!');
+    });
+    this.configureFirebaseLoginWidget();
   };
   
   componentDidMount() 
@@ -74,6 +97,39 @@ class Admin extends Component
     yawp(id).put("reject").then(() => this.selectSpots());
   }
 
+  configureFirebaseLoginWidget() 
+  {
+    const uiConfig = {
+        'signInSuccessUrl': '/',
+        'signInOptions': [
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        ]
+    };
+    
+    const ui = new firebaseui.auth.AuthUI(firebase.auth());
+    ui.start('#firebaseui-auth-container', uiConfig);
+  }
+
+  checkAuth(idToken)
+  {
+    var settings = 
+    {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://new-spotted-cotuca.appspot.com/api/admins",
+      "method": "GET",
+      "headers":
+      {
+        "Authorization": "Bearer " + idToken,
+        "Cache-Control": "no-cache"
+      }
+    }
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+  }
+
   render() 
   {
     return (
@@ -81,7 +137,7 @@ class Admin extends Component
         <header className="App-header">
           <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
         </header>
-        
+        <div id="firebaseui-auth-container"></div>
         <div className="content">
           {
             this.printSpots()
