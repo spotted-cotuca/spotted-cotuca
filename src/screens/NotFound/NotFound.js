@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import './NotFound.css';
 import '../../index.css';
 
-import letterIcon from '../../imgs/letter.png';
 import brokenHeartIcon from '../../imgs/broken-heart.png';
 
 class NotFound extends Component 

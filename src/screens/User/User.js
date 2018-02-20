@@ -7,8 +7,6 @@ import '../../index.css';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 
-import letterIcon from '../../imgs/letter.png';
-
 class User extends Component 
 {
   constructor(props)
@@ -29,7 +27,7 @@ class User extends Component
   {
     let textArea = document.getElementById("message");
     
-    if (textArea.value != "")
+    if (textArea.value !== "")
       yawp('/spots').create({ message: textArea.value }).then(() => 
         { 
           textArea.value = "";

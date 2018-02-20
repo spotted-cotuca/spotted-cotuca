@@ -4,7 +4,6 @@ import yawp from 'yawp';
 import '../../index.css';
 import './Home.css';
 
-import letterIcon from '../../imgs/letter.png';
 import messageIcon from '../../imgs/message.png';
 
 class User extends Component 
@@ -83,7 +82,7 @@ class User extends Component
           { this.printSpots() }
         </div>
         
-        <a href="./send"><img className="sendSpot" src={ messageIcon }/></a>
+        <a href="./send"><img alt="sendSpot" className="sendSpot" src={ messageIcon }/></a>
       </div>
     );
   }
