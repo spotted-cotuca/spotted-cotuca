@@ -22,7 +22,8 @@ class Main extends React.Component
           <Route exact path="/" component={Home}/>
           <Route path="/send" component={User}/>
           <Route path="/admin" component={Admin}/>
-          <Route component={NotFound}/>
+          <Route path="/api" component={null}/>
+          <Route path="*" component={NotFound}/>
         </Switch>
       </Router>
     );

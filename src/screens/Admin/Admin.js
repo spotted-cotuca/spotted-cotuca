@@ -64,7 +64,7 @@ class Admin extends Component
     }
     
     $.ajax(settings).done(function (response) {
-      this.setState({spots: response, logged: true, token: idToken});
+      this.setState({spots: response.reverse(), logged: true, token: idToken});
     }.bind(this));
   }
 
