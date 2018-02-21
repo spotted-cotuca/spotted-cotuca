@@ -25,24 +25,35 @@ class User extends Component
   
   sendSpot()
   {
-    let textArea = document.getElementById("message");
+    let textArea = document.getElementById("message"),
+        text = textArea.value;
     
     if (textArea.value !== "")
       yawp('/spots').create({ message: textArea.value }).then(() => 
-        { 
-          textArea.value = "";
-          Alert.success(<h1>Sua mensagem foi enviada, agora é só esperar!</h1>, {
-              position: 'bottom-right',
-              effect: 'scale',
-              timeout: 6000
-          });
-        });
+      { 
+        textArea.value = "";
+        if (text.toUpperCase().includes("NA PD"))
+          this.createSuccessAlert("Sua mensagem foi enviada, agora manda seu crush pagar a PD também!");
+        else if (text.toUpperCase().includes("NÃO ME QUER") || text.toUpperCase().includes("NÃO ME NOTA"))
+          this.createSuccessAlert("Sua mensagem foi enviada, E É CLARO QUE SEU CRUSH TE QUER!");
+        else
+          this.createSuccessAlert("Sua mensagem foi enviada, agora é só esperar!");
+      });
     else
       Alert.error(<h1>Se você não escrever nada, não tem como o crush te notar!</h1>, {
             position: 'bottom-right',
             effect: 'scale',
             timeout: 4000
         });
+  }
+  
+  createSuccessAlert(message)
+  {
+    Alert.success(<h1>{message}</h1>, {
+      position: 'bottom-right',
+      effect: 'scale',
+      timeout: 4000
+    });
   }
 
   render() 
