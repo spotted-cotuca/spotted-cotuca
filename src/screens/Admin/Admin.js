@@ -82,10 +82,21 @@ class Admin extends Component
 
   createSpotBox(spot)
   {
+    let date = new Date(spot.date);
+    
+    let d = date.getDate();
+    let m = date.getMonth() + 1;
+    
+    let h = date.getHours();
+    let min = date.getMinutes();
+    
     return (
       <div className="spotBox"> 
         <p className="date">
-          { spot.date }
+          { 
+            (d > 9 ? '' : '0') + d + '/' + (m > 9 ? '' : '0') + m + '/' + date.getFullYear() + ' - ' +
+            (h > 9 ? '' : '0') + h + 'h' + (min > 9 ? '' : '0') + min
+          }
         </p>
        
         { "\"" + spot.message + "\"" } 
@@ -173,20 +184,10 @@ class Admin extends Component
             <div className="middle">
               <div className="form-content">
                 <div className="row">
-                  <div className="col-25">
-                    <label htmlFor="email">Email:</label>
-                  </div>
-                  <div className="col-75">
-                    <input type="text" id="email" name="email" placeholder="Email"/>
-                  </div>
+                  <input type="text" id="email" name="email" placeholder="Email"/>
                 </div>
                 <div className="row">
-                  <div className="col-25">
-                    <label htmlFor="pass">Senha:</label>
-                  </div>
-                  <div className="col-75">
-                    <input type="password" id="pass" name="pass" placeholder="Senha"/>
-                  </div>
+                  <input type="password" id="pass" name="pass" placeholder="Senha"/>
                 </div>
                 <div className="row">
                   <button className="btn" onClick={ this.login }>Entrar</button>
