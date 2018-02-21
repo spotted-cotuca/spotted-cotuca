@@ -6,6 +6,13 @@
   font-size: 1.4em;
 }
 
+.user-content
+{
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+}
+
 h1
 {
   font-size: 1.4em;
@@ -32,12 +39,19 @@ textarea:focus
           box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
 }
 
-@media (max-width: 1024px)
+@media (max-width: 1023px)
 {
   textarea
   {
     font-size: 1.4em;
     height: 110px;
+  }
+  
+  .user-content
+  {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
   }
 }
 
@@ -82,4 +96,17 @@ textarea:focus
 {
   width: 80px;
   margin-bottom: 10px;
+}
+
+.user-footer
+{
+  background-color: #7C0606;
+  padding: 20px;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 500;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
 }

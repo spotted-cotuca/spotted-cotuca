@@ -168,6 +168,7 @@ class Admin extends Component
           <header className="App-header">
             <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
           </header>
+          
           <div className="outer">
             <div className="middle">
               <div className="form-content">
@@ -193,6 +194,10 @@ class Admin extends Component
               </div>
             </div>
           </div>
+          
+          <footer className="user-footer">
+            Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>
+          </footer>
         </div>
       );
   }

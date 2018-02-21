@@ -1,5 +1,13 @@
+html
+{
+  min-height: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
 body
 {
+  position: relative;
   background-color: #DF7070;
   font-size: 16px;
   margin: 0;
@@ -11,7 +19,7 @@ body
   background-image: url("imgs/bg.png");
 }
 
-@media (max-width: 1024px)
+@media (max-width: 1023px)
 {
   body
   {
@@ -27,6 +35,7 @@ a
 
 .App
 {
+  height: 100vh;
   text-align: center;
 }
 
@@ -38,6 +47,15 @@ a
   color: white;
 }
 
+.App-footer
+{
+  background-color: #7C0606;
+  padding: 20px;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
 .App-title
 {
   font-size: 2em;
@@ -47,18 +65,19 @@ a
 
 .content
 {
+  min-height: 100%;
   margin-left: auto;
   margin-right: auto;
-  width: 40vw;
+  width: 40%;
 }
 
-@media (max-width: 1024px)
+@media (max-width: 1023px)
 {
   .content
   {
     margin-left: auto;
     margin-right: auto;
-    width: 100vw;
+    width: 100%;
   }
 }
 
@@ -83,4 +102,15 @@ a
   font-family: "Segoe UI";
   margin-top: 0;
   font-size: 0.6em;
+}
+
+.heart
+{
+  font-size: 1.2em;
+  color: #f42c2a;
+}
+
+.fbLink
+{
+  color: #ff7c7c;
 }

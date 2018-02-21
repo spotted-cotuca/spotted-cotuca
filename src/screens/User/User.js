@@ -41,7 +41,7 @@ class User extends Component
       Alert.error(<h1>Se você não escrever nada, não tem como o crush te notar!</h1>, {
             position: 'bottom-right',
             effect: 'scale',
-            timeout: 6000
+            timeout: 4000
         });
   }
 
@@ -50,11 +50,10 @@ class User extends Component
     return (
       <div className="App">
         <header className="App-header">
-          {/*<img className="letter" src={ letterIcon } alt="letter"></img>*/}
           <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
         </header>
         
-        <div className="content">
+        <div className="user-content">
           <div className="presentation">
             Olá! Esse é o novo método de mandar spots no COTUCA :). Basta mandar a mensagem no campo abaixo e esperar ser aprovada por um de nossos administradores, para que ela seja postada no nosso Facebook oficial (nome da página) e no nosso twitter (@dospotted). Boa sorte com os crushes!
           </div>
@@ -67,6 +66,10 @@ class User extends Component
           
           <Alert stack={{limit: 3}} />
         </div>
+        
+        <footer className="user-footer">
+          Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>
+        </footer>
       </div>
     );
   }
