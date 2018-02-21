@@ -1,21 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Courgette');
 
-.spotBox
-{
-  font-family: 'Courgette', cursive;
-  font-size: 1.8em;
-  font-weight: 400;
-  
-  text-align: left;
-  background-color: #FFF;
-  margin: 25px;
-  padding: 20px;
-  word-wrap: break-word;
-  
-  border: 1.5px dashed #D9230F;
-  border-radius: 0.3em;
-}
-
 .date
 {
   font-family: "Segoe UI";

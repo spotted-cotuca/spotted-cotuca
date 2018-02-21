@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
-import './Admin.css';
+import * as firebase from 'firebase';
+import $ from 'jquery';
 
 import approveIcon from '../../imgs/approve.png';
 import rejectIcon from '../../imgs/reject.png';
 
-import $ from 'jquery';
-import * as firebase from 'firebase';
-import * as firebaseui from 'firebaseui';
+import './Admin.css';
 
 var config = 
 {
@@ -18,7 +17,8 @@ var config =
     storageBucket: "new-spotted-cotuca.appspot.com",
     messagingSenderId: "319156712141"
 };
-firebase.initializeApp(config);
+
+//window.addEventListener("unload", () => firebase.auth().signOut());
 
 class Admin extends Component 
 {
@@ -30,15 +30,11 @@ class Admin extends Component
       c.baseUrl('http://new-spotted-cotuca.appspot.com/api');
     });
     
-    this.selectSpots();
-    
+    firebase.initializeApp(config);
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) 
-          user.getIdToken().then(this.checkAuth);
-      else 
-          console.error('No user, mate!');
-    });
-    this.configureFirebaseLoginWidget();
+        user.getIdToken().then(function(idToken) { this.selectSpots(idToken); }.bind(this));
+    }.bind(this));
   };
   
   componentDidMount() 
@@ -48,17 +44,34 @@ class Admin extends Component
 
   state =
   {
-    spots: []  
+    spots: [],
+    logged: false,
+    token: '',
   }
   
-  selectSpots()
+  selectSpots(idToken)
   {
-    yawp('/spots/pending').list(l => this.setState({spots: l}));
+    let settings = 
+    {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://new-spotted-cotuca.appspot.com/api/spots/pending",
+      "method": "GET",
+      "headers":
+      {
+        "Authorization": "Bearer " + idToken
+      }
+    }
+    
+    $.ajax(settings).done(function (response) {
+      this.setState({spots: response, logged: true, token: idToken});
+    }.bind(this));
   }
 
   printSpots()
   {
     let spotsDivs =[];
+    
     this.state.spots.forEach(spot => 
     {
       spotsDivs.push(this.createSpotBox(spot));
@@ -89,62 +102,99 @@ class Admin extends Component
 
   approveSpot(id)
   {
-    yawp(id).put("approve").then(() => this.selectSpots());
+    let settings = 
+    {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://new-spotted-cotuca.appspot.com/api" + id + "/approve",
+      "method": "PUT",
+      "headers":
+      {
+        "Authorization": "Bearer " + this.state.token
+      }
+    };
+    
+    $.ajax(settings).done(function (response) {
+      this.selectSpots(this.state.token);
+    }.bind(this));
   }
 
   rejectSpot(id)
   {
-    yawp(id).put("reject").then(() => this.selectSpots());
-  }
-
-  configureFirebaseLoginWidget() 
-  {
-    const uiConfig = {
-        'signInSuccessUrl': '/',
-        'signInOptions': [
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        ]
-    };
-    
-    const ui = new firebaseui.auth.AuthUI(firebase.auth());
-    ui.start('#firebaseui-auth-container', uiConfig);
-  }
-
-  checkAuth(idToken)
-  {
-    var settings = 
+    let settings = 
     {
       "async": true,
       "crossDomain": true,
-      "url": "https://new-spotted-cotuca.appspot.com/api/admins",
-      "method": "GET",
+      "url": "http://new-spotted-cotuca.appspot.com/api" + id + "/reject",
+      "method": "PUT",
       "headers":
       {
-        "Authorization": "Bearer " + idToken,
-        "Cache-Control": "no-cache"
+        "Authorization": "Bearer " + this.state.token
       }
-    }
-
+    };
+    
     $.ajax(settings).done(function (response) {
-      console.log(response);
-    });
+      this.selectSpots(this.state.token);
+    }.bind(this));
+  }
+
+  login()
+  {
+    let email = document.getElementById("email").value,
+        pass  = document.getElementById("pass").value;
+    
+    firebase.auth().signInWithEmailAndPassword(email, pass).catch(e => console.log(e.message));
   }
 
   render() 
   {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
-        </header>
-        <div id="firebaseui-auth-container"></div>
-        <div className="content">
-          {
-            this.printSpots()
-          }
+    if (this.state.logged)
+      return (
+        <div className="App">
+          <header className="App-header">
+            <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
+          </header>
+          
+          <div className="content">
+            {
+              this.printSpots()
+            }
+          </div>
         </div>
-      </div>
-    );
+      );
+    else
+      return (
+        <div className="App">
+          <header className="App-header">
+            <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
+          </header>
+          <div className="outer">
+            <div className="middle">
+              <div className="form-content">
+                <div className="row">
+                  <div className="col-25">
+                    <label htmlFor="email">Email:</label>
+                  </div>
+                  <div className="col-75">
+                    <input type="text" id="email" name="email" placeholder="Email"/>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-25">
+                    <label htmlFor="pass">Senha:</label>
+                  </div>
+                  <div className="col-75">
+                    <input type="password" id="pass" name="pass" placeholder="Senha"/>
+                  </div>
+                </div>
+                <div className="row">
+                  <button className="btn" onClick={ this.login }>Entrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
   }
 }
 

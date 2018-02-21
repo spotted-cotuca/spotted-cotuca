@@ -3,16 +3,6 @@ hr
   margin: 20px 0 20px 0;
 }
 
-.spotBox
-{
-  font-size: 1.5em;
-  text-align: left;
-  background-color: #FFF;
-  margin: 25px;
-  padding: 20px;
-  word-wrap: break-word;
-}
-
 .spotBoxFooter
 {
   height: 32px;
@@ -24,7 +14,93 @@ hr
   margin-right: 30px;
 }
 
-.date
+.form-content
 {
-  font-size: 0.6em;
+  margin: auto;
+  width: 30vw;
+}
+
+input[type=text], input[type=password]
+{
+  font-size: 1.25em;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #D9230F;
+  border-radius: 0.3rem;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+input[type=text]:focus, input[type=password]:focus
+{
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
+          box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
+  outline: 0;
+}
+
+label
+{
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 49px;
+  font-size: 1.4em;
+}
+
+.container
+{
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.col-25
+{
+  text-align: right;
+  float: left;
+  width: 20%;
+  margin-right: 5%;
+}
+
+.col-75
+{
+  float: left;
+  width: 75%;
+}
+
+.row:after
+{
+  margin-bottom: 15px;
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media (max-width: 600px)
+{
+  .col-25, .col-75
+  {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+
+.row .btn
+{
+  width: 100%;
+}
+
+.outer
+{
+  top: 0;
+  left: 0;
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.middle
+{
+  display: table-cell;
+  vertical-align: middle;
 }
