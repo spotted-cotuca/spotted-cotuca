@@ -97,6 +97,16 @@ a
   border-radius: 0.3em;
 }
 
+hr
+{
+  margin: 20px 0 20px 0;
+}
+
+.spotBoxFooter
+{
+  height: 32px;
+}
+
 .date
 {
   font-family: "Segoe UI";

@@ -5,6 +5,7 @@ import $ from 'jquery';
 import '../../index.css';
 import './Home.css';
 
+import fbIcon from '../../imgs/fb.png';
 import messageIcon from '../../imgs/message.png';
 
 class User extends Component 
@@ -66,6 +67,12 @@ class User extends Component
         </p>
        
         { "\"" + spot.message + "\"" } 
+        
+        <hr/>
+        
+        <div className="spotBoxFooter">
+          <a href={"https://www.facebook.com/pg/spottedcotuca3/posts/" + spot.postId} target="blank"><img alt="fb" className="socialMedia" src={ fbIcon }></img></a>
+        </div>
       </div>
     );
   }
