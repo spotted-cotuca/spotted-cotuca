@@ -14,7 +14,7 @@ var config =
     authDomain: "new-spotted-cotuca.firebaseapp.com",
     databaseURL: "https://new-spotted-cotuca.firebaseio.com",
     projectId: "new-spotted-cotuca",
-    storageBucket: "new-spotted-cotuca.appspot.com",
+    storageBucket: "https://new-spotted-cotuca.appspot.com",
     messagingSenderId: "319156712141"
 };
 
@@ -27,7 +27,7 @@ class Admin extends Component
     super(props);
     
     yawp.config(function (c) {
-      c.baseUrl('http://new-spotted-cotuca.appspot.com/api');
+      c.baseUrl('https://new-spotted-cotuca.appspot.com/api');
     });
     
     firebase.initializeApp(config);
@@ -55,7 +55,7 @@ class Admin extends Component
     {
       "async": true,
       "crossDomain": true,
-      "url": "http://new-spotted-cotuca.appspot.com/api/spots/pending",
+      "url": "https://new-spotted-cotuca.appspot.com/api/spots/pending",
       "method": "GET",
       "headers":
       {
@@ -117,7 +117,7 @@ class Admin extends Component
     {
       "async": true,
       "crossDomain": true,
-      "url": "http://new-spotted-cotuca.appspot.com/api" + id + "/approve",
+      "url": "https://new-spotted-cotuca.appspot.com/api" + id + "/approve",
       "method": "PUT",
       "headers":
       {
@@ -136,7 +136,7 @@ class Admin extends Component
     {
       "async": true,
       "crossDomain": true,
-      "url": "http://new-spotted-cotuca.appspot.com/api" + id + "/reject",
+      "url": "https://new-spotted-cotuca.appspot.com/api" + id + "/reject",
       "method": "PUT",
       "headers":
       {
