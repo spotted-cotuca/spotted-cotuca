@@ -33,7 +33,10 @@ class Admin extends Component
     firebase.initializeApp(config);
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) 
-        user.getIdToken().then(function(idToken) { this.selectSpots(idToken); }.bind(this));
+        user.getIdToken().then(function(idToken) { 
+          this.selectSpots(idToken); 
+          this.setfacebookToken(idToken);
+        }.bind(this));
     }.bind(this));
   };
   
@@ -47,6 +50,7 @@ class Admin extends Component
     spots: [],
     logged: false,
     token: '',
+    fbToken: ''
   }
   
   selectSpots(idToken)
@@ -111,6 +115,24 @@ class Admin extends Component
     );
   }
 
+  setfacebookToken(idToken) {
+    let settings = 
+    {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://localhost:8080/api/admins/token",
+      "method": "GET",
+      "headers":
+      {
+        "Authorization": "Bearer " + idToken
+      }
+    };
+
+    $.ajax(settings).done(function (response) {
+      this.setState({fbToken: response.token});
+    }.bind(this))
+  }
+
   approveSpot(id)
   {
     let settings = 
@@ -127,6 +149,47 @@ class Admin extends Component
     
     $.ajax(settings).done(function (response) {
       this.selectSpots(this.state.token);
+    }.bind(this));
+
+    this.postFacebook(id);
+  }
+
+  postFacebook(id) {
+    var message = this.state.spots.find(spot => spot.id == id).message;
+
+    let settings = 
+    {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://graph.facebook.com/171419300152494/feed?" + 
+              "message=" + message +
+              "&access_token=" + this.state.fbToken,
+      "method": "POST"
+    }
+
+    $.ajax(settings).done(function (response) {
+      this.patchPostId(id, response.id.substring(response.id.indexOf("_") + 1, response.id.lenght));
+    }.bind(this));
+  }
+
+  patchPostId(id, postId) {
+    let settings = 
+    {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://new-spotted-cotuca.appspot.com/api" + id,
+      "method": "PATCH",
+      "headers":
+      {
+        "Authorization": "Bearer " + this.state.token
+      },
+      "body": {
+        "postId": postId
+      }
+    }
+
+    $.ajax(settings).done(function (response) {
+      console.log("atualizado");
     }.bind(this));
   }
 
