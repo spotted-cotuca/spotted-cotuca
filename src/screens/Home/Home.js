@@ -93,7 +93,7 @@ class User extends Component
         <a href="./send"><img alt="sendSpot" className="sendSpot" src={ messageIcon }/></a>
           
         <div className="App-footer">
-          Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>
+            Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>
         </div>
       </div>
     );

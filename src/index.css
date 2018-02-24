@@ -47,14 +47,14 @@ a
   color: white;
   line-height: 100px;
 }
-
 .App-footer
 {
   background-color: #7C0606;
   color: white;
-  font-size: 1.2em;
+  font-size: 1.18em;
   font-weight: 500;
   line-height: 75px;
+  box-sizing: content-box;
 }
 
 @media (max-width: 1023px)
@@ -74,14 +74,15 @@ a
 {
   font-size: 2em;
   margin: 0;
-  margin-bottom: 5px;
 }
 
 .content
 {
+  padding: 20px 0 20px 0;
   margin-left: auto;
   margin-right: auto;
   width: 40%;
+  height:  calc(100vh - 216px);
 }
 
 @media (max-width: 1023px)
@@ -91,6 +92,7 @@ a
     margin-left: auto;
     margin-right: auto;
     width: 100%;
+    height:  calc(100vh - 167px);
   }
 }
 
