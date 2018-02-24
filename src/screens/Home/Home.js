@@ -33,7 +33,7 @@ class User extends Component
 
   selectSpots()
   {
-    yawp('/spots/approved').list(l => this.setState({spots: l}));
+    yawp('/spots/approvedd').list(l => this.setState({spots: l}));
   }
 
   printSpots()
