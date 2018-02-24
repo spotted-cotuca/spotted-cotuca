@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
+import { FB, FacebookApiException } from 'fb';
 import * as firebase from 'firebase';
 import $ from 'jquery';
 
@@ -33,7 +34,7 @@ class Admin extends Component
     firebase.initializeApp(config);
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) 
-        user.getIdToken().then(function(idToken) { this.selectSpots(idToken); }.bind(this));
+        user.getIdToken().then(function(idToken) { this.initializeFacebook(idToken); this.selectSpots(idToken); }.bind(this));
     }.bind(this));
   };
   
@@ -47,6 +48,25 @@ class Admin extends Component
     spots: [],
     logged: false,
     token: '',
+  }
+  
+  initializeFacebook(idToken)
+  {
+    let settings = 
+    {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://new-spotted-cotuca.appspot.com/api/admins/token",
+      "method": "GET",
+      "headers":
+      {
+        "Authorization": "Bearer " + idToken
+      }
+    }
+    
+    $.ajax(settings).done(function (response) {
+      FB.setAccessToken(response.token);
+    }.bind(this));
   }
   
   selectSpots(idToken)
@@ -64,18 +84,14 @@ class Admin extends Component
     }
     
     $.ajax(settings).done(function (response) {
-      this.setState({spots: response.reverse(), logged: true, token: idToken});
+      this.setState({ spots: response.reverse(), logged: true, token: idToken });
     }.bind(this));
   }
 
   printSpots()
   {
     let spotsDivs =[];
-    
-    this.state.spots.forEach(spot => 
-    {
-      spotsDivs.push(this.createSpotBox(spot));
-    });
+    this.state.spots.forEach(spot => spotsDivs.push(this.createSpotBox(spot)));
     
     return spotsDivs;
   }
@@ -104,14 +120,14 @@ class Admin extends Component
         <hr/>
         
         <div className="spotBoxFooter">
-          <img alt="approve" className="changeStatus" src={ approveIcon } onClick={ () => this.approveSpot(spot.id) }></img>
+          <img alt="approve" className="changeStatus" src={ approveIcon } onClick={ () => this.approveSpot(spot.id, spot.message) }></img>
           <img alt="reject" className="changeStatus" src={ rejectIcon } onClick={ () => this.rejectSpot(spot.id) }></img>
         </div>
       </div>
     );
   }
 
-  approveSpot(id)
+  approveSpot(id, spotMessage)
   {
     let settings = 
     {
@@ -126,6 +142,15 @@ class Admin extends Component
     };
     
     $.ajax(settings).done(function (response) {
+      FB.api('me/feed', 'post', { message: "\"" + spotMessage + "\"" }, function (res) 
+      {
+        if(!res || res.error)
+          return;
+
+        settings.url = "https://new-spotted-cotuca.appspot.com/api" + id + "/addPostId?postId=" + res.id.split('_')[1];
+        $.ajax(settings);
+      });
+      
       this.selectSpots(this.state.token);
     }.bind(this));
   }
