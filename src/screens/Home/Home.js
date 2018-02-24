@@ -6,6 +6,7 @@ import '../../index.css';
 import './Home.css';
 
 import fbIcon from '../../imgs/fb.png';
+import ttIcon from '../../imgs/tt.png';
 import messageIcon from '../../imgs/message.png';
 
 class User extends Component 
@@ -33,7 +34,7 @@ class User extends Component
 
   selectSpots()
   {
-    yawp('/spots/approvedd').list(l => this.setState({spots: l}));
+    yawp('/spots/approved').list(l => this.setState({spots: l}));
   }
 
   printSpots()
@@ -71,7 +72,8 @@ class User extends Component
         <hr/>
         
         <div className="spotBoxFooter">
-          <a href={"https://www.facebook.com/pg/spottedcotuca3/posts/" + spot.postId} target="blank"><img alt="fb" className="socialMedia" src={ fbIcon }></img></a>
+          <a href={ "https://www.facebook.com/pg/spottedcotuca3/posts/" + spot.fbPostId } target="blank"><img alt="fb" className="socialMedia" src={ fbIcon }></img></a>
+          <a href={ "https://twitter.com/spottedcotuca3/status/" + spot.ttPostId } target="blank"><img alt="tt" className="socialMedia" src={ ttIcon }></img></a>
         </div>
       </div>
     );
@@ -82,7 +84,6 @@ class User extends Component
     return (
       <div className="App">
         <header className="App-header">
-          {/*<img className="letter" src={ letterIcon } alt="letter"></img>*/}
           <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
         </header>
         

@@ -9,6 +9,8 @@ import rejectIcon from '../../imgs/reject.png';
 
 import './Admin.css';
 
+var Twitter = require('twitter');
+
 var config = 
 {
     apiKey: "AIzaSyAwEx4ct_nKPYIhFBpfB7RMfSIHFme9ais",
@@ -23,6 +25,8 @@ var config =
 
 class Admin extends Component 
 {
+  tt = null;
+
   constructor(props)
   {
     super(props);
@@ -34,7 +38,7 @@ class Admin extends Component
     firebase.initializeApp(config);
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) 
-        user.getIdToken().then(function(idToken) { this.initializeFacebook(idToken); this.selectSpots(idToken); }.bind(this));
+        user.getIdToken().then(function(idToken) { this.initializeSocials(idToken); this.selectSpots(idToken); }.bind(this));
     }.bind(this));
   };
   
@@ -50,23 +54,31 @@ class Admin extends Component
     token: '',
   }
   
-  initializeFacebook(idToken)
+  initializeSocials(idToken)
   {
     let settings = 
     {
       "async": true,
       "crossDomain": true,
-      "url": "https://new-spotted-cotuca.appspot.com/api/admins/token",
+      "url": "https://new-spotted-cotuca.appspot.com/api/admins/tokens",
       "method": "GET",
       "headers":
       {
         "Authorization": "Bearer " + idToken
       }
-    }
+    };
     
+    let context = this;
     $.ajax(settings).done(function (response) {
-      FB.setAccessToken(response.token);
-    }.bind(this));
+      FB.setAccessToken(response.fb_token_key);
+      
+      context.tt = new Twitter({
+        consumer_key: response.tt_consumer_key,
+        consumer_secret: response.tt_consumer_secret,
+        access_token_key: response.tt_token_key,
+        access_token_secret: response.tt_token_secret
+      });
+    });
   }
   
   selectSpots(idToken)
@@ -141,13 +153,23 @@ class Admin extends Component
       }
     };
     
-    $.ajax(settings).done(function (response) {
-      FB.api('me/feed', 'post', { message: "\"" + spotMessage + "\"" }, function (res) 
+    $.ajax(settings).done(function (response) 
+    {
+      FB.api('me/feed', 'post', { message: "\"" + spotMessage + "\"" }, function (res)
       {
         if(!res || res.error)
           return;
 
-        settings.url = "https://new-spotted-cotuca.appspot.com/api" + id + "/addPostId?postId=" + res.id.split('_')[1];
+        settings.url = "https://new-spotted-cotuca.appspot.com/api" + id + "/addPostId?fbPostId=" + res.id.split('_')[1];
+        $.ajax(settings);
+      });
+      
+      this.tt.post('statuses/update', { status: "\"" + spotMessage + "\"" },  function(error, tweet, response)
+      {
+        if (error) 
+          throw error;
+        
+        settings.url = "https://new-spotted-cotuca.appspot.com/api" + id + "/addPostId?ttPostId=" + tweet.id_str;
         $.ajax(settings);
       });
       
@@ -205,7 +227,7 @@ class Admin extends Component
             <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
           </header>
           
-          <div className="outer">
+          <div className="content">
             <div className="middle">
               <div className="form-content">
                 <div className="row">
@@ -221,9 +243,9 @@ class Admin extends Component
             </div>
           </div>
           
-          <footer className="user-footer">
+          <div className="App-footer">
             Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>
-          </footer>
+          </div>
         </div>
       );
   }
