@@ -66,16 +66,9 @@ label
   width: 100%;
 }
 
-.outer
+.content
 {
-  top: 150px;
-  left: 0;
   display: table;
-  position: fixed;
-  margin-bottom: 150px;
-  min-height: calc(100% - 300px);
-  height: calc(100% - 300px);
-  width: 100%;
 }
 
 .middle
