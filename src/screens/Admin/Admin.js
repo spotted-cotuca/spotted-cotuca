@@ -204,6 +204,12 @@ class Admin extends Component
     firebase.auth().signInWithEmailAndPassword(email, pass).catch(e => console.log(e.message));
   }
 
+  logout()
+  {
+    firebase.auth().signOut();
+    this.setState({logged: false});
+  }
+
   render() 
   {
     if (this.state.logged)
@@ -211,6 +217,9 @@ class Admin extends Component
         <div className="App">
           <header className="App-header">
             <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
+            <div className="Logout-btn">
+              <a href="./" onClick={this.logout}><b>Logout</b></a>
+            </div>
           </header>
           
           <div className="content">
