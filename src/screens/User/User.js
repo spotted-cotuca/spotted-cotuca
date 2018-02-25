@@ -28,14 +28,14 @@ class User extends Component
     let textArea = document.getElementById("message"),
         text = textArea.value;
     
-    if (text == "")
+    if (text === "")
       Alert.error(<h1>Se você não escrever nada, não tem como o crush te notar!</h1>, {
         position: 'bottom-right',
         effect: 'scale',
         timeout: 4000
       });
     else if (text.length > 280)
-      Alert.error(<h1>Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 180 caracteres 😢</h1>, {
+      Alert.error(<h1>Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres <span>😢</span></h1>, {
           position: 'bottom-right',
           effect: 'scale',
           timeout: 4000

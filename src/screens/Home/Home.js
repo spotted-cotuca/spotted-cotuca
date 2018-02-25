@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
-import $ from 'jquery';
 
 import '../../index.css';
 import './Home.css';

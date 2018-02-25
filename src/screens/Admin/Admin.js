@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
-import { FB, FacebookApiException } from 'fb';
+import { FB } from 'fb';
 import * as firebase from 'firebase';
 import $ from 'jquery';
 
