@@ -1,15 +1,14 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Spotted Cotuca",
+  "name": "Spotted Cotuca",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#7c0606",
+  "background_color": "#df7171",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "app-icon.png",
+      "sizes": "192x192"
     }
-  ],
-  "start_url": "./index.html",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  ]
 }
