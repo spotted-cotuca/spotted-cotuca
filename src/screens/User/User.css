@@ -76,3 +76,20 @@ textarea:focus
           box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
   outline: 0;
 }
+
+.socialLink
+{
+  color: #7C0606;
+}
+
+.content
+{
+  display: table;
+}
+
+.middle
+{
+  display: table-cell;
+  vertical-align: middle;
+  padding: 25px;
+}
