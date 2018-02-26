@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
-import { FB } from 'fb';
+import { FB } from 'fb-es5';
 import * as firebase from 'firebase';
 import $ from 'jquery';
 
