@@ -73,7 +73,7 @@ class User extends Component
         <div className="content">
           <div className="middle">
             <div className="presentation">
-              Olá, esse é o novo Spotted Cotuca 😁. Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores para que ela seja postada no no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">Facebook</a> e <a className="socialLink" href="https://twitter.com/spottedcotuca3" target="blank">Twitter</a>. Boa sorte com os @s! 😉
+            Olá, esse é o novo Spotted Cotuca 😁. Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores para que ela seja postada no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">Facebook</a> e <a className="socialLink" href="https://twitter.com/spottedcotuca3" target="blank">Twitter</a>. Boa sorte com os @s! 😉
             </div>
 
             <textarea maxLength="280" placeholder="Digite sua mensagem..." id="message"></textarea>
