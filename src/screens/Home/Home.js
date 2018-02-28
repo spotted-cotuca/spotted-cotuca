@@ -15,7 +15,7 @@ class User extends Component
     super(props);
     
     yawp.config(function (c) {
-      c.baseUrl('https://new-spotted-cotuca.appspot.com/api');
+      c.baseUrl('https://newspottedctc.appspot.com/api');
     });
     
     this.selectSpots();
@@ -90,7 +90,7 @@ class User extends Component
           { this.printSpots() }
         </div>
         
-        <a href="./send"><img alt="sendSpot" className="sendSpot" src={ messageIcon }/></a>
+        <a href="./#/send"><img alt="sendSpot" className="sendSpot" src={ messageIcon }/></a>
           
         <div className="App-footer">
             Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>

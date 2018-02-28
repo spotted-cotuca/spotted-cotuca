@@ -14,10 +14,10 @@ var Twitter = require('twitter');
 var config = 
 {
     apiKey: "AIzaSyAwEx4ct_nKPYIhFBpfB7RMfSIHFme9ais",
-    authDomain: "new-spotted-cotuca.firebaseapp.com",
-    databaseURL: "https://new-spotted-cotuca.firebaseio.com",
-    projectId: "new-spotted-cotuca",
-    storageBucket: "https://new-spotted-cotuca.appspot.com",
+    authDomain: "newspottedctc.firebaseapp.com",
+    databaseURL: "https://newspottedctc.firebaseio.com",
+    projectId: "newspottedctc",
+    storageBucket: "https://newspottedctc.appspot.com",
     messagingSenderId: "319156712141"
 };
 
@@ -32,7 +32,7 @@ class Admin extends Component
     super(props);
     
     yawp.config(function (c) {
-      c.baseUrl('https://new-spotted-cotuca.appspot.com/api');
+      c.baseUrl('https://newspottedctc.appspot.com/api');
     });
     
     firebase.initializeApp(config);
@@ -40,6 +40,8 @@ class Admin extends Component
       if (user) 
         user.getIdToken().then(function(idToken) { this.initializeSocials(idToken); this.selectSpots(idToken); }.bind(this));
     }.bind(this));
+
+    console.log(idToken);
   };
   
   componentDidMount() 
@@ -60,7 +62,7 @@ class Admin extends Component
     {
       "async": true,
       "crossDomain": true,
-      "url": "https://new-spotted-cotuca.appspot.com/api/admins/tokens",
+      "url": "https://newspottedctc.appspot.com/api/admins/tokens",
       "method": "GET",
       "headers":
       {
@@ -87,7 +89,7 @@ class Admin extends Component
     {
       "async": true,
       "crossDomain": true,
-      "url": "https://new-spotted-cotuca.appspot.com/api/spots/pending",
+      "url": "https://newspottedctc.appspot.com/api/spots/pending",
       "method": "GET",
       "headers":
       {
@@ -145,7 +147,7 @@ class Admin extends Component
     {
       "async": true,
       "crossDomain": true,
-      "url": "https://new-spotted-cotuca.appspot.com/api" + id + "/approve",
+      "url": "https://newspottedctc.appspot.com/api" + id + "/approve",
       "method": "PUT",
       "headers":
       {
@@ -160,7 +162,7 @@ class Admin extends Component
         if(!res || res.error)
           return;
 
-        settings.url = "https://new-spotted-cotuca.appspot.com/api" + id + "/addPostId?fbPostId=" + res.id.split('_')[1];
+        settings.url = "https://newspottedctc.appspot.com/api" + id + "/addPostId?fbPostId=" + res.id.split('_')[1];
         $.ajax(settings);
       });
       
@@ -169,7 +171,7 @@ class Admin extends Component
         if (error) 
           throw error;
         
-        settings.url = "https://new-spotted-cotuca.appspot.com/api" + id + "/addPostId?ttPostId=" + tweet.id_str;
+        settings.url = "https://newspottedctc.appspot.com/api" + id + "/addPostId?ttPostId=" + tweet.id_str;
         $.ajax(settings);
       });
       
@@ -183,7 +185,7 @@ class Admin extends Component
     {
       "async": true,
       "crossDomain": true,
-      "url": "https://new-spotted-cotuca.appspot.com/api" + id + "/reject",
+      "url": "https://newspottedctc.appspot.com/api" + id + "/reject",
       "method": "PUT",
       "headers":
       {
