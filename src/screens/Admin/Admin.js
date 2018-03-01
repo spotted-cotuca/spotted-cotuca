@@ -40,8 +40,6 @@ class Admin extends Component
       if (user) 
         user.getIdToken().then(function(idToken) { this.initializeSocials(idToken); this.selectSpots(idToken); }.bind(this));
     }.bind(this));
-
-    console.log(idToken);
   };
   
   componentDidMount() 
@@ -155,6 +153,7 @@ class Admin extends Component
       }
     };
     
+    let context = this;
     $.ajax(settings).done(function (response) 
     {
       FB.api('me/feed', 'post', { message: "\"" + spotMessage + "\"" }, function (res)
@@ -163,20 +162,22 @@ class Admin extends Component
           return;
 
         settings.url = "https://newspottedctc.appspot.com/api" + id + "/addPostId?fbPostId=" + res.id.split('_')[1];
-        $.ajax(settings);
+        $.ajax(settings).done(r =>
+        {
+          context.tt.post('statuses/update', { status: "\"" + spotMessage + "\"" },  function(error, tweet, response)
+          {
+            if (error) 
+              throw error;
+
+            console.log(tweet.id_str);
+            settings.url = "https://newspottedctc.appspot.com/api" + id + "/addPostId?ttPostId=" + tweet.id_str;
+            $.ajax(settings);
+          });
+          
+          context.selectSpots(context.state.token);
+        });
       });
-      
-      this.tt.post('statuses/update', { status: "\"" + spotMessage + "\"" },  function(error, tweet, response)
-      {
-        if (error) 
-          throw error;
-        
-        settings.url = "https://newspottedctc.appspot.com/api" + id + "/addPostId?ttPostId=" + tweet.id_str;
-        $.ajax(settings);
-      });
-      
-      this.selectSpots(this.state.token);
-    }.bind(this));
+    });
   }
 
   rejectSpot(id)
@@ -216,46 +217,30 @@ class Admin extends Component
   {
     if (this.state.logged)
       return (
-        <div className="App">
-          <header className="App-header">
-            <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
-            <div className="Logout-btn">
-              <a href="./" onClick={this.logout}><b>Logout</b></a>
-            </div>
-          </header>
-          
-          <div className="content">
-            {
-              this.printSpots()
-            }
+        <div className="content">
+          <div className="Logout-btn">
+            <a href="./" onClick={this.logout}><b>Logout</b></a>
           </div>
+          {
+            this.printSpots()
+          }
         </div>
       );
     else
       return (
-        <div className="App">
-          <header className="App-header">
-            <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
-          </header>
-          
-          <div className="content">
-            <div className="middle">
-              <div className="form-content">
-                <div className="row">
-                  <input type="text" id="email" name="email" placeholder="Email"/>
-                </div>
-                <div className="row">
-                  <input type="password" id="pass" name="pass" placeholder="Senha"/>
-                </div>
-                <div className="row">
-                  <button className="btn" onClick={ this.login }>Entrar</button>
-                </div>
+        <div className="content">
+          <div className="middle">
+            <div className="form-content">
+              <div className="row">
+                <input type="text" id="email" name="email" placeholder="Email"/>
+              </div>
+              <div className="row">
+                <input type="password" id="pass" name="pass" placeholder="Senha"/>
+              </div>
+              <div className="row">
+                <button className="btn" onClick={ this.login }>Entrar</button>
               </div>
             </div>
-          </div>
-          
-          <div className="App-footer">
-            Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>
           </div>
         </div>
       );

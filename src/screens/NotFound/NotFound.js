@@ -16,21 +16,15 @@ class NotFound extends Component
   render() 
   {
     return (
-      <div className="App">
-        <header className="App-header">
-          {/*<img className="letter" src={ letterIcon } alt="letter"></img>*/}
-          <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
-        </header>
-        
-        <div className="content">
-          <img className="brokenHeart" src={ brokenHeartIcon } alt="Broken Heart"></img>
-          <div className="message">
-            <strong>Oh, não!</strong>
-            <br/><br/>
-            Parece que o crush não está nessa direção, aliás, <strong>NADA</strong> está nessa direção.
-            <br/><br/>
-          </div>
-            <a className="link" href="./">Voltar para a home.</a>
+      <div className="content">
+        <img className="brokenHeart" src={ brokenHeartIcon } alt="Broken Heart"></img>
+        <div className="message">
+          <strong>Oh, não!</strong>
+          <br/><br/>
+          Parece que o crush não está nessa direção, aliás, <strong>NADA</strong> está nessa direção.
+          <br/><br/>
+
+          <a className="link" href="./#/">Voltar para a home.</a>
         </div>
       </div>
     );

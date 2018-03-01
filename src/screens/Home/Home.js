@@ -7,6 +7,7 @@ import './Home.css';
 import fbIcon from '../../imgs/fb.png';
 import ttIcon from '../../imgs/tt.png';
 import messageIcon from '../../imgs/message.png';
+import brokenHeartIcon from '../../imgs/broken-heart.png';
 
 class User extends Component 
 {
@@ -28,12 +29,14 @@ class User extends Component
   
   state =
   {
-    spots: []  
+    spots: [],
+    loaded: false,
+    error: false,
   }
 
   selectSpots()
   {
-    yawp('/spots/approved').list(l => this.setState({spots: l}));
+    yawp('/spots/approved').list(l => this.setState({spots: l, loaded: true})).catch(e => this.setState({loaded: true, error: true}));
   }
 
   printSpots()
@@ -81,21 +84,26 @@ class User extends Component
   render() 
   {
     return (
-      <div className="App">
-        <header className="App-header">
-          <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
-        </header>
-        
         <div className="content">
-          { this.printSpots() }
-        </div>
-        
-        <a href="./#/send"><img alt="sendSpot" className="sendSpot" src={ messageIcon }/></a>
+          { !this.state.loaded && <div className="loader"></div> }
           
-        <div className="App-footer">
-            Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>
+          { 
+            this.state.error && 
+            <div className="error">
+              <img className="brokenHeart" src={ brokenHeartIcon } alt="Broken Heart"></img>
+              <div className="message">
+                <strong>Oh, não!</strong>
+                <br/><br/>
+                Algo deu errado ao tentar pegar os spots, por favor, <a className="link" href="./">recarregue a página</a>.
+                <br/><br/>
+              </div>
+            </div> 
+          }
+          
+          { this.printSpots() }
+          
+          <a href="./#/send"><img alt="sendSpot" className="sendSpot" src={ messageIcon }/></a>
         </div>
-      </div>
     );
   }
 }

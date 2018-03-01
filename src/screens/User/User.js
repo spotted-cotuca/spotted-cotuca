@@ -29,17 +29,9 @@ class User extends Component
         text = textArea.value;
     
     if (text === "")
-      Alert.error(<h1>Se você não escrever nada, não tem como o crush te notar!</h1>, {
-        position: 'bottom-right',
-        effect: 'scale',
-        timeout: 4000
-      });
+      this.createErrorMessage("Se você não escrever nada, não tem como o crush te notar!");
     else if (text.length > 280)
-      Alert.error(<h1>Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres <span>😢</span></h1>, {
-          position: 'bottom-right',
-          effect: 'scale',
-          timeout: 4000
-      });
+      this.createErrorMessage("Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres <span>😢</span>");
     else
       yawp('/spots').create({ message: textArea.value }).then(() => 
       { 
@@ -50,7 +42,16 @@ class User extends Component
           this.createSuccessAlert("Sua mensagem foi enviada, E É CLARO QUE SEU CRUSH TE QUER!");
         else
           this.createSuccessAlert("Sua mensagem foi enviada, agora é só esperar!");
-      });  
+      }).catch(err => this.createErrorMessage("Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão"));
+  }
+  
+  createErrorMessage(message)
+  {
+    Alert.error(<h1>{message}</h1>, {
+      position: 'bottom-right',
+      effect: 'scale',
+      timeout: 4000
+    });
   }
   
   createSuccessAlert(message)
@@ -65,30 +66,20 @@ class User extends Component
   render() 
   {
     return (
-      <div className="App">
-        <header className="App-header">
-          <a href="./"><h1 className="App-title">Spotted Cotuca</h1></a>
-        </header>
-        
-        <div className="content">
-          <div className="middle">
-            <div className="presentation">
-            Olá, esse é o novo Spotted Cotuca 😁. Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores para que ela seja postada no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">Facebook</a> e <a className="socialLink" href="https://twitter.com/spottedcotuca3" target="blank">Twitter</a>. Boa sorte com os @s! 😉
-            </div>
-
-            <textarea maxLength="280" placeholder="Digite sua mensagem..." id="message"></textarea>
-
-            <br/>
-
-            <button className="btn btn-primary" onClick={() => this.sendSpot()}>Enviar Spot</button>
-
-            <Alert stack={{limit: 3}} />
+      <div className="content">
+        <div className="middle">
+          <div className="presentation">
+          Olá, esse é o novo Spotted Cotuca 😁. Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores para que ela seja postada no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">Facebook</a> e <a className="socialLink" href="https://twitter.com/spottedcotuca3" target="blank">Twitter</a>. Boa sorte com os @s! 😉
           </div>
+
+          <textarea maxLength="280" placeholder="Digite sua mensagem..." id="message"></textarea>
+
+          <br/>
+
+          <button className="btn btn-primary" onClick={() => this.sendSpot()}>Enviar Spot</button>
+
+          <Alert stack={{limit: 3}} />
         </div>
-        
-        <footer className="App-footer">
-          Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>
-        </footer>
       </div>
     );
   }
