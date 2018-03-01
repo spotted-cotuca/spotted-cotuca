@@ -45,7 +45,6 @@ a
 {
   background-color: #7C0606;
   color: white;
-  line-height: 100px;
 }
 .App-footer
 {
@@ -59,9 +58,9 @@ a
 
 @media (max-width: 1023px)
 {
-  .App-header
+  .App-title
   {
-    line-height: 75px;
+    line-height: 75px !important;
   }
   
   .App-footer
@@ -72,8 +71,10 @@ a
 
 .App-title
 {
+  display: inline-block;
   font-size: 2em;
   margin: 0;
+  line-height: 100px;
 }
 
 .content
@@ -155,4 +156,66 @@ hr
 {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+.bm-burger-button
+{
+  position: absolute;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: calc((100px - 30px) / 2);
+}
+
+@media (max-width: 1023px)
+{
+  .bm-burger-button
+  {
+    top: calc((75px - 30px) / 2);
+  }
+}
+
+.bm-burger-bars
+{
+  background: #FFF;
+}
+
+.bm-morph-shape
+{
+  fill: #FFF;
+}
+
+.bm-menu
+{
+  font-size: 2.2em;
+  background: #380000;
+  overflow: hidden !important;
+}
+
+.bm-menu a 
+{
+  background: #200000;
+  width: 100%;
+}
+
+.bm-menu a:hover, .bm-menu a:focus 
+{
+  color: #c94e50;
+}
+
+.bm-item-wrap
+{
+  background: #200000;
+  margin-top: 0.7em;
+}
+
+.bm-item-list a
+{
+  margin: 1.4em auto 0.7em auto;
+  width: 100%;
+}
+
+.bm-item-list a span 
+{
+  font-weight: 700;
 }

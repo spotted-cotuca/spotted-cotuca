@@ -84,7 +84,7 @@ class User extends Component
   render() 
   {
     return (
-        <div className="content">
+        <div id="content" className="content">
           { !this.state.loaded && <div className="loader"></div> }
           
           { 

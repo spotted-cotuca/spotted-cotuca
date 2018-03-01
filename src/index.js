@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import BurgerMenu from 'react-burger-menu';
 import {
   HashRouter as Router,
   Route,
@@ -12,16 +13,62 @@ import User from './screens/User/User';
 import NotFound from './screens/NotFound/NotFound';
 import registerServiceWorker from './registerServiceWorker';
 
+class MenuWrap extends React.Component
+{
+  constructor(props)
+  {
+    super(props);
+    
+    this.state = 
+    {
+      hidden: false
+    };
+  }
+
+  show()
+  {
+    this.setState({hidden : false});
+  }
+
+  render()
+  {
+    let style;
+    if (this.state.hidden)
+      style = { display: 'none' };
+
+    return (
+      <div style={style} className={this.props.side}>
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
 class Main extends React.Component
 {
+  getMenu()
+  {
+    const Menu = BurgerMenu['slide'];
+    return (
+      <MenuWrap wait={ 20 }>
+        <Menu id={'slide'}>
+          <div className="bm-item-wrap">
+            <a key="0" href="./#/admin">Admin</a>
+          </div>
+        </Menu>
+      </MenuWrap>
+    );
+  }
+
   render()
   {
     return (
       <div id="App" className='App'>
         <header className="App-header">
+          { this.getMenu() }
           <a href="./#/"><h1 className="App-title">Spotted Cotuca</h1></a>
         </header>
-      
+
         <Router>
           <Switch>
             <Route exact path="/" component={Home}/>
