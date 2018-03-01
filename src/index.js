@@ -13,6 +13,9 @@ import User from './screens/User/User';
 import NotFound from './screens/NotFound/NotFound';
 import registerServiceWorker from './registerServiceWorker';
 
+import fbIcon from './imgs/whiteFb.png';
+import ttIcon from './imgs/whiteTt.png';
+
 class MenuWrap extends React.Component
 {
   constructor(props)
@@ -52,8 +55,21 @@ class Main extends React.Component
     return (
       <MenuWrap wait={ 20 }>
         <Menu id={'slide'}>
+          <a href="./#/admin">
+            <div className="bm-item-wrap">
+              Admin
+            </div>
+          </a>
+          
+          <a href="./#/send">
+            <div className="bm-item-wrap">
+              Enviar spots
+            </div>
+          </a>
+          
           <div className="bm-item-wrap">
-            <a key="0" href="./#/admin">Admin</a>
+            <a href={ "https://www.facebook.com/spottedcotuca3" } target="blank"><img alt="fb" className="menuSocialMedia" src={ fbIcon }></img></a>
+            <a href={ "https://twitter.com/spottedcotuca3" } target="blank"><img alt="tt" className="menuSocialMedia" src={ ttIcon }></img></a>
           </div>
         </Menu>
       </MenuWrap>

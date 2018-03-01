@@ -140,6 +140,15 @@ hr
   color: #ff7c7c;
 }
 
+.menuSocialMedia
+{
+  vertical-align: middle;
+  margin-left: 15px;
+  margin-right: 15px;
+  width: 50px;
+  height: 50px;
+}
+
 .loader
 {
   border: 16px solid #d9d9d9;
@@ -194,8 +203,11 @@ hr
 
 .bm-menu a 
 {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 50px;
   background: #200000;
-  width: 100%;
+  font-weight: 700;
 }
 
 .bm-menu a:hover, .bm-menu a:focus 
@@ -206,16 +218,12 @@ hr
 .bm-item-wrap
 {
   background: #200000;
-  margin-top: 0.7em;
+  padding: 0.4em 0 0.4em 0;
+  margin-top: 1.4em;
+  line-height: 75px;
 }
 
 .bm-item-list a
-{
-  margin: 1.4em auto 0.7em auto;
-  width: 100%;
-}
-
-.bm-item-list a span 
 {
   font-weight: 700;
 }
