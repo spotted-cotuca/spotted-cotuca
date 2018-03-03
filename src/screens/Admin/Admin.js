@@ -116,7 +116,9 @@ class Admin extends Component
 
   createSpotBox(spot)
   {
-    let date = new Date(spot.date);
+    var serverDate = new Date(spot.date);
+    var date = new Date(serverDate);
+    date.setMinutes(serverDate.getMinutes() - serverDate.getTimezoneOffset());
     
     let d = date.getDate();
     let m = date.getMonth() + 1;
