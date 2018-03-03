@@ -30,7 +30,7 @@ class User extends Component
     
     if (text === "")
       this.createErrorMessage("Se você não escrever nada, não tem como o crush te notar!");
-    else if (text.length > 280)
+    else if (text.length > 278)
       this.createErrorMessage("Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres <span>😢</span>");
     else
       yawp('/spots').create({ message: textArea.value }).then(() => 
@@ -72,7 +72,7 @@ class User extends Component
           Olá, esse é o novo Spotted Cotuca 😁. Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores para que ela seja postada no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">Facebook</a> e <a className="socialLink" href="https://twitter.com/spottedcotuca3" target="blank">Twitter</a>. Boa sorte com os @s! 😉
           </div>
 
-          <textarea maxLength="280" placeholder="Digite sua mensagem..." id="message"></textarea>
+          <textarea maxLength="278" placeholder="Digite sua mensagem..." id="message"></textarea>
 
           <br/>
 

@@ -13,9 +13,6 @@ import User from './screens/User/User';
 import NotFound from './screens/NotFound/NotFound';
 import registerServiceWorker from './registerServiceWorker';
 
-import fbIcon from './imgs/whiteFb.png';
-import ttIcon from './imgs/whiteTt.png';
-
 class MenuWrap extends React.Component
 {
   constructor(props)
@@ -68,8 +65,8 @@ class Main extends React.Component
           </a>
           
           <div className="bm-item-wrap">
-            <a href={ "https://www.facebook.com/spottedcotuca3" } target="blank"><img alt="fb" className="menuSocialMedia" src={ fbIcon }></img></a>
-            <a href={ "https://twitter.com/spottedcotuca3" } target="blank"><img alt="tt" className="menuSocialMedia" src={ ttIcon }></img></a>
+            <a href={ "https://www.facebook.com/spottedcotuca3" } target="blank"><i className="fa fa-facebook"/></a>
+            <a href={ "https://twitter.com/spottedcotuca3" } target="blank"><i className="fa fa-twitter"/></a>
           </div>
         </Menu>
       </MenuWrap>
