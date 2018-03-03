@@ -52,6 +52,10 @@ class Admin extends Component
     spots: [],
     logged: false,
     token: '',
+    consumer_key: '',
+    consumer_secret: '',
+    access_token_key: '',
+    access_token_secret: '',
   }
   
   initializeSocials(idToken)
@@ -71,7 +75,7 @@ class Admin extends Component
     let context = this;
     $.ajax(settings).done(function (response) {
       FB.setAccessToken(response.fb_token_key);
-      
+    
       context.tt = new Twitter({
         consumer_key: response.tt_consumer_key,
         consumer_secret: response.tt_consumer_secret,
@@ -79,6 +83,8 @@ class Admin extends Component
         access_token_secret: response.tt_token_secret
       });
     });
+
+    console.log(idToken);
   }
   
   selectSpots(idToken)
@@ -164,16 +170,38 @@ class Admin extends Component
         settings.url = "https://newspottedctc.appspot.com/api" + id + "/addPostId?fbPostId=" + res.id.split('_')[1];
         $.ajax(settings).done(r =>
         {
-          context.tt.post('statuses/update', { status: "\"" + spotMessage + "\"" },  function(error, tweet, response)
-          {
-            if (error) 
-              throw error;
+          let settings = {
+            async: true,
+            crossDomain: true,
+            url: 'https://newspottedctcproxy.herokuapp.com/tweet',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              "accessSecret": context.tt.options.access_token_secret,
+              "accessToken": context.tt.options.access_token_key,
+              "consumerKey": context.tt.options.consumer_key,
+              "consumerSecret": context.tt.options.consumer_secret,
+              "message": "\"" + spotMessage + "\""
+            })
+          }
 
-            console.log(tweet.id_str);
-            settings.url = "https://newspottedctc.appspot.com/api" + id + "/addPostId?ttPostId=" + tweet.id_str;
+          $.ajax(settings).done(r =>
+          {
+            let settings = 
+            {
+              "async": true,
+              "crossDomain": true,
+              "url": "https://newspottedctc.appspot.com/api" + id + "/addPostId?ttPostId=" + r.tweetId,
+              "method": "PUT",
+              "headers":
+              {
+                "Authorization": "Bearer " + context.state.token
+              }
+            };
+
             $.ajax(settings);
-          });
-          
+          })
+
           context.selectSpots(context.state.token);
         });
       });
