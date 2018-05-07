@@ -7,12 +7,6 @@ import brokenHeartIcon from '../../imgs/broken-heart.png';
 
 class NotFound extends Component 
 {
-
-  componentDidMount()
-  {
-    document.title = "Spotted Cotuca";
-  }
-
   render() 
   {
     return (

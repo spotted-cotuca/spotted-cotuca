@@ -9,22 +9,17 @@ import ttIcon from '../../imgs/tt.png';
 import messageIcon from '../../imgs/message.png';
 import brokenHeartIcon from '../../imgs/broken-heart.png';
 
-class User extends Component 
+class Home extends Component 
 {
   constructor(props)
   {
     super(props);
     
     yawp.config(function (c) {
-      c.baseUrl('https://newspottedctc.appspot.com/api');
+      c.baseUrl(props.serverUrl);
     });
     
     this.selectSpots();
-  }
-  
-  componentDidMount()
-  {
-    document.title = "Spotted Cotuca";
   }
   
   state =
@@ -110,4 +105,4 @@ class User extends Component
   }
 }
 
-export default User;
+export default Home;
