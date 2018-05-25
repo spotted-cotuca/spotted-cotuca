@@ -13,6 +13,8 @@ class User extends Component
   {
     super(props);
     
+    
+    this.canSend = true;
     yawp.config(function (c) {
       c.baseUrl('https://newspottedctc.appspot.com/api');
     });
@@ -25,14 +27,23 @@ class User extends Component
   
   sendSpot()
   {
+    if (!this.canSend)
+    {
+      this.createErrorMessage("Espera mais um pouquinho, o crush não vai fugir não");
+      return;
+    } 
+    
     let textArea = document.getElementById("message"),
         text = textArea.value;
     
     if (text === "")
       this.createErrorMessage("Se você não escrever nada, não tem como o crush te notar!");
     else if (text.length > 278)
-      this.createErrorMessage("Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres <span>😢</span>");
+      this.createErrorMessage("Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres 😢");
     else
+    {
+      this.canSend = false;
+      
       yawp('/spots').create({ message: textArea.value }).then(() => 
       { 
         textArea.value = "";
@@ -42,7 +53,14 @@ class User extends Component
           this.createSuccessAlert("Sua mensagem foi enviada, E É CLARO QUE SEU CRUSH TE QUER!");
         else
           this.createSuccessAlert("Sua mensagem foi enviada, agora é só esperar!");
-      }).catch(err => this.createErrorMessage("Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão"));
+        
+        this.canSend = true;
+      }).catch(err =>
+      { 
+        this.createErrorMessage("Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão");
+        this.canSend = true;
+      });
+    }
   }
   
   createErrorMessage(message)
@@ -69,7 +87,7 @@ class User extends Component
       <div className="content">
         <div className="middle">
           <div className="presentation">
-          Olá, esse é o novo Spotted Cotuca 😁. Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores para que ela seja postada no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">Facebook</a> e <a className="socialLink" href="https://twitter.com/spottedcotuca3" target="blank">Twitter</a>. Boa sorte com os @s! 😉
+            Olá, esse é o novo Spotted Cotuca <span role="img" aria-label="smile face">😁</span>. Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores para que ela seja postada no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">Facebook</a> e <a className="socialLink" href="https://twitter.com/spottedcotuca3" target="blank">Twitter</a>. Boa sorte com os @s! <span role="img" aria-label="blinky face">😉</span>
           </div>
 
           <textarea maxLength="278" placeholder="Digite sua mensagem..." id="message"></textarea>
