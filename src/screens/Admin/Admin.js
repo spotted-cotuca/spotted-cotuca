@@ -11,18 +11,6 @@ import './Admin.css';
 
 var Twitter = require('twitter');
 
-var config = 
-{
-    apiKey: "AIzaSyAwEx4ct_nKPYIhFBpfB7RMfSIHFme9ais",
-    authDomain: "newspottedctc.firebaseapp.com",
-    databaseURL: "https://newspottedctc.firebaseio.com",
-    projectId: "newspottedctc",
-    storageBucket: "https://newspottedctc.appspot.com",
-    messagingSenderId: "319156712141"
-};
-
-//window.addEventListener("unload", () => firebase.auth().signOut());
-
 class Admin extends Component 
 {
   tt = null;
@@ -32,20 +20,15 @@ class Admin extends Component
     super(props);
     
     yawp.config(function (c) {
-      c.baseUrl('https://newspottedctc.appspot.com/api');
+      c.baseUrl(props.serverUrl);
     });
     
-    firebase.initializeApp(config);
+    firebase.initializeApp(props.firebase);
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) 
         user.getIdToken().then(function(idToken) { this.initializeSocials(idToken); this.selectSpots(idToken); }.bind(this));
     }.bind(this));
   };
-  
-  componentDidMount() 
-  {
-    document.title = "Spotted Cotuca";
-  }
 
   state =
   {
@@ -64,7 +47,7 @@ class Admin extends Component
     {
       "async": true,
       "crossDomain": true,
-      "url": "https://newspottedctc.appspot.com/api/admins/tokens",
+      "url": this.props.serverUrl + "/admins/tokens",
       "method": "GET",
       "headers":
       {
@@ -93,7 +76,7 @@ class Admin extends Component
     {
       "async": true,
       "crossDomain": true,
-      "url": "https://newspottedctc.appspot.com/api/spots/pending",
+      "url": this.props.serverUrl + "/spots/pending",
       "method": "GET",
       "headers":
       {
@@ -153,7 +136,7 @@ class Admin extends Component
     {
       "async": true,
       "crossDomain": true,
-      "url": "https://newspottedctc.appspot.com/api" + id + "/approve",
+      "url": this.props.serverUrl + id + "/approve",
       "method": "PUT",
       "headers":
       {
@@ -169,13 +152,13 @@ class Admin extends Component
         if(!res || res.error)
           return;
 
-        settings.url = "https://newspottedctc.appspot.com/api" + id + "/addPostId?fbPostId=" + res.id.split('_')[1];
+        settings.url = context.props.serverUrl + id + "/addPostId?fbPostId=" + res.id.split('_')[1];
         $.ajax(settings).done(r =>
         {
           let settings = {
             async: true,
             crossDomain: true,
-            url: 'https://newspottedctcproxy.herokuapp.com/tweet',
+            url: context.props.proxyUrl,
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -193,7 +176,7 @@ class Admin extends Component
             {
               "async": true,
               "crossDomain": true,
-              "url": "https://newspottedctc.appspot.com/api" + id + "/addPostId?ttPostId=" + r.tweetId,
+              "url": context.props.serverUrl + id + "/addPostId?ttPostId=" + r.tweetId,
               "method": "PUT",
               "headers":
               {
@@ -216,7 +199,7 @@ class Admin extends Component
     {
       "async": true,
       "crossDomain": true,
-      "url": "https://newspottedctc.appspot.com/api" + id + "/reject",
+      "url": this.props.serverUrl + id + "/reject",
       "method": "PUT",
       "headers":
       {

@@ -13,6 +13,8 @@ import User from './screens/User/User';
 import NotFound from './screens/NotFound/NotFound';
 import registerServiceWorker from './registerServiceWorker';
 
+const config = require('./config.json');
+
 class MenuWrap extends React.Component
 {
   constructor(props)
@@ -75,6 +77,7 @@ class Main extends React.Component
 
   render()
   {
+    console.log(config)
     return (
       <div id="App" className='App'>
         <header className="App-header">
@@ -84,9 +87,9 @@ class Main extends React.Component
 
         <Router>
           <Switch>
-            <Route exact path="/" component={Home}/>
-            <Route path="/send" component={User}/>
-            <Route path="/admin" component={Admin}/>
+            <Route exact path="/" render={(props) => <Home {...props} serverUrl={config.serverUrl} />}/>
+            <Route path="/send" render={(props) => <User {...props} serverUrl={config.serverUrl} />}/>
+            <Route path="/admin" render={(props) => <Admin {...props} serverUrl={config.serverUrl} proxyUrl={config.proxyUrl} firebase={config.firebase} />}/>
             <Route path="/api" component={null}/>
             <Route path="*" component={NotFound}/>
           </Switch>

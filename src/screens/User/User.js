@@ -16,13 +16,8 @@ class User extends Component
     
     this.canSend = true;
     yawp.config(function (c) {
-      c.baseUrl('https://newspottedctc.appspot.com/api');
+      c.baseUrl(props.serverUrl);
     });
-  }
-  
-  componentDidMount()
-  {
-    document.title = "Spotted Cotuca";
   }
   
   sendSpot()
