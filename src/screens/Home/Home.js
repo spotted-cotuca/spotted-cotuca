@@ -81,7 +81,7 @@ class Home extends Component
   render() 
   {
     return (
-        <div id="content" className="content">
+        <div id="content" className="content home">
           { !this.state.loaded && <div className="loader"></div> }
           
           { 

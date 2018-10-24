@@ -230,7 +230,7 @@ class Admin extends Component
   {
     if (this.state.logged)
       return (
-        <div className="content">
+        <div className="content admin">
           <div className="Logout-btn">
             <a href="./" onClick={this.logout}><b>Logout</b></a>
           </div>
@@ -241,7 +241,7 @@ class Admin extends Component
       );
     else
       return (
-        <div className="content">
+        <div className="content admin">
           <div className="middle">
             <div className="form-content">
               <div className="row">

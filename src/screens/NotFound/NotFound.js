@@ -10,7 +10,7 @@ class NotFound extends Component
   render() 
   {
     return (
-      <div className="content">
+      <div className="content notFound">
         <img className="brokenHeart" src={ brokenHeartIcon } alt="Broken Heart"></img>
         <div className="message">
           <strong>Oh, não!</strong>
