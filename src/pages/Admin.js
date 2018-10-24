@@ -4,8 +4,8 @@ import { FB } from 'fb-es5';
 import * as firebase from 'firebase';
 import $ from 'jquery';
 
-import approveIcon from '../../imgs/approve.png';
-import rejectIcon from '../../imgs/reject.png';
+import approveIcon from '../imgs/approve.png';
+import rejectIcon from '../imgs/reject.png';
 
 import './Admin.css';
 

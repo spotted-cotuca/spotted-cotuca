@@ -7,10 +7,10 @@ import {
   Switch
 } from 'react-router-dom';
 
-import Home from './screens/Home/Home';
-import Admin from './screens/Admin/Admin';
-import User from './screens/User/User';
-import NotFound from './screens/NotFound/NotFound';
+import Home from './pages/Home';
+import Admin from './pages/Admin';
+import User from './pages/User';
+import NotFound from './pages/NotFound';
 import registerServiceWorker from './registerServiceWorker';
 
 const config = require('./config.json');

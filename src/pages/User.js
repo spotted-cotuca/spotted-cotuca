@@ -3,7 +3,7 @@ import Alert from 'react-s-alert';
 import yawp from 'yawp';
 
 import './User.css';
-import '../../index.css';
+import '../index.css';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 

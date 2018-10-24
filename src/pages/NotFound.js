@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 import './NotFound.css';
-import '../../index.css';
+import '../index.css';
 
-import brokenHeartIcon from '../../imgs/broken-heart.png';
+import brokenHeartIcon from '../imgs/broken-heart.png';
 
 class NotFound extends Component 
 {

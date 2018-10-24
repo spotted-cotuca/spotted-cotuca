@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
 
-import '../../index.css';
+import '../index.css';
 import './Home.css';
 
 import fbIcon from '../../imgs/fb.png';
