@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import yawp from 'yawp';
 
 import '../../index.css';
-import './Home.css';
+import '../../sass/Home.css';
 
 import fbIcon from '../../imgs/fb.png';
 import ttIcon from '../../imgs/tt.png';

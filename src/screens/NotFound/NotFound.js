@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import './NotFound.css';
+import '../../sass/NotFound.css';
 import '../../index.css';
 
 import brokenHeartIcon from '../../imgs/broken-heart.png';
