@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import fbIcon from '../../imgs/fb.png';
-import ttIcon from '../../imgs/tt.png';
+import fbIcon from '../imgs/fb.png';
+import ttIcon from '../imgs/tt.png';
 
 class SpotBox extends Component {
   constructor(props) {
@@ -21,21 +22,32 @@ class SpotBox extends Component {
   }
 
   render() {
-    <div className="spotBox"> 
-      <p className="date">
-        { this.date }
-      </p>
-      
-      { "\"" + this.props.message + "\"" } 
-      
-      <hr/>
-      
-      <div className="spotBoxFooter">
-        <a href={ "https://www.facebook.com/pg/spottedcotuca3/posts/" + this.props.fbPostId } target="blank"><img alt="fb" className="socialMedia" src={ fbIcon }></img></a>
-        <a href={ "https://twitter.com/spottedcotuca3/status/" + this.props.ttPostId } target="blank"><img alt="tt" className="socialMedia" src={ ttIcon }></img></a>
+    return (
+      <div className="spotBox"> 
+        <p className="date">
+          { this.date }
+        </p>
+        
+        { "\"" + this.props.message + "\"" } 
+        
+        <hr/>
+        
+        <div className="spotBoxFooter">
+          <a href={ "https://www.facebook.com/pg/spottedcotuca3/posts/" + this.props.fbPostId } target="blank"><img alt="fb" className="socialMedia" src={ fbIcon }></img></a>
+          <a href={ "https://twitter.com/spottedcotuca3/status/" + this.props.ttPostId } target="blank"><img alt="tt" className="socialMedia" src={ ttIcon }></img></a>
+        </div>
       </div>
-    </div>
+    );
   }
+}
+
+SpotBox.propTypes = {
+  message: PropTypes.string.isRequired,
+  fbPostId: PropTypes.string,
+  ttPostId: PropTypes.string,
+  date: PropTypes.instanceOf(Date).isRequired,
+  approveSpot: PropTypes.func,
+  rejectSpot: PropTypes.func
 }
 
 export default SpotBox;
