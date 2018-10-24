@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
 
-import '../../index.css';
-import '../../sass/Home.css';
+import '../../css/index.css';
+import '../../css/Home.css';
 
 import fbIcon from '../../imgs/fb.png';
 import ttIcon from '../../imgs/tt.png';

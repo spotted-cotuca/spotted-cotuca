@@ -7,7 +7,7 @@ import $ from 'jquery';
 import approveIcon from '../../imgs/approve.png';
 import rejectIcon from '../../imgs/reject.png';
 
-import '../../sass/Admin.css';
+import '../../css/Admin.css';
 
 var Twitter = require('twitter');
 
