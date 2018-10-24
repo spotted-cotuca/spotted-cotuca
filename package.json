@@ -17,9 +17,13 @@
     "yawp": "^1.0.37"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently 'sass --watch src/sass:src/css' 'react-scripts start'",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "concurrently": "^4.0.1",
+    "sass": "^1.14.3"
   }
 }
