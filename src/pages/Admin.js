@@ -10,54 +10,52 @@ import '../css/Admin.css';
 
 var Twitter = require('twitter');
 
-class Admin extends Component 
-{
+class Admin extends Component {
   tt = null;
 
-  constructor(props)
-  {
+  constructor(props) {
     super(props);
-    
-    yawp.config(function (c) {
-      c.baseUrl(props.serverUrl);
-    });
-    
-    firebase.initializeApp(props.firebase);
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) 
-        user.getIdToken().then(function(idToken) { this.initializeSocials(idToken); this.selectSpots(idToken); }.bind(this));
-    }.bind(this));
-  };
 
-  state =
-  {
-    spots: [],
-    logged: false,
-    token: '',
-    consumer_key: '',
-    consumer_secret: '',
-    access_token_key: '',
-    access_token_secret: '',
-  }
-  
-  initializeSocials(idToken)
-  {
-    let settings = 
-    {
-      "async": true,
-      "crossDomain": true,
-      "url": this.props.serverUrl + "/admins/tokens",
-      "method": "GET",
-      "headers":
-      {
-        "Authorization": "Bearer " + idToken
-      }
+    yawp.config(c => c.baseUrl(props.serverUrl));
+    this.state = {
+      spots: [],
+      logged: false,
+      token: '',
+      consumer_key: '',
+      consumer_secret: '',
+      access_token_key: '',
+      access_token_secret: '',
     };
-    
+  }
+
+  componentDidMount() {
+    firebase.initializeApp(this.props.firebase);
+    firebase.auth().onAuthStateChanged(user => {
+      if (user)
+        user.getIdToken().then(idToken => {
+          this.initializeSocials(idToken);
+          this.selectSpots(idToken);
+        });
+    });
+  }
+
+  initializeSocials(idToken) {
+    let settings =
+      {
+        "async": true,
+        "crossDomain": true,
+        "url": this.props.serverUrl + "/admins/tokens",
+        "method": "GET",
+        "headers":
+          {
+            "Authorization": "Bearer " + idToken
+          }
+      };
+
     let context = this;
     $.ajax(settings).done(function (response) {
       FB.setAccessToken(response.fb_token_key);
-    
+
       context.tt = new Twitter({
         consumer_key: response.tt_consumer_key,
         consumer_secret: response.tt_consumer_secret,
@@ -68,68 +66,52 @@ class Admin extends Component
 
     console.log(idToken);
   }
-  
-  selectSpots(idToken)
-  {
-    let settings = 
-    {
-      "async": true,
-      "crossDomain": true,
-      "url": this.props.serverUrl + "/spots/pending",
-      "method": "GET",
-      "headers":
-      {
-        "Authorization": "Bearer " + idToken
-      }
-    }
-    
-    $.ajax(settings).done(function (response) {
-      this.setState({ spots: response.reverse(), logged: true, token: idToken });
-    }.bind(this));
+
+  selectSpots(idToken) {
+    fetch(this.props.serverUrl + '/spots/pending', {
+      headers: new Headers({
+        Authorization: 'Bearer ' + idToken
+      })
+    }).then(raw => raw.json())
+      .then(response => {
+        this.setState({
+          spots: response.reverse().map(spot => 
+            <SpotBox
+              key={spot.id}
+              approveSpot={() => this.approveSpot(spot.id, spot.message)}
+              rejectSpot={() => this.rejectSpot(spot.id)}
+              {...spot}
+              date={new Date(spot.date)}
+              admin
+            />
+          ),
+          logged: true,
+          token: idToken
+        });
+      });
   }
 
-  printSpots()
-  {
-    let spotsDivs =[];
-    this.state.spots.forEach(spot => spotsDivs.push(
-      <SpotBox
-        key={spot.id}
-        approveSpot={() => this.approveSpot(spot.id, spot.message)} 
-        rejectSpot={() => this.rejectSpot(spot.id)}
-        {...spot}
-        date={new Date(spot.date)}
-        admin
-      />
-    ));
-    
-    return spotsDivs;
-  }
-
-  approveSpot(id, spotMessage)
-  {
-    let settings = 
-    {
-      "async": true,
-      "crossDomain": true,
-      "url": this.props.serverUrl + id + "/approve",
-      "method": "PUT",
-      "headers":
+  approveSpot(id, spotMessage) {
+    let settings =
       {
-        "Authorization": "Bearer " + this.state.token
-      }
-    };
-    
+        "async": true,
+        "crossDomain": true,
+        "url": this.props.serverUrl + id + "/approve",
+        "method": "PUT",
+        "headers":
+          {
+            "Authorization": "Bearer " + this.state.token
+          }
+      };
+
     let context = this;
-    $.ajax(settings).done(function (response) 
-    {
-      FB.api('me/feed', 'post', { message: "\"" + spotMessage + "\"" }, function (res)
-      {
-        if(!res || res.error)
+    $.ajax(settings).done(function (response) {
+      FB.api('me/feed', 'post', { message: "\"" + spotMessage + "\"" }, function (res) {
+        if (!res || res.error)
           return;
 
         settings.url = context.props.serverUrl + id + "/addPostId?fbPostId=" + res.id.split('_')[1];
-        $.ajax(settings).done(r =>
-        {
+        $.ajax(settings).done(r => {
           let settings = {
             async: true,
             crossDomain: true,
@@ -145,19 +127,18 @@ class Admin extends Component
             })
           }
 
-          $.ajax(settings).done(r =>
-          {
-            let settings = 
-            {
-              "async": true,
-              "crossDomain": true,
-              "url": context.props.serverUrl + id + "/addPostId?ttPostId=" + r.tweetId,
-              "method": "PUT",
-              "headers":
+          $.ajax(settings).done(r => {
+            let settings =
               {
-                "Authorization": "Bearer " + context.state.token
-              }
-            };
+                "async": true,
+                "crossDomain": true,
+                "url": context.props.serverUrl + id + "/addPostId?ttPostId=" + r.tweetId,
+                "method": "PUT",
+                "headers":
+                  {
+                    "Authorization": "Bearer " + context.state.token
+                  }
+              };
 
             $.ajax(settings);
           })
@@ -168,50 +149,44 @@ class Admin extends Component
     });
   }
 
-  rejectSpot(id)
-  {
-    let settings = 
-    {
-      "async": true,
-      "crossDomain": true,
-      "url": this.props.serverUrl + id + "/reject",
-      "method": "PUT",
-      "headers":
+  rejectSpot(id) {
+    let settings =
       {
-        "Authorization": "Bearer " + this.state.token
-      }
-    };
-    
+        "async": true,
+        "crossDomain": true,
+        "url": this.props.serverUrl + id + "/reject",
+        "method": "PUT",
+        "headers":
+          {
+            "Authorization": "Bearer " + this.state.token
+          }
+      };
+
     $.ajax(settings).done(function (response) {
       this.selectSpots(this.state.token);
     }.bind(this));
   }
 
-  login()
-  {
+  login() {
     let email = document.getElementById("email").value,
-        pass  = document.getElementById("pass").value;
-    
+        pass = document.getElementById("pass").value;
+
     firebase.auth().signInWithEmailAndPassword(email, pass).catch(e => console.log(e.message));
   }
 
-  logout()
-  {
+  logout() {
     firebase.auth().signOut();
-    this.setState({logged: false});
+    this.setState({ logged: false });
   }
 
-  render() 
-  {
+  render() {
     if (this.state.logged)
       return (
         <div className="content admin">
           <div className="Logout-btn">
             <a href="./" onClick={this.logout}><b>Logout</b></a>
           </div>
-          {
-            this.printSpots()
-          }
+          { this.state.spots }
         </div>
       );
     else
@@ -220,13 +195,13 @@ class Admin extends Component
           <div className="middle">
             <div className="form-content">
               <div className="row">
-                <input type="text" id="email" name="email" placeholder="Email"/>
+                <input type="text" id="email" name="email" placeholder="Email" />
               </div>
               <div className="row">
-                <input type="password" id="pass" name="pass" placeholder="Senha"/>
+                <input type="password" id="pass" name="pass" placeholder="Senha" />
               </div>
               <div className="row">
-                <button className="btn" onClick={ this.login }>Entrar</button>
+                <button className="btn" onClick={this.login}>Entrar</button>
               </div>
             </div>
           </div>
