@@ -1,24 +1,20 @@
 .home {
   .sendSpot {
+    position: fixed;
     right: 15px;
     bottom: 15px;
-    position: fixed;
-    padding: 0.5rem 1rem;
+    width: 150px;
 
     img {
-      width: 150px;
+      width: 100%;
     }
   }
 
   @media (max-width: 1023px) {
     .sendSpot {
-      right: 5px;
-      bottom: 5px;
+      right: 10px;
+      bottom: 10px;
       width: 100px;
-
-      img {
-        width: 100px;
-      }
     }
   }
 }
