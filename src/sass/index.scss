@@ -28,7 +28,9 @@ a {
   color: white;
 }
 
-.App {
+.app {
+  display: flex;
+  flex-direction: column;
   min-height: 100%;
   height: 100vh;
   text-align: center;
@@ -36,16 +38,17 @@ a {
 
 header {
   position: relative;
-  display: inline-flex;
+  display: block;
   width: 100%;
   background-color: #f0739f;
 
   a {
+    display: block;
     margin: 0 auto;
+    height: 100px;
     
     img  {
-      margin: 0;
-      height: 100px;
+      height: 100%;
     }
   }
 
@@ -65,7 +68,7 @@ header {
   .bm-item-list {
     font-size: 2.2em;
     background-color: #f0739f;
-    overflow: hidden !important;
+    overflow: hidden;
     
     & > div {
       width: 100%;
@@ -89,7 +92,7 @@ header {
 }
 
 footer {
-  background-color: #7C0606;
+  background-color: #f0739f;
   color: white;
   font-size: 1.18em;
   font-weight: 500;
@@ -101,8 +104,8 @@ footer {
     color: #f42c2a;
   }
 
-  .fbLink {
-    color: #ff7c7c;
+  a {
+    color: #9c1d21;
   }
 }
 
@@ -117,17 +120,17 @@ footer {
 }
 
 .content {
+  flex-grow: 1;
   padding: 20px 0 20px 0;
   margin-left: auto;
   margin-right: auto;
   width: 40%;
-  height: calc(100vh - 216px);
+  flex-grow: 1;
 }
 
 @media (max-width: 1023px) {
   .content {
     width: 100%;
-    height: calc(100vh - 167px);
   }
 }
 

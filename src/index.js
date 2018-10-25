@@ -99,7 +99,7 @@ class Main extends React.Component
         </Router>
       
         <footer>
-          Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>
+          Feito com <i className="heart">♥</i> por <a href="https://fb.com/igor.mandello" target="blank">Igor</a>, <a href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a> e <a href="https://fb.com/vitor.bartier" target="blank">Bart</a>
         </footer>
       </div>
     );
