@@ -34,35 +34,49 @@ a {
   text-align: center;
 }
 
-.App-header {
+header {
+  display: inline-flex;
+  width: 100%;
   background-color: #7C0606;
   color: white;
+
+  a {
+    margin: 0 auto;
+    
+    h1 {
+      font-size: 2em;
+      margin: 0;
+      line-height: 100px;
+    }
+  }
 }
 
-.App-footer {
+footer {
   background-color: #7C0606;
   color: white;
   font-size: 1.18em;
   font-weight: 500;
   line-height: 75px;
   box-sizing: content-box;
+
+  .heart {
+    font-size: 1.2em;
+    color: #f42c2a;
+  }
+
+  .fbLink {
+    color: #ff7c7c;
+  }
 }
 
 @media (max-width: 1023px) {
-  .App-title {
+  header a h1 {
     line-height: 75px !important;
   }
 
-  .App-footer {
+  footer {
     line-height: 50px;
   }
-}
-
-.App-title {
-  display: inline-block;
-  font-size: 2em;
-  margin: 0;
-  line-height: 100px;
 }
 
 .content {
@@ -78,43 +92,6 @@ a {
     width: 100%;
     height: calc(100vh - 167px);
   }
-}
-
-.spotBox {
-  position: relative;
-  font-family: 'Courgette', cursive;
-  font-size: 1.8em;
-  font-weight: 400;
-  text-align: left;
-  background-color: #FFF;
-  margin: 25px;
-  padding: 20px;
-  word-break: break-word;
-  border: 1.5px dashed #D9230F;
-  border-radius: 0.3em;
-}
-
-hr {
-  margin: 20px 0 20px 0;
-}
-
-.spotBoxFooter {
-  height: 32px;
-}
-
-.date {
-  font-family: "Segoe UI";
-  margin-top: 0;
-  font-size: 0.6em;
-}
-
-.heart {
-  font-size: 1.2em;
-  color: #f42c2a;
-}
-
-.fbLink {
-  color: #ff7c7c;
 }
 
 .loader {

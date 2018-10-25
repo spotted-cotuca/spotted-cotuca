@@ -81,10 +81,10 @@ class Main extends React.Component
   {
     console.log(config)
     return (
-      <div id="App" className='App'>
-        <header className="App-header">
+      <div id="App" className='app'>
+        <header>
           { this.getMenu() }
-          <a href="./#/"><h1 className="App-title">Spotted Cotuca</h1></a>
+          <a href="./#/"><h1>Spotted Cotuca</h1></a>
         </header>
 
         <Router>
@@ -97,9 +97,9 @@ class Main extends React.Component
           </Switch>
         </Router>
       
-        <div className="App-footer">
+        <footer>
           Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>
-        </div>
+        </footer>
       </div>
     );
   }
