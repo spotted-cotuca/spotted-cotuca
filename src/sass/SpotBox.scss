@@ -7,13 +7,15 @@
   margin: 25px;
   padding: 20px;
   white-space: pre-line;
-  border: 1.5px dashed #D9230F;
+  word-break: break-word;
+  border: 1.5px dashed #f85a69;
   border-radius: 10px;
 
   .date {
-    font-family: "Segoe UI";
+    font-family: "Segoe UI", "Ubuntu", sans-serif;
     margin-top: 0;
     font-size: 0.6em;
+    color: #4c4c4c;
   }
 
   hr {
