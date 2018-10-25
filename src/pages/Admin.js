@@ -32,45 +32,36 @@ class Admin extends Component {
     firebase.initializeApp(this.props.firebase);
     firebase.auth().onAuthStateChanged(user => {
       if (user)
-        user.getIdToken().then(idToken => {
-          this.initializeSocials(idToken);
-          this.selectSpots(idToken);
+        user.getIdToken().then(token => {
+          console.log(token);
+          this.initializeSocials(token);
+          this.selectSpots(token);
         });
     });
   }
 
-  initializeSocials(idToken) {
-    let settings =
-      {
-        "async": true,
-        "crossDomain": true,
-        "url": this.props.serverUrl + "/admins/tokens",
-        "method": "GET",
-        "headers":
-          {
-            "Authorization": "Bearer " + idToken
-          }
-      };
-
-    let context = this;
-    $.ajax(settings).done(function (response) {
-      FB.setAccessToken(response.fb_token_key);
-
-      context.tt = new Twitter({
-        consumer_key: response.tt_consumer_key,
-        consumer_secret: response.tt_consumer_secret,
-        access_token_key: response.tt_token_key,
-        access_token_secret: response.tt_token_secret
+  initializeSocials(token) {
+    fetch(this.props.serverUrl + '/admins/tokens', {
+      headers: new Headers({
+        Authorization: 'Bearer ' + token
+      })
+    }).then(raw => raw.json())
+      .then(response => {
+        FB.setAccessToken(response.fb_token_key);
+        
+        this.tt = new Twitter({
+          consumer_key: response.tt_consumer_key,
+          consumer_secret: response.tt_consumer_secret,
+          access_token_key: response.tt_token_key,
+          access_token_secret: response.tt_token_secret
+        });
       });
-    });
-
-    console.log(idToken);
   }
 
-  selectSpots(idToken) {
+  selectSpots(token) {
     fetch(this.props.serverUrl + '/spots/pending', {
       headers: new Headers({
-        Authorization: 'Bearer ' + idToken
+        Authorization: 'Bearer ' + token
       })
     }).then(raw => raw.json())
       .then(response => {
@@ -86,7 +77,7 @@ class Admin extends Component {
             />
           ),
           logged: true,
-          token: idToken
+          token: token
         });
       });
   }
