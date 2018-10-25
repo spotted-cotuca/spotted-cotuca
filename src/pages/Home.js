@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import yawp from 'yawp';
 import SpotBox from '../components/SpotBox';
 
-import '../css/index.css';
-import '../css/Home.css';
-
 import messageIcon from '../imgs/message.png';
 import brokenHeartIcon from '../imgs/broken-heart.png';
+
+import '../css/Home.css';
 
 class Home extends Component 
 {

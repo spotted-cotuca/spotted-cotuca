@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
+import brokenHeartIcon from '../imgs/broken-heart.png';
 
 import '../css/NotFound.css';
-import '../css/index.css';
-
-import brokenHeartIcon from '../imgs/broken-heart.png';
 
 class NotFound extends Component 
 {

@@ -13,6 +13,8 @@ import User from './pages/User';
 import NotFound from './pages/NotFound';
 import registerServiceWorker from './registerServiceWorker';
 
+import './css/index.css';
+
 const config = require('./config.json');
 
 class MenuWrap extends React.Component
