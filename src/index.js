@@ -13,6 +13,7 @@ import User from './pages/User';
 import NotFound from './pages/NotFound';
 import registerServiceWorker from './registerServiceWorker';
 
+import logo from './imgs/logo.png';
 import './css/index.css';
 
 const config = require('./config.json');
@@ -56,19 +57,17 @@ class Main extends React.Component
     return (
       <MenuWrap wait={ 20 }>
         <Menu id={'slide'}>
-          <a href="./#/admin">
-            <div className="bm-item-wrap">
+          <div>
+            <a href="./#/admin">
               Admin
-            </div>
-          </a>
-          
-          <a href="./#/send">
-            <div className="bm-item-wrap">
+            </a>
+          </div>
+          <div>
+            <a href="./#/send">
               Enviar spots
-            </div>
-          </a>
-          
-          <div className="bm-item-wrap">
+            </a>
+          </div>
+          <div>
             <a href={ "https://www.facebook.com/spottedcotuca3" } target="blank"><i className="fa fa-facebook"/></a>
             <a href={ "https://twitter.com/spottedcotuca3" } target="blank"><i className="fa fa-twitter"/></a>
           </div>
@@ -84,7 +83,9 @@ class Main extends React.Component
       <div id="App" className='app'>
         <header>
           { this.getMenu() }
-          <a href="./#/"><h1>Spotted Cotuca</h1></a>
+          <a href="./#/">
+            <img src={logo} alt="logo"/>
+          </a>
         </header>
 
         <Router>

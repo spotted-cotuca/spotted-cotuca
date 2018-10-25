@@ -35,18 +35,55 @@ a {
 }
 
 header {
+  position: relative;
   display: inline-flex;
   width: 100%;
-  background-color: #7C0606;
-  color: white;
+  background-color: #f0739f;
 
   a {
     margin: 0 auto;
     
-    h1 {
-      font-size: 2em;
+    img  {
       margin: 0;
-      line-height: 100px;
+      height: 100px;
+    }
+  }
+
+  .bm-burger-button {
+    position: absolute;
+    width: 36px;
+    height: 30px;
+    left: 36px;
+    top: calc(50% - 15px);
+
+    .bm-burger-bars {
+      background-color: #FFF;
+      transition: opacity 0.4s;
+    }
+  }
+  
+  .bm-item-list {
+    font-size: 2.2em;
+    background-color: #f0739f;
+    overflow: hidden !important;
+    
+    & > div {
+      width: 100%;
+      display: block;
+      height: auto;
+      padding: 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    a {
+      margin-right: 20px;
+      font-weight: 700;
+      color: #252525;
+      transition: background-color 0.4s;
     }
   }
 }
@@ -113,70 +150,4 @@ footer {
   to {
     transform: rotate(360deg);
   }
-}
-
-
-.bm-burger-button {
-  position: absolute;
-  width: 36px;
-  height: 30px;
-  left: 36px;
-  top: calc((100px - 30px) / 2);
-}
-
-@media (max-width: 1023px) {
-  .bm-burger-button {
-    top: calc((75px - 30px) / 2);
-  }
-
-  .bm-item-wrap {
-    line-height: 50px;
-  }
-}
-
-.bm-burger-bars {
-  background: #FFF;
-}
-
-.bm-morph-shape {
-  fill: #FFF;
-}
-
-.bm-menu {
-  font-size: 2.2em;
-  background: #380000;
-  overflow: hidden !important;
-  
-  a {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 50px;
-    background: #200000;
-    font-weight: 700;
-
-    &:hover, &:focus {
-      color: #c94e50;
-    }
-  }
-}
-
-.bm-item-wrap {
-  background: #200000;
-  padding: 0.4em 0 0.4em 0;
-  margin-top: 1.4em;
-  line-height: 75px;
-
-  a {
-    margin: 0 0.8em 0 0.8em;
-    line-height: 1;
-
-    i {
-      font-size: 2.2em;
-      line-height: 75px;
-    }
-  }
-}
-
-.bm-item-list a {
-  font-weight: 700;
 }
