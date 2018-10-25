@@ -1,13 +1,11 @@
-html
-{
+html {
   min-height: 100%;
   height: 100%;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-body
-{
+body {
   min-height: 100%;
   background-color: #DF7070;
   font-size: 16px;
@@ -15,39 +13,33 @@ body
   padding: 0;
   font-family: "Segoe UI";
   overflow-x: hidden;
-  
   background-position: -40px 25px;
-  background-image: url("imgs/bg.png");
+  background-image: url("../imgs/bg.png");
 }
 
-@media (max-width: 1023px)
-{
-  body
-  {
+@media (max-width: 1023px) {
+  body {
     font-size: 12px;
   }
 }
 
-a
-{
+a {
   text-decoration: none;
   color: white;
 }
 
-.App
-{
+.App {
   min-height: 100%;
   height: 100vh;
   text-align: center;
 }
 
-.App-header
-{
+.App-header {
   background-color: #7C0606;
   color: white;
 }
-.App-footer
-{
+
+.App-footer {
   background-color: #7C0606;
   color: white;
   font-size: 1.18em;
@@ -56,92 +48,76 @@ a
   box-sizing: content-box;
 }
 
-@media (max-width: 1023px)
-{
-  .App-title
-  {
+@media (max-width: 1023px) {
+  .App-title {
     line-height: 75px !important;
   }
-  
-  .App-footer
-  {
+
+  .App-footer {
     line-height: 50px;
   }
 }
 
-.App-title
-{
+.App-title {
   display: inline-block;
   font-size: 2em;
   margin: 0;
   line-height: 100px;
 }
 
-.content
-{
+.content {
   padding: 20px 0 20px 0;
   margin-left: auto;
   margin-right: auto;
   width: 40%;
-  height:  calc(100vh - 216px);
+  height: calc(100vh - 216px);
 }
 
-@media (max-width: 1023px)
-{
-  .content
-  {
+@media (max-width: 1023px) {
+  .content {
     width: 100%;
-    height:  calc(100vh - 167px);
+    height: calc(100vh - 167px);
   }
 }
 
-.spotBox
-{
+.spotBox {
   position: relative;
   font-family: 'Courgette', cursive;
   font-size: 1.8em;
   font-weight: 400;
-  
   text-align: left;
   background-color: #FFF;
   margin: 25px;
   padding: 20px;
   word-break: break-word;
-  
   border: 1.5px dashed #D9230F;
   border-radius: 0.3em;
 }
 
-hr
-{
+hr {
   margin: 20px 0 20px 0;
 }
 
-.spotBoxFooter
-{
+.spotBoxFooter {
   height: 32px;
 }
 
-.date
-{
+.date {
   font-family: "Segoe UI";
   margin-top: 0;
   font-size: 0.6em;
 }
 
-.heart
-{
+.heart {
   font-size: 1.2em;
   color: #f42c2a;
 }
 
-.fbLink
-{
+.fbLink {
   color: #ff7c7c;
 }
 
-.loader
-{
+.loader {
   border: 16px solid #d9d9d9;
   border-top: 16px solid #a72a2a;
   border-radius: 50%;
@@ -152,14 +128,18 @@ hr
   margin-top: 100px;
 }
 
-@keyframes spin
-{
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.bm-burger-button
-{
+
+.bm-burger-button {
   position: absolute;
   width: 36px;
   height: 30px;
@@ -167,72 +147,59 @@ hr
   top: calc((100px - 30px) / 2);
 }
 
-@media (max-width: 1023px)
-{
-  .bm-burger-button
-  {
+@media (max-width: 1023px) {
+  .bm-burger-button {
     top: calc((75px - 30px) / 2);
   }
-  
-  .bm-item-wrap
-  {
+
+  .bm-item-wrap {
     line-height: 50px;
   }
 }
 
-.bm-burger-bars
-{
+.bm-burger-bars {
   background: #FFF;
 }
 
-.bm-morph-shape
-{
+.bm-morph-shape {
   fill: #FFF;
 }
 
-.bm-menu
-{
+.bm-menu {
   font-size: 2.2em;
   background: #380000;
   overflow: hidden !important;
+  
+  a {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 50px;
+    background: #200000;
+    font-weight: 700;
+
+    &:hover, &:focus {
+      color: #c94e50;
+    }
+  }
 }
 
-.bm-menu a 
-{
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 50px;
-  background: #200000;
-  font-weight: 700;
-}
-
-.bm-menu a:hover, .bm-menu a:focus 
-{
-  color: #c94e50;
-}
-
-.bm-item-wrap
-{
+.bm-item-wrap {
   background: #200000;
   padding: 0.4em 0 0.4em 0;
   margin-top: 1.4em;
   line-height: 75px;
+
+  a {
+    margin: 0 0.8em 0 0.8em;
+    line-height: 1;
+
+    i {
+      font-size: 2.2em;
+      line-height: 75px;
+    }
+  }
 }
 
-.bm-item-wrap a
-{
-  margin: 0 0.8em 0 0.8em;
-  
-  line-height: 1;
-}
-
-.bm-item-wrap a i
-{
-  font-size: 2.2em;
-  line-height: 75px;
-}
-
-.bm-item-list a
-{
+.bm-item-list a {
   font-weight: 700;
 }

@@ -60,3 +60,10 @@ typings/
 
 # build
 build/
+
+### Sass ###
+.sass-cache/
+*.css.map
+*.sass.map
+*.scss.map
+css/

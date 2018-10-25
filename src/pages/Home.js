@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import yawp from 'yawp';
 import SpotBox from '../components/SpotBox';
 
-import '../index.css';
-import './Home.css';
+import '../css/index.css';
+import '../css/Home.css';
 
 import messageIcon from '../imgs/message.png';
 import brokenHeartIcon from '../imgs/broken-heart.png';

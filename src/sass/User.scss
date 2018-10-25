@@ -1,0 +1,80 @@
+.user {
+  .presentation {
+    margin-bottom: 40px;
+    color: white;
+    font-size: 1.4em;
+  }
+  
+  h1 {
+    font-size: 1.4em;
+    font-weight: 500;
+  }
+  
+  textarea {
+    border: 2px solid #D9230F;
+    border-radius: 1rem;
+    padding: 10px;
+    font-size: 1em;
+    resize: none;
+    width: 85%;
+    height: 140px;
+    margin-bottom: 20px;
+    font-family: "Segoe UI";
+    outline: 0;
+
+    &:focus {
+      -webkit-box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
+      box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
+    }
+  }
+  
+  @media (max-width: 1023px) {
+    textarea {
+      font-size: 1.4em;
+      height: 110px;
+    }
+  }
+  
+  .btn {
+    width: 89%;
+    margin: 0;
+    display: inline-block;
+    color: #fff;
+    background-color: #D9230F;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid #D9230F;
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    
+    &:hover {
+      background-color: #b51d0d;
+      border-color: #a91b0c;
+    }
+    
+    &:focus {
+      -webkit-box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
+      box-shadow: 0 0 0 0.2rem rgba(217, 35, 15, 0.5);
+      outline: 0;
+    }
+  }
+  
+  .socialLink {
+    color: #7C0606;
+  }
+  
+  .content {
+    display: table;
+  }
+  
+  .middle {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 25px;
+  }
+}
