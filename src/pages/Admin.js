@@ -150,21 +150,12 @@ class Admin extends Component {
   }
 
   rejectSpot(id) {
-    let settings =
-      {
-        "async": true,
-        "crossDomain": true,
-        "url": this.props.serverUrl + id + "/reject",
-        "method": "PUT",
-        "headers":
-          {
-            "Authorization": "Bearer " + this.state.token
-          }
-      };
-
-    $.ajax(settings).done(function (response) {
-      this.selectSpots(this.state.token);
-    }.bind(this));
+    fetch(this.props.serverUrl + id + '/reject', {
+      method: "PUT",
+      headers: new Headers({
+        Authorization: 'Bearer ' + this.state.token
+      })
+    }).then(() => this.selectSpots(this.state.token));
   }
 
   login() {
