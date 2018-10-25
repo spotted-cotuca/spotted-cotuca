@@ -17,32 +17,32 @@ class User extends Component {
 
   sendSpot = () => {
     if (!this.canSend) {
-      this.createErrorMessage("Espera mais um pouquinho, o crush não vai fugir não!");
+      this.createErrorMessage('Espera mais um pouquinho, o crush não vai fugir não!');
       return;
     }
 
     let textArea = document.getElementById("message"),
-      text = textArea.value;
+        text = textArea.value;
 
-    if (text === "")
-      this.createErrorMessage("Se você não escrever nada, não tem como o crush te notar!");
+    if (text === '')
+      this.createErrorMessage('Se você não escrever nada, não tem como o crush te notar!');
     else if (text.length > 278)
-      this.createErrorMessage("Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres 😢");
+      this.createErrorMessage('Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres 😢');
     else {
       this.canSend = false;
 
       yawp('/spots').create({ message: textArea.value }).then(() => {
-        textArea.value = "";
-        if (text.toUpperCase().includes("NA PD"))
-          this.createSuccessAlert("Sua mensagem foi enviada, agora manda seu crush pagar a PD também!");
-        else if (text.toUpperCase().includes("NÃO ME QUER") || text.toUpperCase().includes("NÃO ME NOTA"))
-          this.createSuccessAlert("Sua mensagem foi enviada, E É CLARO QUE SEU CRUSH TE QUER!");
+        textArea.value = '';
+        if (text.toUpperCase().includes('NA PD'))
+          this.createSuccessAlert('Sua mensagem foi enviada, agora manda seu crush pagar a PD também!');
+        else if (text.toUpperCase().includes('NÃO ME QUER') || text.toUpperCase().includes('NÃO ME NOTA'))
+          this.createSuccessAlert('Sua mensagem foi enviada, E É CLARO QUE SEU CRUSH TE QUER!');
         else
-          this.createSuccessAlert("Sua mensagem foi enviada, agora é só esperar!");
+          this.createSuccessAlert('Sua mensagem foi enviada, agora é só esperar!');
 
         this.canSend = true;
       }).catch(err => {
-        this.createErrorMessage("Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão");
+        this.createErrorMessage('Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão');
         this.canSend = true;
       });
     }
