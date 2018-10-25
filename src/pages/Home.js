@@ -45,7 +45,7 @@ class Home extends Component
   render() 
   {
     return (
-        <div id="content" className="content">
+        <div id="content" className="content home">
           { !this.state.loaded && <div className="loader"></div> }
           
           { 
@@ -63,7 +63,9 @@ class Home extends Component
           
           { this.printSpots() }
           
-          <a href="./#/send"><img alt="sendSpot" className="sendSpot" src={ messageIcon }/></a>
+          <a href="./#/send" className="sendSpot">
+            <img alt="sendSpot" src={ messageIcon }/>
+          </a>
         </div>
     );
   }

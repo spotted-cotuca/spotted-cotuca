@@ -1,12 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Courgette');
-
 .home {
   .sendSpot {
-    width: 150px;
     right: 15px;
     bottom: 15px;
     position: fixed;
     padding: 0.5rem 1rem;
+
+    img {
+      width: 150px;
+    }
   }
 
   @media (max-width: 1023px) {
@@ -14,6 +15,10 @@
       right: 5px;
       bottom: 5px;
       width: 100px;
+
+      img {
+        width: 100px;
+      }
     }
   }
 }
