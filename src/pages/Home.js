@@ -36,7 +36,9 @@ class Home extends Component
   printSpots()
   {
     let spotsDivs =[];
-    this.state.spots.forEach(spot => spotsDivs.push(<SpotBox {...spot}/>));
+    this.state.spots.forEach(spot => spotsDivs.push(
+      <SpotBox key={spot.id} {...spot} date={new Date(spot.date)}/>
+    ));
     
     return spotsDivs;
   }

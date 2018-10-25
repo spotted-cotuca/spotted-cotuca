@@ -4,8 +4,7 @@ import { FB } from 'fb-es5';
 import * as firebase from 'firebase';
 import $ from 'jquery';
 
-import approveIcon from '../imgs/approve.png';
-import rejectIcon from '../imgs/reject.png';
+import SpotBox from '../components/SpotBox';
 
 import './Admin.css';
 
@@ -92,42 +91,18 @@ class Admin extends Component
   printSpots()
   {
     let spotsDivs =[];
-    this.state.spots.forEach(spot => spotsDivs.push(this.createSpotBox(spot)));
+    this.state.spots.forEach(spot => spotsDivs.push(
+      <SpotBox
+        key={spot.id}
+        approveSpot={() => this.approveSpot(spot.id, spot.message)} 
+        rejectSpot={() => this.rejectSpot(spot.id)}
+        {...spot}
+        date={new Date(spot.date)}
+        admin
+      />
+    ));
     
     return spotsDivs;
-  }
-
-  createSpotBox(spot)
-  {
-    var serverDate = new Date(spot.date);
-    var date = new Date(serverDate);
-    date.setMinutes(serverDate.getMinutes() - serverDate.getTimezoneOffset());
-    
-    let d = date.getDate();
-    let m = date.getMonth() + 1;
-    
-    let h = date.getHours();
-    let min = date.getMinutes();
-    
-    return (
-      <div className="spotBox"> 
-        <p className="date">
-          { 
-            (d > 9 ? '' : '0') + d + '/' + (m > 9 ? '' : '0') + m + '/' + date.getFullYear() + ' - ' +
-            (h > 9 ? '' : '0') + h + 'h' + (min > 9 ? '' : '0') + min
-          }
-        </p>
-       
-        { "\"" + spot.message + "\"" } 
-        
-        <hr/>
-        
-        <div className="spotBoxFooter">
-          <img alt="approve" className="changeStatus" src={ approveIcon } onClick={ () => this.approveSpot(spot.id, spot.message) }></img>
-          <img alt="reject" className="changeStatus" src={ rejectIcon } onClick={ () => this.rejectSpot(spot.id) }></img>
-        </div>
-      </div>
-    );
   }
 
   approveSpot(id, spotMessage)
