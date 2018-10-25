@@ -1,0 +1,31 @@
+.spotBox {
+  position: relative;
+  font-family: 'Courgette', cursive;
+  font-size: 1.8em;
+  font-weight: 400;
+  text-align: left;
+  background-color: #FFF;
+  margin: 25px;
+  padding: 20px;
+  word-break: break-word;
+  border: 1.5px dashed #D9230F;
+  border-radius: 0.3em;
+
+  .date {
+    font-family: "Segoe UI";
+    margin-top: 0;
+    font-size: 0.6em;
+  }
+
+  hr {
+    margin: 20px 0 20px 0;
+  }
+
+  .spotBoxFooter {
+    height: 32px;
+
+    .socialMedia {
+      margin-right: 20px;
+    }
+  }
+}

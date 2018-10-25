@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import AdminFooter from './AdminFooter';
 import UserFooter from './UserFooter';
 
+import '../css/SpotBox.css';
+
 class SpotBox extends Component {
   constructor(props) {
     super(props);
