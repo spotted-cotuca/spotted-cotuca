@@ -1,8 +1,9 @@
-.user {
+.content.user {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 20px;
 
   .presentation {
     margin-bottom: 40px;

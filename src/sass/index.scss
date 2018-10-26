@@ -53,6 +53,8 @@ header {
     
     img  {
       height: 100%;
+      padding: 5px 0;
+      object-fit: contain;
     }
   }
 
@@ -88,9 +90,24 @@ header {
     }
 
     a {
-      font-weight: 700;
-      color: #252525;
+      font-family: "Courgette";
+      font-weight: 400;
+      color: white;
       transition: background-color 0.4s;
+    }
+
+    a:not(:last-child) {
+      margin-right: 20px;
+    }
+  }
+
+  .bm-cross {
+    background-color: white;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .bm-menu-wrap {
+      width: 250px !important;
     }
   }
 }
