@@ -217,19 +217,9 @@ class Admin extends Component
     else
       return (
         <div className="content admin">
-          <div className="middle">
-            <div className="form-content">
-              <div className="row">
-                <input type="text" id="email" name="email" placeholder="Email"/>
-              </div>
-              <div className="row">
-                <input type="password" id="pass" name="pass" placeholder="Senha"/>
-              </div>
-              <div className="row">
-                <button className="btn" onClick={ this.login }>Entrar</button>
-              </div>
-            </div>
-          </div>
+          <input type="text" id="email" name="email" placeholder="Email"/>
+          <input type="password" id="pass" name="pass" placeholder="Senha"/>
+          <button className="btn" onClick={ this.login }>Entrar</button>
         </div>
       );
   }
