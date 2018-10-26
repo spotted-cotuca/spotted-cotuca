@@ -1,4 +1,9 @@
 .content.admin {
+  @media only screen and (max-width: 768px) {
+    & {
+      padding: 0;
+    }
+  }
 
   &.centralize {
     display: flex;

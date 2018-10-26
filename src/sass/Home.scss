@@ -1,4 +1,10 @@
-.home {
+.content.home {
+  @media only screen and (max-width: 768px) {
+    & {
+      padding: 0;
+    }
+  }
+
   .sendSpot {
     position: fixed;
     right: 15px;
