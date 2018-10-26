@@ -216,7 +216,7 @@ class Admin extends Component
       );
     else
       return (
-        <div className="content admin">
+        <div className="content admin centralize">
           <input type="text" id="email" name="email" placeholder="Email"/>
           <input type="password" id="pass" name="pass" placeholder="Senha"/>
           <button className="btn" onClick={ this.login }>Entrar</button>

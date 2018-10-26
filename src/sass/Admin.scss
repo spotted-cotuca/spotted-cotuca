@@ -1,9 +1,12 @@
 .content.admin {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 40px;
+
+  &.centralize {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 40px;
+  }
 
   .changeStatus {
     cursor: pointer;
