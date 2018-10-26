@@ -59,13 +59,14 @@ header {
   .bm-burger-button {
     position: absolute;
     width: 36px;
-    height: 30px;
+    height: 24px;
     left: 36px;
-    top: calc(50% - 15px);
+    top: calc(50% - 12px);
 
     .bm-burger-bars {
       background-color: #FFF;
       transition: opacity 0.4s;
+      height: 3px !important;
     }
   }
   

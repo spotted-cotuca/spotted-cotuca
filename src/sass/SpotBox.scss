@@ -8,8 +8,9 @@
   padding: 20px;
   white-space: pre-line;
   word-break: break-word;
-  border: 1.5px dashed #f85a69;
+  border: 1px dashed #f85a69;
   border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 
   .date {
     font-family: "Segoe UI", "Ubuntu", sans-serif;
