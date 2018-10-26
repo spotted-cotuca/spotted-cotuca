@@ -79,19 +79,20 @@ class User extends Component
   {
     return (
       <div className="content user">
-        <div className="middle">
-          <div className="presentation">
-            Olá, esse é o novo Spotted Cotuca <span role="img" aria-label="smile face">😁</span>. Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores para que ela seja postada no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">Facebook</a> e <a className="socialLink" href="https://twitter.com/spottedcotuca3" target="blank">Twitter</a>. Boa sorte com os @s! <span role="img" aria-label="blinky face">😉</span>
-          </div>
-
-          <textarea maxLength="278" placeholder="Digite sua mensagem..." id="message"></textarea>
-
-          <br/>
-
-          <button className="btn btn-primary" onClick={() => this.sendSpot()}>Enviar Spot</button>
-
-          <Alert stack={{limit: 3}} />
+        <div className="presentation">
+          Olá, esse é o novo Spotted Cotuca <span role="img" aria-label="smile face">😁</span>.
+          Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores 
+          para que ela seja postada no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">
+            Facebook
+          </a> e <a className="socialLink" href="https://twitter.com/spottedcotuca3" target="blank">
+            Twitter
+          </a>. 
+          Boa sorte com os @s! <span role="img" aria-label="blinky face">😉</span>
         </div>
+        <textarea maxLength="278" placeholder="Digite sua mensagem..." id="message"></textarea>
+
+        <button className="btn btn-primary" onClick={() => this.sendSpot()}>Enviar Spot</button>
+        <Alert stack={{limit: 3}} />
       </div>
     );
   }
