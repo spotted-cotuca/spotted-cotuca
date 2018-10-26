@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import yawp from 'yawp';
 import { FB } from 'fb-es5';
 import * as firebase from 'firebase';
-import $ from 'jquery';
 
 import SpotBox from '../components/SpotBox';
 
@@ -20,11 +19,6 @@ class Admin extends Component {
     this.state = {
       spots: [],
       logged: false,
-      token: '',
-      consumer_key: '',
-      consumer_secret: '',
-      access_token_key: '',
-      access_token_secret: '',
     };
   }
 
@@ -83,58 +77,47 @@ class Admin extends Component {
   }
 
   approveSpot(id, spotMessage) {
-    let settings =
-      {
-        "async": true,
-        "crossDomain": true,
-        "url": this.props.serverUrl + id + "/approve",
-        "method": "PUT",
-        "headers":
-          {
-            "Authorization": "Bearer " + this.state.token
-          }
-      };
-
-    let context = this;
-    $.ajax(settings).done(function (response) {
-      FB.api('me/feed', 'post', { message: "\"" + spotMessage + "\"" }, function (res) {
+    fetch(this.props.serverUrl + id + '/approve', {
+      method: 'PUT',
+      headers: new Headers({
+        Authorization: 'Bearer ' + this.state.token
+      })
+    }).then(() => {
+      FB.api('me/feed', 'post', { message: '"' + spotMessage + '"' }, res => {
         if (!res || res.error)
           return;
 
-        settings.url = context.props.serverUrl + id + "/addPostId?fbPostId=" + res.id.split('_')[1];
-        $.ajax(settings).done(r => {
-          let settings = {
+        fetch(this.props.serverUrl + id + '/addPostId?fbPostId=' + res.id.split('_')[1], {
+          method: 'PUT',
+          headers: new Headers({
+            Authorization: 'Bearer ' + this.state.token
+          })
+        }).then(() => {
+          fetch(this.props.proxyUrl, {
             async: true,
             crossDomain: true,
-            url: context.props.proxyUrl,
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({
-              "accessSecret": context.tt.options.access_token_secret,
-              "accessToken": context.tt.options.access_token_key,
-              "consumerKey": context.tt.options.consumer_key,
-              "consumerSecret": context.tt.options.consumer_secret,
-              "message": "\"" + spotMessage + "\""
+            body: JSON.stringify({
+              accessSecret: this.tt.options.access_token_secret,
+              accessToken: this.tt.options.access_token_key,
+              consumerKey: this.tt.options.consumer_key,
+              consumerSecret: this.tt.options.consumer_secret,
+              message: '"' + spotMessage + '"'
             })
-          }
+          }).then(raw => raw.json())
+            .then(response => {
+              fetch(this.props.serverUrl + id + '/addPostId?ttPostId=' + response.tweetId, {
+                async: true,
+                crossDomain: true,
+                method: 'PUT',
+                headers: new Headers({
+                  Authorization: 'Bearer ' + this.state.token
+                })
+              })
+            });
 
-          $.ajax(settings).done(r => {
-            let settings =
-              {
-                "async": true,
-                "crossDomain": true,
-                "url": context.props.serverUrl + id + "/addPostId?ttPostId=" + r.tweetId,
-                "method": "PUT",
-                "headers":
-                  {
-                    "Authorization": "Bearer " + context.state.token
-                  }
-              };
-
-            $.ajax(settings);
-          })
-
-          context.selectSpots(context.state.token);
+          this.selectSpots(this.state.token);
         });
       });
     });
@@ -142,7 +125,7 @@ class Admin extends Component {
 
   rejectSpot(id) {
     fetch(this.props.serverUrl + id + '/reject', {
-      method: "PUT",
+      method: 'PUT',
       headers: new Headers({
         Authorization: 'Bearer ' + this.state.token
       })
@@ -150,8 +133,8 @@ class Admin extends Component {
   }
 
   login() {
-    let email = document.getElementById("email").value,
-        pass = document.getElementById("pass").value;
+    let email = document.getElementById('email').value,
+        pass = document.getElementById('pass').value;
 
     firebase.auth().signInWithEmailAndPassword(email, pass).catch(e => console.log(e.message));
   }
