@@ -88,6 +88,7 @@ class Main extends React.Component
           </a>
         </header>
 
+        <div className="background" />
         <Router>
           <Switch>
             <Route exact path="/" render={(props) => <Home {...props} serverUrl={config.serverUrl} />}/>
