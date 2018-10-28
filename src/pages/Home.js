@@ -64,7 +64,14 @@ class Home extends Component
           { this.printSpots() }
           
           <a href="./#/send" className="sendSpot">
-            <img alt="sendSpot" src={ messageIcon }/>
+            <div class="send">
+              <div class="letter">
+                Enviar
+                <img src={messageIcon}/>
+                Spots
+              </div>
+              <div class="thumb"/>
+            </div>
           </a>
         </div>
     );
