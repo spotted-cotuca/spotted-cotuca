@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
 import SpotBox from '../components/SpotBox';
+import Spinner from '../components/Spinner';
 
 import messageIcon from '../imgs/message.png';
 import brokenHeartIcon from '../imgs/broken-heart.png';
@@ -46,7 +47,7 @@ class Home extends Component
   {
     return (
         <div id="content" className="content home">
-          { !this.state.loaded && <div className="loader"></div> }
+          { !this.state.loaded && <Spinner /> }
           
           { 
             this.state.error && 

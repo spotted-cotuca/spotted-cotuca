@@ -1,7 +1,7 @@
 .spinner {
   width: 100px;
   height: 100px;
-  margin: 0 auto;
+  margin: 20px auto;
 
   .rotating-circle {
     display: inline-flex;
@@ -17,7 +17,7 @@
       
       & > div {
         position: absolute;
-        border: 3px solid;
+        border: 4px solid;
         border-radius: 50%;
         border-color: transparent;
         width: 200%;
@@ -27,14 +27,14 @@
       }
 
       &.circle-left > div {
-        border-left-color: #25272E;
+        border-left-color: #f85a69;
         transform: rotate(60deg);
 
         animation: rotation-left 1.5s infinite ease-in-out;
       }
 
       &.circle-right > div {
-        border-right-color: #25272E;
+        border-right-color: #f85a69;
         transform: rotate(-60deg);
         left: -100%;
 
