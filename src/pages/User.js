@@ -5,6 +5,7 @@ import yawp from 'yawp';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 import '../css/User.css';
+import Spinner from '../components/Spinner';
 
 class User extends Component 
 {
@@ -91,7 +92,7 @@ class User extends Component
         </div>
         <textarea maxLength="278" placeholder="Digite sua mensagem..." id="message"></textarea>
 
-        <button className="btn btn-primary" onClick={() => this.sendSpot()}>Enviar Spot</button>
+        <button className="btn" onClick={() => this.sendSpot()}>Enviar Spot <Spinner color="#FFF"/></button>
         <Alert stack={{limit: 3}} />
       </div>
     );

@@ -164,12 +164,12 @@ footer {
 .btn {
   width: 89%;
   margin: 0;
-  display: inline-block;
+  display: inline-flex;
   color: #fff;
   background-color: #f0739f;
   border: none;
-  font-weight: 400;
-  text-align: center;
+  outline: none;
+  justify-content: center;
   white-space: nowrap;
   vertical-align: middle;
   border-radius: 5px;

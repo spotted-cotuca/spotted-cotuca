@@ -7,10 +7,10 @@ function Spinner(props) {
     <div className="spinner">
       <div className="rotating-circle">
         <div className="circle-left">
-          <div />
+          <div style={{ borderLeftColor: props.color }}/>
         </div>
         <div className="circle-right">
-          <div />
+          <div style={{ borderRightColor: props.color }}/>
         </div>
       </div>
     </div>
