@@ -20,18 +20,29 @@ class Admin extends Component {
     this.state = {
       spots: [],
       logged: false,
-      logging: false
+      logging: true
     };
   }
 
   componentDidMount() {
-    firebase.initializeApp(this.props.firebase);
+    if (!firebase.apps.length)
+      firebase.initializeApp(this.props.firebase);
+
     firebase.auth().onAuthStateChanged(user => {
       if (user)
         user.getIdToken().then(token => {
           console.log(token);
+          this.setState({
+            logged: true,
+            logging: false
+          });
+
           this.initializeSocials(token);
           this.selectSpots(token);
+        });
+      else
+        this.setState({
+          logging: false
         });
     });
   }
@@ -141,12 +152,6 @@ class Admin extends Component {
       logging: true
     });
     firebase.auth().signInWithEmailAndPassword(email, pass)
-      .then(() => {
-        this.setState({
-          logged: true,
-          logging: false
-        });
-      })
       .catch(e => {
         console.log(e.message);
         this.setState({
@@ -175,7 +180,7 @@ class Admin extends Component {
     else
       return (
         <div className="content admin centralize">
-          <input type="text" id="email" name="email" placeholder="Email"/>
+          <input type="email" id="email" name="email" placeholder="Email"/>
           <input type="password" id="pass" name="pass" placeholder="Senha"/>
           <button className="btn" onClick={this.login}>
             Entrar

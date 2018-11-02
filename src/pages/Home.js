@@ -56,7 +56,7 @@ class Home extends Component
           { this.state.spots }
 
           <a href="./#/send" className="sendSpot">
-            <div class="send">
+            <div className="send">
               <div className="letter">
                 Enviar
                 <img src={messageIcon} alt=""/>
