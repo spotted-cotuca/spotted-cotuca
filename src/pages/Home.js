@@ -66,12 +66,12 @@ class Home extends Component
           
           <a href="./#/send" className="sendSpot">
             <div class="send">
-              <div class="letter">
+              <div className="letter">
                 Enviar
-                <img src={messageIcon}/>
+                <img src={messageIcon} alt=""/>
                 Spots
               </div>
-              <div class="thumb"/>
+              <div className="thumb"/>
             </div>
           </a>
         </div>
