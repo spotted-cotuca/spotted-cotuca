@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import Alert from 'react-s-alert';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import yawp from 'yawp';
 
-import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/scale.css';
+import 'react-notifications/lib/notifications.css';
 import '../css/User.css';
 import Spinner from '../components/Spinner';
 
@@ -59,19 +58,11 @@ class User extends Component {
   }
 
   createErrorMessage(message) {
-    Alert.error(<h1>{message}</h1>, {
-      position: 'bottom-right',
-      effect: 'scale',
-      timeout: 1000000
-    });
+    NotificationManager.error(message, 'Ah não...', 4000);
   }
 
   createSuccessAlert(message) {
-    Alert.success(<h1>{message}</h1>, {
-      position: 'bottom-right',
-      effect: 'scale',
-      timeout: 4000
-    });
+    NotificationManager.success(message, 'Aí sim!', 4000)
   }
 
   render() {
@@ -93,7 +84,8 @@ class User extends Component {
           Enviar Spot
           <Spinner active={!this.state.canSend} color="#FFF"/>
         </button>
-        <Alert stack={{limit: 3}} />
+
+        <NotificationContainer />
       </div>
     );
   }
