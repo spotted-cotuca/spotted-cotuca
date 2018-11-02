@@ -34,6 +34,18 @@ body {
   width: 100vw;
   height: 100vh;
   z-index: -1;
+
+  @media only screen and (max-width: 1024px) {
+    background-size: 37.5%;
+  }
+
+  @media only screen and (max-width: 768px) {
+    background-size: 50%;
+  }
+
+  @media only screen and (max-width: 600px) {
+    background-size: 75%;
+  }
 }
 
 a {
