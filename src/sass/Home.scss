@@ -48,8 +48,20 @@
   @media (max-width: 1023px) {
     .sendSpot {
       right: 10px;
-      bottom: 10px;
-      width: 100px;
+      bottom: 25px;
+
+      .send {
+        width: 110px;
+
+        .letter {
+          font-size: 1rem;
+          padding: 4px 20px;
+        }
+
+        .thumb {
+          height: 15px;
+        }
+      }
     }
   }
 }
