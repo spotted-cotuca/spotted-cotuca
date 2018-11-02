@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
 import SpotBox from '../components/SpotBox';
-
-import '../css/index.css';
-import '../css/Home.css';
+import Spinner from '../components/Spinner';
 
 import messageIcon from '../imgs/message.png';
 import brokenHeartIcon from '../imgs/broken-heart.png';
+
+import '../css/Home.css';
 
 class Home extends Component 
 {
@@ -46,8 +46,8 @@ class Home extends Component
   render() 
   {
     return (
-        <div id="content" className="content">
-          { !this.state.loaded && <div className="loader"></div> }
+        <div id="content" className="content home">
+          { !this.state.loaded && <Spinner /> }
           
           { 
             this.state.error && 
@@ -64,7 +64,16 @@ class Home extends Component
           
           { this.printSpots() }
           
-          <a href="./#/send"><img alt="sendSpot" className="sendSpot" src={ messageIcon }/></a>
+          <a href="./#/send" className="sendSpot">
+            <div class="send">
+              <div className="letter">
+                Enviar
+                <img src={messageIcon} alt=""/>
+                Spots
+              </div>
+              <div className="thumb"/>
+            </div>
+          </a>
         </div>
     );
   }

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import Alert from 'react-s-alert';
 import yawp from 'yawp';
 
-import '../css/User.css';
-import '../css/index.css';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/scale.css';
+import '../css/User.css';
+import Spinner from '../components/Spinner';
 
 class User extends Component 
 {
@@ -14,7 +14,10 @@ class User extends Component
     super(props);
     
     
-    this.canSend = true;
+    this.state = {
+      canSend: true
+    }
+
     yawp.config(function (c) {
       c.baseUrl(props.serverUrl);
     });
@@ -22,7 +25,7 @@ class User extends Component
   
   sendSpot()
   {
-    if (!this.canSend)
+    if (!this.state.canSend)
     {
       this.createErrorMessage("Espera mais um pouquinho, o crush não vai fugir não");
       return;
@@ -37,7 +40,9 @@ class User extends Component
       this.createErrorMessage("Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres 😢");
     else
     {
-      this.canSend = false;
+      this.setState({
+        canSend: false
+      });
       
       yawp('/spots').create({ message: textArea.value }).then(() => 
       { 
@@ -49,11 +54,15 @@ class User extends Component
         else
           this.createSuccessAlert("Sua mensagem foi enviada, agora é só esperar!");
         
-        this.canSend = true;
+          this.setState({
+            canSend: true
+          });
       }).catch(err =>
       { 
         this.createErrorMessage("Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão");
-        this.canSend = true;
+        this.setState({
+          canSend: true
+        });
       });
     }
   }
@@ -63,7 +72,7 @@ class User extends Component
     Alert.error(<h1>{message}</h1>, {
       position: 'bottom-right',
       effect: 'scale',
-      timeout: 4000
+      timeout: 1000000
     });
   }
   
@@ -80,19 +89,23 @@ class User extends Component
   {
     return (
       <div className="content user">
-        <div className="middle">
-          <div className="presentation">
-            Olá, esse é o novo Spotted Cotuca <span role="img" aria-label="smile face">😁</span>. Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores para que ela seja postada no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">Facebook</a> e <a className="socialLink" href="https://twitter.com/spottedcotuca3" target="blank">Twitter</a>. Boa sorte com os @s! <span role="img" aria-label="blinky face">😉</span>
-          </div>
-
-          <textarea maxLength="278" placeholder="Digite sua mensagem..." id="message"></textarea>
-
-          <br/>
-
-          <button className="btn btn-primary" onClick={() => this.sendSpot()}>Enviar Spot</button>
-
-          <Alert stack={{limit: 3}} />
+        <div className="presentation">
+          Olá, esse é o novo Spotted Cotuca <span role="img" aria-label="smile face">😁</span>.
+          Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores 
+          para que ela seja postada no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">
+            Facebook
+          </a> e <a className="socialLink" href="https://twitter.com/spottedcotuca3" target="blank">
+            Twitter
+          </a>. 
+          Boa sorte com os @s! <span role="img" aria-label="blinky face">😉</span>
         </div>
+        <textarea maxLength="278" placeholder="Digite sua mensagem..." id="message"></textarea>
+
+        <button className="btn" onClick={() => this.sendSpot()}>
+          Enviar Spot
+          <Spinner active={!this.state.canSend} color="#FFF"/>
+        </button>
+        <Alert stack={{limit: 3}} />
       </div>
     );
   }

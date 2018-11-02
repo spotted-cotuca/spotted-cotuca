@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 import $ from 'jquery';
 
 import SpotBox from '../components/SpotBox';
+import Spinner from '../components/Spinner';
 
 import '../css/Admin.css';
 
@@ -33,6 +34,7 @@ class Admin extends Component
   {
     spots: [],
     logged: false,
+    logging: false,
     token: '',
     consumer_key: '',
     consumer_secret: '',
@@ -84,7 +86,7 @@ class Admin extends Component
     }
     
     $.ajax(settings).done(function (response) {
-      this.setState({ spots: response.reverse(), logged: true, token: idToken });
+      this.setState({ spots: response.reverse(), token: idToken });
     }.bind(this));
   }
 
@@ -187,18 +189,35 @@ class Admin extends Component
     }.bind(this));
   }
 
-  login()
+  login = () =>
   {
     let email = document.getElementById("email").value,
         pass  = document.getElementById("pass").value;
     
-    firebase.auth().signInWithEmailAndPassword(email, pass).catch(e => console.log(e.message));
+    this.setState({
+      logging: true
+    });
+    firebase.auth().signInWithEmailAndPassword(email, pass)
+      .then(() => {
+        this.setState({
+          logged: true,
+          logging: false
+        });
+      })
+      .catch(e => {
+        console.log(e.message);
+        this.setState({
+          logging: false
+        });
+      });
   }
 
   logout()
   {
     firebase.auth().signOut();
-    this.setState({logged: false});
+    this.setState({
+      logged: false
+    });
   }
 
   render() 
@@ -216,20 +235,13 @@ class Admin extends Component
       );
     else
       return (
-        <div className="content admin">
-          <div className="middle">
-            <div className="form-content">
-              <div className="row">
-                <input type="text" id="email" name="email" placeholder="Email"/>
-              </div>
-              <div className="row">
-                <input type="password" id="pass" name="pass" placeholder="Senha"/>
-              </div>
-              <div className="row">
-                <button className="btn" onClick={ this.login }>Entrar</button>
-              </div>
-            </div>
-          </div>
+        <div className="content admin centralize">
+          <input type="text" id="email" name="email" placeholder="Email"/>
+          <input type="password" id="pass" name="pass" placeholder="Senha"/>
+          <button className="btn" onClick={this.login}>
+            Entrar
+            <Spinner active={this.state.logging} color="#FFF"/>
+          </button>
         </div>
       );
   }

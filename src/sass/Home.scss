@@ -1,29 +1,67 @@
-@import url('https://fonts.googleapis.com/css?family=Courgette');
-
-.home {
-  .socialMedia {
-    margin-right: 30px;
-  }
-
-  .date {
-    font-family: "Segoe UI";
-    margin-top: 0;
-    font-size: 0.6em;
+.content.home {
+  @media only screen and (max-width: 768px) {
+    & {
+      padding: 0;
+    }
   }
 
   .sendSpot {
-    width: 150px;
-    right: 15px;
-    bottom: 15px;
     position: fixed;
-    padding: 0.5rem 1rem;
+    right: 25px;
+    bottom: 55px;
+
+    .send {
+      position: relative;
+      width: 150px;
+      filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.4));
+      
+      .letter {
+        padding: 4px 30px;
+        width: 100%;
+        border-radius: 20px;
+        background-color: #f0739f;
+        font-size: 1.2rem;
+        font-weight: 500;
+        font-family: 'Courgette';
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        img {
+          width: 100%;
+          padding: 4px;
+        }
+      }
+      
+      .thumb {
+        position: absolute;
+        right: 20%;
+        width: 30%;
+        height: 30px;
+        border-bottom-right-radius: 5px;
+        background-color: #f0739f;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, calc(100% - 5px) 100%);
+      }
+    }
   }
 
   @media (max-width: 1023px) {
     .sendSpot {
-      right: 5px;
-      bottom: 5px;
-      width: 100px;
+      right: 10px;
+      bottom: 25px;
+
+      .send {
+        width: 110px;
+
+        .letter {
+          font-size: 1rem;
+          padding: 4px 20px;
+        }
+
+        .thumb {
+          height: 15px;
+        }
+      }
     }
   }
 }

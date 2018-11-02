@@ -13,6 +13,9 @@ import User from './pages/User';
 import NotFound from './pages/NotFound';
 import registerServiceWorker from './registerServiceWorker';
 
+import logo from './imgs/logo.png';
+import './css/index.css';
+
 const config = require('./config.json');
 
 class MenuWrap extends React.Component
@@ -54,19 +57,17 @@ class Main extends React.Component
     return (
       <MenuWrap wait={ 20 }>
         <Menu id={'slide'}>
-          <a href="./#/admin">
-            <div className="bm-item-wrap">
+          <div>
+            <a href="./#/admin">
               Admin
-            </div>
-          </a>
-          
-          <a href="./#/send">
-            <div className="bm-item-wrap">
+            </a>
+          </div>
+          <div>
+            <a href="./#/send">
               Enviar spots
-            </div>
-          </a>
-          
-          <div className="bm-item-wrap">
+            </a>
+          </div>
+          <div>
             <a href={ "https://www.facebook.com/spottedcotuca3" } target="blank"><i className="fa fa-facebook"/></a>
             <a href={ "https://twitter.com/spottedcotuca3" } target="blank"><i className="fa fa-twitter"/></a>
           </div>
@@ -79,12 +80,15 @@ class Main extends React.Component
   {
     console.log(config)
     return (
-      <div id="App" className='App'>
-        <header className="App-header">
+      <div id="App" className='app'>
+        <header>
           { this.getMenu() }
-          <a href="./#/"><h1 className="App-title">Spotted Cotuca</h1></a>
+          <a href="./#/">
+            <img src={logo} alt="logo"/>
+          </a>
         </header>
 
+        <div className="background" />
         <Router>
           <Switch>
             <Route exact path="/" render={(props) => <Home {...props} serverUrl={config.serverUrl} />}/>
@@ -95,9 +99,9 @@ class Main extends React.Component
           </Switch>
         </Router>
       
-        <div className="App-footer">
-          Feito com <i className="heart">♥</i> por <a className="fbLink" href="https://fb.com/igor.mandello" target="blank">Igor</a> e <a className="fbLink" href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a>
-        </div>
+        <footer>
+          Feito com <i className="heart">♥</i> por <a href="https://fb.com/igor.mandello" target="blank">Igor</a>, <a href="https://fb.com/lorenzopincinato" target="blank">Lorenzo</a> e <a href="https://fb.com/vitor.bartier" target="blank">Bart</a>
+        </footer>
       </div>
     );
   }
