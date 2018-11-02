@@ -10,8 +10,7 @@ import brokenHeartIcon from '../imgs/broken-heart.png';
 
 class Home extends Component 
 {
-  constructor(props)
-  {
+  constructor(props) {
     super(props);
 
     yawp.config(c => c.baseUrl(props.serverUrl));
@@ -22,8 +21,7 @@ class Home extends Component
     }
   }
 
-  componentDidMount()
-  {
+  componentDidMount() {
     yawp('/spots/approved').list(l => 
       this.setState({
         spots: l.map(spot => <SpotBox key={spot.id} {...spot} date={new Date(spot.date)}/>),
@@ -37,8 +35,7 @@ class Home extends Component
     );
   }
 
-  render() 
-  {
+  render() {
     return (
         <div id="content" className="content">
           { !this.state.loaded && <div className="loader"></div> }
