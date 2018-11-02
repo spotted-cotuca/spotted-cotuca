@@ -19,18 +19,6 @@
     font-size: 1.4em; 
     font-weight: 500; 
   }
-
-  .btn .spinner {
-    display: none;
-    height: 1.4rem;
-    width: 1.4rem;
-    margin: 0 20px;
-    margin-right: calc(-20px - 1.4rem);
-
-    &.active {
-      display: block;
-    }
-  }
   
   textarea {
     border: 2px solid #f85a69;

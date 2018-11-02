@@ -181,4 +181,16 @@ footer {
   &:hover {
     background-color: darken($color: #f0739f, $amount: 3.5);
   }
+
+  .spinner {
+    display: none;
+    height: 1.4rem;
+    width: 1.4rem;
+    margin: 0 20px;
+    margin-right: calc(-20px - 1.4rem);
+
+    &.active {
+      display: block;
+    }
+  }
 }
