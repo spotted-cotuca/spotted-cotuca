@@ -14,7 +14,10 @@ class User extends Component
     super(props);
     
     
-    this.canSend = true;
+    this.state = {
+      canSend: true
+    }
+
     yawp.config(function (c) {
       c.baseUrl(props.serverUrl);
     });
@@ -22,7 +25,7 @@ class User extends Component
   
   sendSpot()
   {
-    if (!this.canSend)
+    if (!this.state.canSend)
     {
       this.createErrorMessage("Espera mais um pouquinho, o crush não vai fugir não");
       return;
@@ -37,7 +40,9 @@ class User extends Component
       this.createErrorMessage("Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres 😢");
     else
     {
-      this.canSend = false;
+      this.setState({
+        canSend: false
+      });
       
       yawp('/spots').create({ message: textArea.value }).then(() => 
       { 
@@ -49,11 +54,15 @@ class User extends Component
         else
           this.createSuccessAlert("Sua mensagem foi enviada, agora é só esperar!");
         
-        this.canSend = true;
+          this.setState({
+            canSend: true
+          });
       }).catch(err =>
       { 
         this.createErrorMessage("Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão");
-        this.canSend = true;
+        this.setState({
+          canSend: true
+        });
       });
     }
   }
@@ -63,7 +72,7 @@ class User extends Component
     Alert.error(<h1>{message}</h1>, {
       position: 'bottom-right',
       effect: 'scale',
-      timeout: 4000
+      timeout: 1000000
     });
   }
   
@@ -92,7 +101,10 @@ class User extends Component
         </div>
         <textarea maxLength="278" placeholder="Digite sua mensagem..." id="message"></textarea>
 
-        <button className="btn" onClick={() => this.sendSpot()}>Enviar Spot <Spinner color="#FFF"/></button>
+        <button className="btn" onClick={() => this.sendSpot()}>
+          Enviar Spot
+          <Spinner active={!this.state.canSend} color="#FFF"/>
+        </button>
         <Alert stack={{limit: 3}} />
       </div>
     );

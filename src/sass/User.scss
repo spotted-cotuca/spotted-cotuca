@@ -21,9 +21,15 @@
   }
 
   .btn .spinner {
+    display: none;
     height: 1.4rem;
     width: 1.4rem;
     margin: 0 20px;
+    margin-right: calc(-20px - 1.4rem);
+
+    &.active {
+      display: block;
+    }
   }
   
   textarea {

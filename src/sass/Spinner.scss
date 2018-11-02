@@ -1,7 +1,12 @@
 .spinner {
+  display: none;
   width: 100px;
   height: 100px;
   margin: 20px auto;
+
+  &.active {
+    display: block;
+  }
 
   .rotating-circle {
     display: inline-flex;
