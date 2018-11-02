@@ -10,41 +10,32 @@ import '../css/Home.css';
 
 class Home extends Component 
 {
-  constructor(props)
-  {
+  constructor(props) {
     super(props);
-    
-    yawp.config(function (c) {
-      c.baseUrl(props.serverUrl);
-    });
-    
-    this.selectSpots();
-  }
-  
-  state =
-  {
-    spots: [],
-    loaded: false,
-    error: false,
+
+    yawp.config(c => c.baseUrl(props.serverUrl));
+    this.state = {
+      spots: [],
+      loaded: false,
+      error: false,
+    }
   }
 
-  selectSpots()
-  {
-    yawp('/spots/approved').list(l => this.setState({spots: l, loaded: true})).catch(e => this.setState({loaded: true, error: true}));
+  componentDidMount() {
+    yawp('/spots/approved').list(l => 
+      this.setState({
+        spots: l.map(spot => <SpotBox key={spot.id} {...spot} date={new Date(spot.date)}/>),
+        loaded: true
+      })
+    ).catch(e => 
+      this.setState({
+        loaded: true,
+        error: true
+      })
+    );
   }
 
-  printSpots()
-  {
-    let spotsDivs =[];
-    this.state.spots.forEach(spot => spotsDivs.push(
-      <SpotBox key={spot.id} {...spot} date={new Date(spot.date)}/>
-    ));
-    
-    return spotsDivs;
-  }
-
-  render() 
-  {
+  render() {
     return (
         <div id="content" className="content home">
           { !this.state.loaded && <Spinner /> }
@@ -62,8 +53,8 @@ class Home extends Component
             </div> 
           }
           
-          { this.printSpots() }
-          
+          { this.state.spots }
+
           <a href="./#/send" className="sendSpot">
             <div class="send">
               <div className="letter">

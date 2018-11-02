@@ -7,10 +7,8 @@ import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 import '../css/User.css';
 import Spinner from '../components/Spinner';
 
-class User extends Component 
-{
-  constructor(props)
-  {
+class User extends Component {
+  constructor(props) {
     super(props);
     
     
@@ -18,66 +16,57 @@ class User extends Component
       canSend: true
     }
 
-    yawp.config(function (c) {
-      c.baseUrl(props.serverUrl);
-    });
+    yawp.config((c) => c.baseUrl(props.serverUrl));
   }
-  
-  sendSpot()
-  {
-    if (!this.state.canSend)
-    {
-      this.createErrorMessage("Espera mais um pouquinho, o crush não vai fugir não");
+
+  sendSpot = () => {
+    if (!this.state.canSend) {
+      this.createErrorMessage('Espera mais um pouquinho, o crush não vai fugir não!');
       return;
-    } 
-    
+    }
+
     let textArea = document.getElementById("message"),
         text = textArea.value;
-    
-    if (text === "")
-      this.createErrorMessage("Se você não escrever nada, não tem como o crush te notar!");
+
+    if (text === '')
+      this.createErrorMessage('Se você não escrever nada, não tem como o crush te notar!');
     else if (text.length > 278)
-      this.createErrorMessage("Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres 😢");
-    else
-    {
+      this.createErrorMessage('Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres 😢');
+    else {
       this.setState({
         canSend: false
       });
-      
-      yawp('/spots').create({ message: textArea.value }).then(() => 
-      { 
-        textArea.value = "";
-        if (text.toUpperCase().includes("NA PD"))
-          this.createSuccessAlert("Sua mensagem foi enviada, agora manda seu crush pagar a PD também!");
-        else if (text.toUpperCase().includes("NÃO ME QUER") || text.toUpperCase().includes("NÃO ME NOTA"))
-          this.createSuccessAlert("Sua mensagem foi enviada, E É CLARO QUE SEU CRUSH TE QUER!");
+
+      yawp('/spots').create({ message: textArea.value }).then(() => {
+        textArea.value = '';
+        if (text.toUpperCase().includes('NA PD'))
+          this.createSuccessAlert('Sua mensagem foi enviada, agora manda seu crush pagar a PD também!');
+        else if (text.toUpperCase().includes('NÃO ME QUER') || text.toUpperCase().includes('NÃO ME NOTA'))
+          this.createSuccessAlert('Sua mensagem foi enviada, E É CLARO QUE SEU CRUSH TE QUER!');
         else
-          this.createSuccessAlert("Sua mensagem foi enviada, agora é só esperar!");
-        
-          this.setState({
-            canSend: true
-          });
-      }).catch(err =>
-      { 
-        this.createErrorMessage("Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão");
+          this.createSuccessAlert('Sua mensagem foi enviada, agora é só esperar!');
+
+        this.setState({
+          canSend: true
+        });
+      }).catch(err => {
+        this.createErrorMessage('Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão');
         this.setState({
           canSend: true
         });
       });
     }
   }
-  
-  createErrorMessage(message)
-  {
+
+  createErrorMessage(message) {
     Alert.error(<h1>{message}</h1>, {
       position: 'bottom-right',
       effect: 'scale',
       timeout: 1000000
     });
   }
-  
-  createSuccessAlert(message)
-  {
+
+  createSuccessAlert(message) {
     Alert.success(<h1>{message}</h1>, {
       position: 'bottom-right',
       effect: 'scale',
@@ -85,8 +74,7 @@ class User extends Component
     });
   }
 
-  render() 
-  {
+  render() {
     return (
       <div className="content user">
         <div className="presentation">
@@ -101,7 +89,7 @@ class User extends Component
         </div>
         <textarea maxLength="278" placeholder="Digite sua mensagem..." id="message"></textarea>
 
-        <button className="btn" onClick={() => this.sendSpot()}>
+        <button className="btn" onClick={this.sendSpot}>
           Enviar Spot
           <Spinner active={!this.state.canSend} color="#FFF"/>
         </button>
