@@ -59,7 +59,7 @@ class Main extends React.Component
         <Menu id={'slide'}>
           <div>
             <a href="./#/admin">
-              Admin
+              Administração
             </a>
           </div>
           <div>

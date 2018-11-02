@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import yawp from 'yawp';
 
+import Spinner from '../components/Spinner';
+
 import 'react-notifications/lib/notifications.css';
 import '../css/User.css';
-import Spinner from '../components/Spinner';
 
 class User extends Component {
   constructor(props) {

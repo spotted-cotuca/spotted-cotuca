@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import yawp from 'yawp';
 import { FB } from 'fb-es5';
 import * as firebase from 'firebase';
@@ -6,6 +7,7 @@ import * as firebase from 'firebase';
 import SpotBox from '../components/SpotBox';
 import Spinner from '../components/Spinner';
 
+import 'react-notifications/lib/notifications.css';
 import '../css/Admin.css';
 
 var Twitter = require('twitter');
@@ -153,7 +155,21 @@ class Admin extends Component {
     });
     firebase.auth().signInWithEmailAndPassword(email, pass)
       .catch(e => {
-        console.log(e.message);
+        switch (e.code) {
+          case 'auth/invalid-email':
+            NotificationManager.error('O email inserido é inválido!', 'Ah não...', 4000);
+            break;
+
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+            NotificationManager.error('Usuário ou senha incorreta!', 'Ah não...', 4000);
+            break;
+
+          default:
+            NotificationManager.error('Algo de errado aconteceu, tente novamente.', 'Ah não...', 4000);
+            break;
+        }
+
         this.setState({
           logging: false
         });
@@ -186,6 +202,8 @@ class Admin extends Component {
             Entrar
             <Spinner active={this.state.logging} color="#FFF"/>
           </button>
+
+          <NotificationContainer />
         </div>
       );
   }
