@@ -96,45 +96,82 @@ class Admin extends Component {
       headers: new Headers({
         Authorization: 'Bearer ' + this.state.token
       })
-    }).then(() => {
-      FB.api('me/feed', 'post', { message: '"' + spotMessage + '"' }, res => {
-        if (!res || res.error)
-          return;
+    }).then(async () => {
+      for (let i = 0; i < 10; i++)
+        try {
+          if (await postFacebook() === 'posted')
+            break;
+        } catch (e) {
+          await sleep(1000);
+          console.log('erro ao postar no facebook', e);
+        }
 
-        fetch(this.props.serverUrl + id + '/addPostId?fbPostId=' + res.id.split('_')[1], {
-          method: 'PUT',
-          headers: new Headers({
-            Authorization: 'Bearer ' + this.state.token
-          })
-        }).then(() => {
-          fetch(this.props.proxyUrl, {
-            async: true,
-            crossDomain: true,
-            method: 'POST',
-            contentType: 'application/json',
-            body: JSON.stringify({
-              accessSecret: this.tt.options.access_token_secret,
-              accessToken: this.tt.options.access_token_key,
-              consumerKey: this.tt.options.consumer_key,
-              consumerSecret: this.tt.options.consumer_secret,
-              message: '"' + spotMessage + '"'
-            })
-          }).then(raw => raw.json())
-            .then(response => {
-              fetch(this.props.serverUrl + id + '/addPostId?ttPostId=' + response.tweetId, {
-                async: true,
-                crossDomain: true,
-                method: 'PUT',
-                headers: new Headers({
-                  Authorization: 'Bearer ' + this.state.token
-                })
-              })
-            });
+      for (let i = 0; i < 10; i++) 
+        try {
+          if (await postTwitter() === 'posted')
+            break;
+        } catch (e) {
+          await sleep(1000);
+          console.log('erro ao postar no twitter', e);
+        }
 
-          this.selectSpots(this.state.token);
-        });
-      });
+      this.selectSpots(this.state.token);
     });
+
+    let sleep = (time) => new Promise(resolve => setTimeout(() => resolve(), time));
+
+    let postFacebook = () => {
+      return new Promise((resolve, reject) => {
+        FB.api('me/feed', 'post', {
+          message: '"' + spotMessage + '"'
+        }, res => {
+          if (!res || res.error || (res.code && res.code !== 200)) {
+            reject(res);
+            return;
+          }
+  
+          fetch(this.props.serverUrl + id + '/addPostId?fbPostId=' + res.id.split('_')[1], {
+            method: 'PUT',
+            headers: new Headers({
+              Authorization: 'Bearer ' + this.state.token
+            })
+          }).then(() => resolve('posted'));
+        });
+      })
+    }
+
+    let postTwitter = () => {
+      return new Promise((resolve, reject) => {
+        fetch(this.props.proxyUrl, {
+          async: true,
+          crossDomain: true,
+          method: 'POST',
+          contentType: 'application/json',
+          body: JSON.stringify({
+            accessSecret: this.tt.options.access_token_secret,
+            accessToken: this.tt.options.access_token_key,
+            consumerKey: this.tt.options.consumer_key,
+            consumerSecret: this.tt.options.consumer_secret,
+            message: '"' + spotMessage + '"'
+          })
+        }).then(raw => raw.json())
+          .then(response => {
+            if (!response || !response.tweetId) {
+              reject(response);
+              return;
+            }
+
+            fetch(this.props.serverUrl + id + '/addPostId?ttPostId=' + response.tweetId, {
+              async: true,
+              crossDomain: true,
+              method: 'PUT',
+              headers: new Headers({
+                Authorization: 'Bearer ' + this.state.token
+              })
+            }).then(() => resolve('posted'));
+          });
+      });
+    }
   }
 
   rejectSpot(id) {
