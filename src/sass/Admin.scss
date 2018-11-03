@@ -39,17 +39,28 @@
     font-size: 1.4em;
   }
   
-  .logout {
+  .options {
     position: fixed;
     top: 120px;
     right: 20px;
-    width: unset;
-    left: auto;
+
+    .btn {
+      display: block;
+      width: 100%;
+      flex-grow: 1;
+      margin-bottom: 10px;
+    }
 
     @media only screen and (max-width: 1023px) {
       position: relative;
       top: 0;
       right: 0;
+
+      .btn {
+        display: inline-flex;
+        width: unset;
+        margin: 0 10px;
+      }
     }
   }
 }

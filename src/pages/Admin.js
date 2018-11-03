@@ -236,9 +236,12 @@ class Admin extends Component {
     if (this.state.logged)
       return (
         <div className="content admin">
-          <button className="btn logout" onClick={this.logout}>
-            Logout
-          </button>
+          <div className="options">
+            <button className="btn" onClick={this.logout}>
+              Logout
+            </button>
+          </div>
+
           { this.state.spots }
           <NotificationContainer />
         </div>
