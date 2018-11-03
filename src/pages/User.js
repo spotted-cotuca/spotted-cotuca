@@ -63,7 +63,7 @@ class User extends Component {
   }
 
   createSuccessAlert(message) {
-    NotificationManager.success(message, 'Aí sim!', 4000)
+    NotificationManager.success(message, 'Aí sim!', 4000);
   }
 
   render() {

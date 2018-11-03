@@ -90,34 +90,7 @@ class Admin extends Component {
       });
   }
 
-  approveSpot(id, spotMessage) {
-    fetch(this.props.serverUrl + id + '/approve', {
-      method: 'PUT',
-      headers: new Headers({
-        Authorization: 'Bearer ' + this.state.token
-      })
-    }).then(async () => {
-      for (let i = 0; i < 10; i++)
-        try {
-          if (await postFacebook() === 'posted')
-            break;
-        } catch (e) {
-          await sleep(1000);
-          console.log('erro ao postar no facebook', e);
-        }
-
-      for (let i = 0; i < 10; i++) 
-        try {
-          if (await postTwitter() === 'posted')
-            break;
-        } catch (e) {
-          await sleep(1000);
-          console.log('erro ao postar no twitter', e);
-        }
-
-      this.selectSpots(this.state.token);
-    });
-
+  async approveSpot(id, spotMessage) {
     let sleep = (time) => new Promise(resolve => setTimeout(() => resolve(), time));
 
     let postFacebook = () => {
@@ -172,6 +145,41 @@ class Admin extends Component {
           });
       });
     }
+
+    let facebook = false, twitter = false;
+    for (let i = 0; i < 10; i++)
+      try {
+        if (await postFacebook() === 'posted') {
+          facebook = true;
+          break;
+        }
+      } catch (e) {
+        await sleep(1000);
+        console.log('erro ao postar no facebook', e);
+      }
+
+    for (let i = 0; i < 10; i++) 
+      try {
+        if (await postTwitter() === 'posted') {
+          twitter = true;
+          break;
+        }
+      } catch (e) {
+        await sleep(1000);
+        console.log('erro ao postar no twitter', e);
+      }
+
+    if (twitter && facebook) {
+      NotificationManager.success('Spot postado com sucesso.', 'Aí sim!', 2000);
+
+      fetch(this.props.serverUrl + id + '/approve', {
+        method: 'PUT',
+        headers: new Headers({
+          Authorization: 'Bearer ' + this.state.token
+        })
+      }).then(() => this.selectSpots(this.state.token));
+    } else
+      NotificationManager.error('Algo de errado aconteceu, mas o spot foi postado no ' + (facebook ? 'Facebook.' : 'Twitter.'), 'Ah não...', 2000);
   }
 
   rejectSpot(id) {
@@ -228,6 +236,7 @@ class Admin extends Component {
             <a href="./" onClick={this.logout}><b>Logout</b></a>
           </div>
           { this.state.spots }
+          <NotificationContainer />
         </div>
       );
     else
