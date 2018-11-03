@@ -3,8 +3,8 @@
   "name": "Spotted Cotuca",
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#7c0606",
-  "background_color": "#df7171",
+  "theme_color": "#f0739f",
+  "background_color": "#ffe6e9",
   "icons": [
     {
       "src": "app-icon.png",
