@@ -188,7 +188,10 @@ class Admin extends Component {
       headers: new Headers({
         Authorization: 'Bearer ' + this.state.token
       })
-    }).then(() => this.selectSpots(this.state.token));
+    }).then(() => {
+      NotificationManager.success('Spot rejeitado com sucesso.', 'Aí sim!', 2000);
+      this.selectSpots(this.state.token);
+    });
   }
 
   login = () => {
@@ -221,10 +224,11 @@ class Admin extends Component {
       });
   }
 
-  logout() {
-    firebase.auth().signOut();
-    this.setState({
-      logged: false
+  logout = () => {
+    firebase.auth().signOut().then(() => {
+      this.setState({
+        logged: false
+      });
     });
   }
 
@@ -232,9 +236,9 @@ class Admin extends Component {
     if (this.state.logged)
       return (
         <div className="content admin">
-          <div className="Logout-btn">
-            <a href="./" onClick={this.logout}><b>Logout</b></a>
-          </div>
+          <button className="btn logout" onClick={this.logout}>
+            Logout
+          </button>
           { this.state.spots }
           <NotificationContainer />
         </div>

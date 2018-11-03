@@ -189,12 +189,12 @@ footer {
   outline: none;
   justify-content: center;
   white-space: nowrap;
-  vertical-align: middle;
   border-radius: 5px;
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   transition: background-color 0.4s;
+  cursor: pointer;
   
   &:hover {
     background-color: darken($color: #f0739f, $amount: 3.5);
