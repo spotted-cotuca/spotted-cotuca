@@ -1,5 +1,5 @@
 {
-  "serverUrl": "http://newspottedctc.appspot.com/api",
+  "serverUrl": "https://newspottedctc.appspot.com/api",
   "proxyUrl": "https://newspottedctcproxy.herokuapp.com/tweet",
   "firebase": {
     "apiKey": "AIzaSyAwEx4ct_nKPYIhFBpfB7RMfSIHFme9ais",
