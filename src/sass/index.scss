@@ -70,6 +70,10 @@ header {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
   z-index: 1000;
 
+  @media only screen and (max-width: 768px) {
+    height: 75px;
+  }
+
   & > a {
     display: inline-flex;
     margin: 0 auto;
@@ -174,6 +178,7 @@ footer {
 
   @media only screen and (max-width: 768px) {
     padding: 0;
+    margin-top: 75px;
   }
 }
 
