@@ -1,10 +1,4 @@
 .content.home {
-  @media only screen and (max-width: 768px) {
-    & {
-      padding: 0;
-    }
-  }
-
   .sendSpot {
     position: fixed;
     right: 25px;
@@ -26,6 +20,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        color: white;
         
         img {
           width: 100%;

@@ -50,7 +50,7 @@ body {
 
 a {
   text-decoration: none;
-  color: white;
+  color: #f85a69;
 }
 
 .app {
@@ -171,6 +171,10 @@ footer {
   margin: 100px auto 0 auto;
   width: 40%;
   flex-grow: 1;
+
+  @media only screen and (max-width: 768px) {
+    padding: 0;
+  }
 }
 
 @media (max-width: 1023px) {
@@ -180,7 +184,7 @@ footer {
 }
 
 .btn {
-  width: 89%;
+  width: 100%;
   margin: 0;
   display: inline-flex;
   color: #fff;
@@ -217,4 +221,23 @@ footer {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.12);
   text-align: left;
   opacity: 0.95;
+}
+
+.error {
+  padding: 10px 40px;
+  padding-bottom: 20px;
+
+  .message {
+    margin-top: 10px;
+    color: #252525;
+    font-size: 1.8em;
+  }
+
+  .brokenHeart {
+    width: 250px;
+  
+    @media (max-width: 768px) {
+      width: 150px;
+    }
+  }
 }

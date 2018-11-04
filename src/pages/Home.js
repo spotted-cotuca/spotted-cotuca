@@ -47,7 +47,7 @@ class Home extends Component
               <div className="message">
                 <strong>Oh, não!</strong>
                 <br/><br/>
-                  Algo deu errado ao tentar pegar os spots, por favor, <a className="link" href="./">recarregue a página</a>.
+                  Algo deu errado ao tentar pegar os spots, por favor, <a href="./">recarregue a página</a>.
                 <br/><br/>
               </div>
             </div> 
