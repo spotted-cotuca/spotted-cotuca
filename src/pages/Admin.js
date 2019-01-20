@@ -22,7 +22,8 @@ class Admin extends Component {
     this.state = {
       spots: [],
       logged: false,
-      logging: true
+      logging: true,
+      loaded: false
     };
   }
 
@@ -85,7 +86,8 @@ class Admin extends Component {
               admin
             />
           ),
-          token: token
+          token: token,
+          loaded: true
         });
       });
   }
@@ -242,6 +244,7 @@ class Admin extends Component {
             </button>
           </div>
 
+          { !this.state.loaded && <Spinner /> }
           { this.state.spots }
           <NotificationContainer />
         </div>

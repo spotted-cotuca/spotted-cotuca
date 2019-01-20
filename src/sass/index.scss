@@ -145,8 +145,9 @@ header {
 footer {
   background-color: #f0739f;
   color: white;
-  line-height: 75px;
+  line-height: 30px;
   box-sizing: content-box;
+  padding: 15px 0;
 
   .heart {
     font-size: 1.2em;
@@ -165,7 +166,8 @@ footer {
   }
 
   footer {
-    line-height: 50px;
+    line-height: 25px;
+    padding: 10px 0;
   }
 }
 
