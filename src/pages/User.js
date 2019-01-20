@@ -26,7 +26,7 @@ class User extends Component {
     }
 
     let textArea = document.getElementById("message"),
-        text = textArea.value;
+        text = textArea.value.trim();
 
     if (text === '')
       this.createErrorMessage('Se você não escrever nada, não tem como o crush te notar!');
@@ -37,11 +37,19 @@ class User extends Component {
         canSend: false
       });
 
-      yawp('/spots').create({ message: textArea.value }).then(() => {
+      let startQuotes = text.startsWith("\""),
+          endQuotes = text.endsWith("\"");
+      if (startQuotes && endQuotes)
+        text = text.substring(1, text.length - 1);
+
+      yawp('/spots').create({ message: text }).then(() => {
         textArea.value = '';
-        if (text.toUpperCase().includes('NA PD'))
+        let testText = text.toUpperCase();
+        if (startQuotes && endQuotes)
+          this.createSuccessAlert('Pode deixar que nós já colocamos as aspas para você, elas foram removidas e sua mensagem enviada 😊');
+        else if (testText.includes('NA PD'))
           this.createSuccessAlert('Sua mensagem foi enviada, agora manda seu crush pagar a PD também!');
-        else if (text.toUpperCase().includes('NÃO ME QUER') || text.toUpperCase().includes('NÃO ME NOTA'))
+        else if (testText.includes('NÃO ME QUER') || testText.includes('NÃO ME NOTA'))
           this.createSuccessAlert('Sua mensagem foi enviada, E É CLARO QUE SEU CRUSH TE QUER!');
         else
           this.createSuccessAlert('Sua mensagem foi enviada, agora é só esperar!');
