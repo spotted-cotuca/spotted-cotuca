@@ -1,4 +1,4 @@
-import { takeEvery, put, call } from 'redux-saga/effects';
+import { takeEvery, put } from 'redux-saga/effects';
 import { NotificationManager } from 'react-notifications';
 import * as firebase from 'firebase';
 import {

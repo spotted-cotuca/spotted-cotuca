@@ -4,6 +4,7 @@ import yawp from 'yawp';
 import { FB } from 'fb-es5';
 import { connect } from 'react-redux';
 import { loginUser, logoutUser } from '../actions/authenticationActions';
+import SocialMediasHandler from '../js/SocialMediasHandler';
 
 import SpotBox from '../components/SpotBox';
 import Spinner from '../components/Spinner';
@@ -14,7 +15,7 @@ import '../css/Admin.css';
 var Twitter = require('twitter');
 
 class Admin extends Component {
-  tt = null;
+  socialMedias = null;
 
   constructor(props) {
     super(props);
@@ -28,15 +29,16 @@ class Admin extends Component {
 
   componentDidMount() {
     const { token } = this.props.auth;
-    if (token) this.selectSpots(token);
+    if (token) {
+      this.initializeSocials(token);
+      this.selectSpots(token);
+    }
   }
 
   componentDidUpdate(prevProps) {
     const { token } = this.props.auth;
-    if (token) {
-      if (!prevProps.auth.token)
-        this.initializeSocials(token);
-
+    if (token && !prevProps.auth.token) {
+      this.initializeSocials(token);
       this.selectSpots(token);
     }
   }
@@ -50,11 +52,17 @@ class Admin extends Component {
       .then(response => {
         FB.setAccessToken(response.fb_token_key);
         
-        this.tt = new Twitter({
+        let tt = new Twitter({
           consumer_key: response.tt_consumer_key,
           consumer_secret: response.tt_consumer_secret,
           access_token_key: response.tt_token_key,
           access_token_secret: response.tt_token_secret
+        });
+
+        this.socialMedias = new SocialMediasHandler(tt, FB, {
+          serverUrl: this.props.serverUrl,
+          proxyUrl: this.props.proxyUrl,
+          token
         });
       });
   }
@@ -84,85 +92,9 @@ class Admin extends Component {
   }
 
   async approveSpot(id, spotMessage) {
-    let sleep = (time) => new Promise(resolve => setTimeout(() => resolve(), time));
+    let post = await this.socialMedias.postOnSocialMedias(id, spotMessage);
 
-    let postFacebook = () => {
-      return new Promise((resolve, reject) => {
-        FB.api('me/feed', 'post', {
-          message: '"' + spotMessage + '"'
-        }, res => {
-          if (!res || res.error || (res.code && res.code !== 200)) {
-            reject(res);
-            return;
-          }
-  
-          fetch(this.props.serverUrl + id + '/addPostId?fbPostId=' + res.id.split('_')[1], {
-            method: 'PUT',
-            headers: new Headers({
-              Authorization: 'Bearer ' + this.state.token
-            })
-          }).then(() => resolve('posted'));
-        });
-      })
-    }
-
-    let postTwitter = () => {
-      return new Promise((resolve, reject) => {
-        fetch(this.props.proxyUrl, {
-          async: true,
-          crossDomain: true,
-          method: 'POST',
-          contentType: 'application/json',
-          body: JSON.stringify({
-            accessSecret: this.tt.options.access_token_secret,
-            accessToken: this.tt.options.access_token_key,
-            consumerKey: this.tt.options.consumer_key,
-            consumerSecret: this.tt.options.consumer_secret,
-            message: '"' + spotMessage + '"'
-          })
-        }).then(raw => raw.json())
-          .then(response => {
-            if (!response || !response.tweetId) {
-              reject(response);
-              return;
-            }
-
-            fetch(this.props.serverUrl + id + '/addPostId?ttPostId=' + response.tweetId, {
-              async: true,
-              crossDomain: true,
-              method: 'PUT',
-              headers: new Headers({
-                Authorization: 'Bearer ' + this.state.token
-              })
-            }).then(() => resolve('posted'));
-          });
-      });
-    }
-
-    let facebook = false, twitter = false;
-    for (let i = 0; i < 10; i++)
-      try {
-        if (await postFacebook() === 'posted') {
-          facebook = true;
-          break;
-        }
-      } catch (e) {
-        await sleep(1000);
-        console.error('erro ao postar no facebook', e);
-      }
-
-    for (let i = 0; i < 10; i++) 
-      try {
-        if (await postTwitter() === 'posted') {
-          twitter = true;
-          break;
-        }
-      } catch (e) {
-        await sleep(1000);
-        console.error('erro ao postar no twitter', e);
-      }
-
-    if (twitter && facebook) {
+    if (post.twitter && post.facebook) {
       NotificationManager.success('Spot postado com sucesso.', 'Aí sim!', 2000);
 
       fetch(this.props.serverUrl + id + '/approve', {
@@ -171,10 +103,10 @@ class Admin extends Component {
           Authorization: 'Bearer ' + this.state.token
         })
       }).then(() => this.selectSpots(this.state.token));
-    } else if (!(twitter || facebook))
+    } else if (!(post.twitter || post.facebook))
       NotificationManager.error('Algo de errado aconteceu, o spot não foi postado em nenhum lugar', 'Ah não...', 2000);
     else
-      NotificationManager.error('Algo de errado aconteceu, mas o spot foi postado no ' + (facebook ? 'Facebook.' : 'Twitter.'), 'Ah não...', 2000);
+      NotificationManager.error('Algo de errado aconteceu, mas o spot foi postado no ' + (post.facebook ? 'Facebook.' : 'Twitter.'), 'Ah não...', 2000);
   }
 
   rejectSpot(id) {
