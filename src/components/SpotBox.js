@@ -5,6 +5,7 @@ import AdminFooter from './AdminFooter';
 import UserFooter from './UserFooter';
 
 import '../css/SpotBox.css';
+import trashIcon from '../imgs/trash.png';
 
 class SpotBox extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class SpotBox extends Component {
     this.date = (d > 9 ? '' : '0') + d + '/' + (m > 9 ? '' : '0') + m + '/' + props.date.getFullYear() + ' - ' +
                 (h > 9 ? '' : '0') + h + 'h' + (min > 9 ? '' : '0') + min;
 
-    if (props.admin)
+    if (!props.posted)
       this.footer = <AdminFooter approveSpot={props.approveSpot} rejectSpot={props.rejectSpot} />;
     else
       this.footer = <UserFooter fbPostId={props.fbPostId} ttPostId={props.ttPostId} />;
@@ -29,9 +30,15 @@ class SpotBox extends Component {
   render() {
     return (
       <div className="spotBox"> 
-        <p className="date">
-          { this.date }
-        </p>
+        <div className="header">
+          <p className="date">
+            { this.date }
+          </p>
+          { 
+            this.props.admin &&
+            <img alt="delete" className="deleteSpot" src={ trashIcon } onClick={ this.props.deleteSpot }></img>
+          }
+        </div>
         { "\"" + this.props.message + "\"" } 
         <hr/>
         { this.footer }
@@ -47,7 +54,9 @@ SpotBox.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
   approveSpot:  PropTypes.func,
   rejectSpot: PropTypes.func,
-  admin: PropTypes.bool
+  deleteSpot: PropTypes.func,
+  admin: PropTypes.bool,
+  posted: PropTypes.bool
 }
 
 export default SpotBox;

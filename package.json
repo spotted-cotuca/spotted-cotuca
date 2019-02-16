@@ -9,6 +9,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.8.1",
     "react-burger-menu": "^2.3.0",
+    "react-coin-hive": "^1.1.1",
     "react-dom": "^16.8.1",
     "react-notifications": "^1.4.3",
     "react-redux": "^6.0.0",
