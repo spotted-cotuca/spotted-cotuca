@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import { NotificationManager } from 'react-notifications';
 import yawp from 'yawp';
-import { FB } from 'fb-es5';
 import { connect } from 'react-redux';
 import { loginUser, logoutUser } from '../actions/authenticationActions';
-import SocialMediasHandler from '../js/SocialMediasHandler';
 
 import SpotBox from '../components/SpotBox';
 import Spinner from '../components/Spinner';
 
 import 'react-notifications/lib/notifications.css';
 import '../css/Admin.css';
-
-var Twitter = require('twitter');
 
 class Admin extends Component {
   socialMedias = null;
@@ -29,42 +25,14 @@ class Admin extends Component {
 
   componentDidMount() {
     const { token } = this.props.auth;
-    if (token) {
-      this.initializeSocials(token);
+    if (token)
       this.selectSpots(token);
-    }
   }
 
   componentDidUpdate(prevProps) {
     const { token } = this.props.auth;
-    if (token && !prevProps.auth.token) {
-      this.initializeSocials(token);
+    if (token && !prevProps.auth.token)
       this.selectSpots(token);
-    }
-  }
-
-  initializeSocials(token) {
-    fetch(this.props.serverUrl + '/admins/tokens', {
-      headers: new Headers({
-        Authorization: 'Bearer ' + token
-      })
-    }).then(raw => raw.json())
-      .then(response => {
-        FB.setAccessToken(response.fb_token_key);
-        
-        let tt = new Twitter({
-          consumer_key: response.tt_consumer_key,
-          consumer_secret: response.tt_consumer_secret,
-          access_token_key: response.tt_token_key,
-          access_token_secret: response.tt_token_secret
-        });
-
-        this.socialMedias = new SocialMediasHandler(tt, FB, {
-          serverUrl: this.props.serverUrl,
-          proxyUrl: this.props.proxyUrl,
-          token
-        });
-      });
   }
 
   selectSpots(token) {
@@ -91,7 +59,7 @@ class Admin extends Component {
   }
 
   async approveSpot(id, spotMessage) {
-    let post = await this.socialMedias.postOnSocialMedias(id, spotMessage);
+    let post = await this.props.socialMedias.postOnSocialMedias(id, spotMessage);
 
     if (post.twitter && post.facebook) {
       NotificationManager.success('Spot postado com sucesso.', 'Aí sim!', 2000);
@@ -159,6 +127,9 @@ class Admin extends Component {
 }
 
 export default connect(
-  state => ({ auth: state.authentication }),
+  state => ({ 
+    auth: state.authentication,
+    socialMedias: state.authentication.socialMediasHandler
+  }),
   { loginUser, logoutUser }
 )(Admin);

@@ -3,10 +3,16 @@ import {
   LOGIN_SUCCEEDED,
   LOGIN_FAILED,
   LOGOUT_SUCCEEDED,
+  INITIALIZE_SOCIALS_SUCCEEDED
 } from '../actions/authenticationActions';
 
-function authentication(state = { token: null, logged: false, logging: true }, action) {
+function authentication(state = { token: null, logged: false, logging: true, socialMediasHandler: null }, action) {
   switch (action.type) {
+    case INITIALIZE_SOCIALS_SUCCEEDED:
+      return {
+        ...state,
+        socialMediasHandler: action.socialMediasHandler
+      };
     case LOGIN_SUCCEEDED:
       return {
         ...state,
@@ -29,7 +35,8 @@ function authentication(state = { token: null, logged: false, logging: true }, a
       return {
         ...state,
         logged: false,
-        token: null
+        token: null,
+        socialMediasHandler: null
       }
     default:
       return state;

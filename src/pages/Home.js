@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import yawp from 'yawp';
 import { connect } from 'react-redux';
+import { NotificationManager } from 'react-notifications';
 import SpotBox from '../components/SpotBox';
 import Spinner from '../components/Spinner';
 
@@ -23,6 +24,10 @@ class Home extends Component
   }
 
   componentDidMount() {
+    this.selectSpots();
+  }
+
+  selectSpots() {
     yawp('/spots/approved').list(l => 
       this.setState({
         spots: l.map(
@@ -30,7 +35,9 @@ class Home extends Component
             <SpotBox
               posted
               admin={this.props.token !== null}
-              deleteSpot={() => console.log('oi')}
+              deleteSpot={
+                () => this.deleteSpot(spot.id, spot.fbPostId, spot.ttPostId)
+              }
               key={spot.id}
               {...spot}
               date={new Date(spot.date)}
@@ -44,6 +51,24 @@ class Home extends Component
         error: true
       })
     );
+  }
+
+  async deleteSpot(id, fbId, ttId) {
+    let deleted = await this.props.socialMediasHandler.deleteFromSocialMedias(fbId, ttId);
+    if (deleted.facebook && deleted.twitter) {
+      NotificationManager.success('Spot deletado com sucesso.', 'Aí sim!', 2000);
+      
+      fetch(this.props.serverUrl + id, {
+        method: 'DELETE',
+        headers: new Headers({
+          Authorization: 'Bearer ' + this.props.token
+        })
+      }).then(() => this.selectSpots());
+    }
+    else if (!(deleted.twitter || deleted.facebook))
+      NotificationManager.error('Algo de errado aconteceu, o spot não foi deletado de nenhum lugar', 'Ah não...', 2000);
+    else
+      NotificationManager.error('Algo de errado aconteceu, mas o spot foi deletado do ' + (deleted.facebook ? 'Facebook.' : 'Twitter.'), 'Ah não...', 2000);
   }
 
   render() {
@@ -82,6 +107,9 @@ class Home extends Component
 }
 
 export default connect(
-  state => ({ token: state.authentication.token }),
+  state => ({ 
+    token: state.authentication.token,
+    socialMediasHandler: state.authentication.socialMediasHandler 
+  }),
   {}
 )(Home);

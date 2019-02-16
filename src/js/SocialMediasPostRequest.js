@@ -30,7 +30,7 @@ class SocialMediasPostRequest {
     })
   }
 
-  postFacebook() {
+  postOnFacebook() {
     return new Promise((resolve, reject) => {
       this.handler.fb.api('me/feed', 'post', {
         message: '"' + this.message + '"'
@@ -46,7 +46,7 @@ class SocialMediasPostRequest {
     });
   }
 
-  postTwitter() {
+  postOnTwitter() {
     return new Promise((resolve, reject) => {
       fetch(this.handler.proxyUrl, {
         async: true,

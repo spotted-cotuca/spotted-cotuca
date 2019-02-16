@@ -103,7 +103,7 @@ class Main extends React.Component {
             <Switch>
               <Route exact path="/" render={(props) => <Home {...props} serverUrl={config.serverUrl} />}/>
               <Route path="/send" render={(props) => <User {...props} serverUrl={config.serverUrl} />}/>
-              <Route path="/admin" render={(props) => <Admin {...props} serverUrl={config.serverUrl} proxyUrl={config.proxyUrl} />}/>
+              <Route path="/admin" render={(props) => <Admin {...props} serverUrl={config.serverUrl} />}/>
               <Route path="/api" component={null}/>
               <Route path="*" component={NotFound}/>
             </Switch>
