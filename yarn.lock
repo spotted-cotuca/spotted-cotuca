@@ -7717,13 +7717,6 @@ react-burger-menu@^2.3.0:
     prop-types "^15.5.8"
     snapsvg-cjs "0.0.6"
 
-react-coin-hive@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-coin-hive/-/react-coin-hive-1.1.1.tgz#fc8e0ed043ad1de0ce58b66c70ab9eaac4a3faf8"
-  dependencies:
-    load-script "^1.0.0"
-    react-idle "^2.0.0"
-
 react-dev-utils@^6.0.5:
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-6.0.5.tgz#6ef34d0a416dc1c97ac20025031ea1f0d819b21d"
@@ -7763,10 +7756,6 @@ react-dom@^16.8.1:
 react-error-overlay@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.0.5.tgz#716ff1a92fda76bb89a39adf9ce046a5d740e71a"
-
-react-idle@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-idle/-/react-idle-2.0.0.tgz#ccd2f0c8ae086928975edee5403def80b76cfef7"
 
 react-is@^16.6.3, react-is@^16.7.0:
   version "16.8.1"
