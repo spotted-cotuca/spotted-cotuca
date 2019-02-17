@@ -54,7 +54,8 @@ class MenuWrap extends React.Component {
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    window.location.host = window.location.host.replace('www.', '');
+    if (window.location.host.startsWith('www.'))
+      window.location.host = window.location.host.replace('www.', '');
   }
 
   getMenu() {
