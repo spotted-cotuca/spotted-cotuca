@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 import yawp from 'yawp';
 
 import Spinner from '../components/Spinner';
@@ -93,8 +93,6 @@ class User extends Component {
           Enviar Spot
           <Spinner active={!this.state.canSend} color="#FFF"/>
         </button>
-
-        <NotificationContainer />
       </div>
     );
   }

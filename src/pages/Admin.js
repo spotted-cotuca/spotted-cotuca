@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 import yawp from 'yawp';
-import { FB } from 'fb-es5';
-import * as firebase from 'firebase';
+import { connect } from 'react-redux';
+import { loginUser, logoutUser } from '../actions/authenticationActions';
 
 import SpotBox from '../components/SpotBox';
 import Spinner from '../components/Spinner';
@@ -10,10 +10,8 @@ import Spinner from '../components/Spinner';
 import 'react-notifications/lib/notifications.css';
 import '../css/Admin.css';
 
-var Twitter = require('twitter');
-
 class Admin extends Component {
-  tt = null;
+  socialMedias = null;
 
   constructor(props) {
     super(props);
@@ -21,51 +19,20 @@ class Admin extends Component {
     yawp.config(c => c.baseUrl(props.serverUrl));
     this.state = {
       spots: [],
-      logged: false,
-      logging: true,
       loaded: false
     };
   }
 
   componentDidMount() {
-    if (!firebase.apps.length)
-      firebase.initializeApp(this.props.firebase);
-
-    firebase.auth().onAuthStateChanged(user => {
-      if (user)
-        user.getIdToken().then(token => {
-          console.log(token);
-          this.setState({
-            logged: true,
-            logging: false
-          });
-
-          this.initializeSocials(token);
-          this.selectSpots(token);
-        });
-      else
-        this.setState({
-          logging: false
-        });
-    });
+    const { token } = this.props.auth;
+    if (token)
+      this.selectSpots(token);
   }
 
-  initializeSocials(token) {
-    fetch(this.props.serverUrl + '/admins/tokens', {
-      headers: new Headers({
-        Authorization: 'Bearer ' + token
-      })
-    }).then(raw => raw.json())
-      .then(response => {
-        FB.setAccessToken(response.fb_token_key);
-        
-        this.tt = new Twitter({
-          consumer_key: response.tt_consumer_key,
-          consumer_secret: response.tt_consumer_secret,
-          access_token_key: response.tt_token_key,
-          access_token_secret: response.tt_token_secret
-        });
-      });
+  componentDidUpdate(prevProps) {
+    const { token } = this.props.auth;
+    if (token && !prevProps.auth.token)
+      this.selectSpots(token);
   }
 
   selectSpots(token) {
@@ -83,7 +50,6 @@ class Admin extends Component {
               rejectSpot={() => this.rejectSpot(spot.id)}
               {...spot}
               date={new Date(spot.date)}
-              admin
             />
           ),
           token: token,
@@ -93,85 +59,9 @@ class Admin extends Component {
   }
 
   async approveSpot(id, spotMessage) {
-    let sleep = (time) => new Promise(resolve => setTimeout(() => resolve(), time));
+    let post = await this.props.socialMedias.postOnSocialMedias(id, spotMessage);
 
-    let postFacebook = () => {
-      return new Promise((resolve, reject) => {
-        FB.api('me/feed', 'post', {
-          message: '"' + spotMessage + '"'
-        }, res => {
-          if (!res || res.error || (res.code && res.code !== 200)) {
-            reject(res);
-            return;
-          }
-  
-          fetch(this.props.serverUrl + id + '/addPostId?fbPostId=' + res.id.split('_')[1], {
-            method: 'PUT',
-            headers: new Headers({
-              Authorization: 'Bearer ' + this.state.token
-            })
-          }).then(() => resolve('posted'));
-        });
-      })
-    }
-
-    let postTwitter = () => {
-      return new Promise((resolve, reject) => {
-        fetch(this.props.proxyUrl, {
-          async: true,
-          crossDomain: true,
-          method: 'POST',
-          contentType: 'application/json',
-          body: JSON.stringify({
-            accessSecret: this.tt.options.access_token_secret,
-            accessToken: this.tt.options.access_token_key,
-            consumerKey: this.tt.options.consumer_key,
-            consumerSecret: this.tt.options.consumer_secret,
-            message: '"' + spotMessage + '"'
-          })
-        }).then(raw => raw.json())
-          .then(response => {
-            if (!response || !response.tweetId) {
-              reject(response);
-              return;
-            }
-
-            fetch(this.props.serverUrl + id + '/addPostId?ttPostId=' + response.tweetId, {
-              async: true,
-              crossDomain: true,
-              method: 'PUT',
-              headers: new Headers({
-                Authorization: 'Bearer ' + this.state.token
-              })
-            }).then(() => resolve('posted'));
-          });
-      });
-    }
-
-    let facebook = false, twitter = false;
-    for (let i = 0; i < 10; i++)
-      try {
-        if (await postFacebook() === 'posted') {
-          facebook = true;
-          break;
-        }
-      } catch (e) {
-        await sleep(1000);
-        console.log('erro ao postar no facebook', e);
-      }
-
-    for (let i = 0; i < 10; i++) 
-      try {
-        if (await postTwitter() === 'posted') {
-          twitter = true;
-          break;
-        }
-      } catch (e) {
-        await sleep(1000);
-        console.log('erro ao postar no twitter', e);
-      }
-
-    if (twitter && facebook) {
+    if (post.twitter && post.facebook) {
       NotificationManager.success('Spot postado com sucesso.', 'Aí sim!', 2000);
 
       fetch(this.props.serverUrl + id + '/approve', {
@@ -180,8 +70,10 @@ class Admin extends Component {
           Authorization: 'Bearer ' + this.state.token
         })
       }).then(() => this.selectSpots(this.state.token));
-    } else
-      NotificationManager.error('Algo de errado aconteceu, mas o spot foi postado no ' + (facebook ? 'Facebook.' : 'Twitter.'), 'Ah não...', 2000);
+    } else if (!(post.twitter || post.facebook))
+      NotificationManager.error('Algo de errado aconteceu, o spot não foi postado em nenhum lugar', 'Ah não...', 2000);
+    else
+      NotificationManager.error('Algo de errado aconteceu, mas o spot foi postado no ' + (post.facebook ? 'Facebook.' : 'Twitter.'), 'Ah não...', 2000);
   }
 
   rejectSpot(id) {
@@ -200,53 +92,24 @@ class Admin extends Component {
     let email = document.getElementById("email").value,
         pass  = document.getElementById("pass").value;
     
-    this.setState({
-      logging: true
-    });
-    firebase.auth().signInWithEmailAndPassword(email, pass)
-      .catch(e => {
-        switch (e.code) {
-          case 'auth/invalid-email':
-            NotificationManager.error('O email inserido é inválido!', 'Ah não...', 4000);
-            break;
-
-          case 'auth/user-not-found':
-          case 'auth/wrong-password':
-            NotificationManager.error('Usuário ou senha incorreta!', 'Ah não...', 4000);
-            break;
-
-          default:
-            NotificationManager.error('Algo de errado aconteceu, tente novamente.', 'Ah não...', 4000);
-            break;
-        }
-
-        this.setState({
-          logging: false
-        });
-      });
-  }
-
-  logout = () => {
-    firebase.auth().signOut().then(() => {
-      this.setState({
-        logged: false
-      });
-    });
+    this.props.loginUser(email, pass);
   }
 
   render() {
-    if (this.state.logged)
+    const { logged, logging } = this.props.auth;
+    const { logoutUser } = this.props;
+
+    if (logged)
       return (
         <div className="content admin">
           <div className="options">
-            <button className="btn" onClick={this.logout}>
+            <button className="btn" onClick={logoutUser}>
               Logout
             </button>
           </div>
 
           { !this.state.loaded && <Spinner /> }
           { this.state.spots }
-          <NotificationContainer />
         </div>
       );
     else
@@ -254,15 +117,19 @@ class Admin extends Component {
         <div className="content admin centralize">
           <input type="email" id="email" name="email" placeholder="Email"/>
           <input type="password" id="pass" name="pass" placeholder="Senha"/>
-          <button className="btn" onClick={this.login}>
+          <button className="btn" onClick={this.login} disabled={logging}>
             Entrar
-            <Spinner active={this.state.logging} color="#FFF"/>
+            <Spinner active={logging} color="#FFF"/>
           </button>
-
-          <NotificationContainer />
         </div>
       );
   }
 }
 
-export default Admin;
+export default connect(
+  state => ({ 
+    auth: state.authentication,
+    socialMedias: state.authentication.socialMediasHandler
+  }),
+  { loginUser, logoutUser }
+)(Admin);

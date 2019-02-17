@@ -13,10 +13,22 @@
   border-radius: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 
-  .date {
-    margin-top: 0;
-    font-size: 0.6em;
-    color: #4c4c4c;
+  .header {
+    display: inline-flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0.6em;
+
+    .date {
+      margin: 0;
+      font-size: 0.6em;
+      color: #4c4c4c;
+    }
+
+    .deleteSpot {
+      height: 0.8em;
+      cursor: pointer;
+    }
   }
 
   hr {
