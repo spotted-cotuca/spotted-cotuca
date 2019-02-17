@@ -58,28 +58,45 @@ export default class SocialMediasHandler {
     });
 
     let facebook = false, twitter = false;
-    for (let i = 0; i < 10; i++)
-      try {
-        if (await deleteRequest.deleteFromFacebook() === 'deleted') {
-          facebook = true;
-          break;
+    if (facebookId) {
+      for (let i = 0; i < 10; i++) {
+        try {
+          if (await deleteRequest.deleteFromFacebook() === 'deleted') {
+            facebook = true;
+            break;
+          }
+        } catch (e) {
+          if (e.error.code === 100 && e.error.error_subcode === 33) {
+            facebook = true;
+            break;
+          } else {
+            await sleep(1000);
+            console.error('erro ao deletar do facebook', e);
+          }
         }
-      } catch (e) {
-        await sleep(1000);
-        console.error('erro ao deletar do facebook', e);
       }
+    } else
+      facebook = true;
 
-    if (facebook)
-      for (let i = 0; i < 10; i++) 
+    if (twitterId && facebook) {
+      for (let i = 0; i < 10; i++) {
         try {
           if (await deleteRequest.deleteFromTwitter() === 'deleted') {
             twitter = true;
             break;
           }
         } catch (e) {
-          await sleep(1000);
-          console.error('erro ao deletar do twitter', e);
+          if (e.errors && e.errors.length > 0 && e.errors[0].code === 144) {
+            twitter = true;
+            break;
+          } else {
+            await sleep(1000);
+            console.error('erro ao deletar do twitter', e);
+          }
         }
+      }
+    } else if (!twitterId)
+      twitter = true;
 
     return {
       facebook,
