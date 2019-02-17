@@ -52,11 +52,6 @@ class MenuWrap extends React.Component {
 }
 
 class Main extends React.Component {
-  constructor(props) {
-    super(props);
-    window.location.host = window.location.host.replace('www.', '');
-  }
-
   getMenu() {
     const Menu = BurgerMenu['slide'];
     return (
