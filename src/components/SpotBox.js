@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import AdminFooter from './AdminFooter';
 import UserFooter from './UserFooter';
@@ -28,6 +29,7 @@ class SpotBox extends Component {
   }
 
   render() {
+    const { admin, deleteSpot, message } = this.props;
     return (
       <div className="spotBox"> 
         <div className="header">
@@ -35,11 +37,11 @@ class SpotBox extends Component {
             { this.date }
           </p>
           { 
-            this.props.admin &&
-            <img alt="delete" className="deleteSpot" src={ trashIcon } onClick={ this.props.deleteSpot }></img>
+            admin &&
+            <img alt="delete" className="deleteSpot" src={ trashIcon } onClick={ deleteSpot }></img>
           }
         </div>
-        { "\"" + this.props.message + "\"" } 
+        { "\"" + message + "\"" } 
         <hr/>
         { this.footer }
       </div>
@@ -55,8 +57,9 @@ SpotBox.propTypes = {
   approveSpot:  PropTypes.func,
   rejectSpot: PropTypes.func,
   deleteSpot: PropTypes.func,
-  admin: PropTypes.bool,
   posted: PropTypes.bool
 }
 
-export default SpotBox;
+export default connect(
+  state => ({ admin: state.authentication.token !== null })
+)(SpotBox);

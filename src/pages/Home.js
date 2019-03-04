@@ -34,7 +34,6 @@ class Home extends Component
           spot => 
             <SpotBox
               posted
-              admin={this.props.token !== null}
               deleteSpot={
                 () => this.deleteSpot(spot.id, spot.fbPostId, spot.ttPostId)
               }
