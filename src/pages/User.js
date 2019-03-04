@@ -28,6 +28,13 @@ class User extends Component {
     let textArea = document.getElementById("message"),
         text = textArea.value.trim();
 
+    let betweenQuotes = text.match(/^["“'](.|\n)*["”']$/);
+    let removeQuotes = betweenQuotes && text.match(/["“”']/g).length <= 2;
+    if (removeQuotes)
+      text = text.substring(1, text.length - 1);
+
+    text = text.trim();
+    
     if (text === '')
       this.createErrorMessage('Se você não escrever nada, não tem como o crush te notar!');
     else if (text.length > 278)
@@ -37,15 +44,10 @@ class User extends Component {
         canSend: false
       });
 
-      let startQuotes = text.startsWith("\""),
-          endQuotes = text.endsWith("\"");
-      if (startQuotes && endQuotes)
-        text = text.substring(1, text.length - 1);
-
       yawp('/spots').create({ message: text }).then(() => {
         textArea.value = '';
         let testText = text.toUpperCase();
-        if (startQuotes && endQuotes)
+        if (removeQuotes)
           this.createSuccessAlert('Pode deixar que nós já colocamos as aspas para você, elas foram removidas e sua mensagem enviada 😊');
         else if (testText.includes('NA PD'))
           this.createSuccessAlert('Sua mensagem foi enviada, agora manda seu crush pagar a PD também!');
@@ -78,7 +80,7 @@ class User extends Component {
     return (
       <div className="content user">
         <div className="presentation">
-          Olá, esse é o novo Spotted Cotuca <span role="img" aria-label="smile face">😁</span>.
+          Olá, esse é o Spotted Cotuca <span role="img" aria-label="smile face">😁</span>.
           Basta mandar a mensagem no campo abaixo e esperar a aprovação de nossos administradores 
           para que ela seja postada no <a className="socialLink" href="https://fb.com/spottedcotuca3" target="blank">
             Facebook

