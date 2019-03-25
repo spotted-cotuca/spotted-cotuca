@@ -2,11 +2,11 @@
   "serverUrl": "https://newspottedctc.appspot.com/api",
   "proxyUrl": "https://newspottedctcproxy.herokuapp.com/tweet",
   "firebase": {
-    "apiKey": "AIzaSyAwEx4ct_nKPYIhFBpfB7RMfSIHFme9ais",
+    "apiKey": "AIzaSyDUm76LiGsYxwu7cg0yqDEElOveGXpYzss",
     "authDomain": "newspottedctc.firebaseapp.com",
     "databaseURL": "https://newspottedctc.firebaseio.com",
     "projectId": "newspottedctc",
-    "storageBucket": "https://newspottedctc.appspot.com",
-    "messagingSenderId": "319156712141"
+    "storageBucket": "newspottedctc.appspot.com",
+    "messagingSenderId": "317055733278"
   }
 }
