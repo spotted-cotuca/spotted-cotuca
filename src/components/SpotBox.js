@@ -37,7 +37,7 @@ class SpotBox extends Component {
             { this.date }
           </p>
           { 
-            admin &&
+            admin && deleteSpot &&
             <img alt="delete" className="deleteSpot" src={ trashIcon } onClick={ deleteSpot }></img>
           }
         </div>
