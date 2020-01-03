@@ -4,16 +4,11 @@ export const LOGIN_FAILED = 'LOGIN_FAILED';
 
 export const LOGOUT_REQUESTED = 'LOGOUT_REQUESTED';
 export const LOGOUT_SUCCEEDED = 'LOGOUT_SUCCEEDED';
-export const LOGOUT_FAILED = 'LOGOUT_FAILED';
 
-export const AUTH_STATE_CHANGED = 'AUTH_STATE_CHANGED';
+export const VERIFY_AUTH_STATE = 'VERIFY_AUTH_STATE';
 
-export const INITIALIZE_SOCIALS_REQUESTED = 'INITIALIZE_SOCIALS_REQUESTED';
-export const INITIALIZE_SOCIALS_SUCCEEDED = 'INITIALIZE_SOCIALS_SUCCEEDED';
-
-export const changeAuthState = (user) => ({
-  type: AUTH_STATE_CHANGED,
-  user
+export const verifyAuthState = () => ({
+  type: VERIFY_AUTH_STATE
 })
 
 export const loginUser = (email, password) => ({

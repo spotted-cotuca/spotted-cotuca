@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "fb-es5": "^2.0.1",
-    "firebase": "^4.10.0",
-    "firebaseui": "^2.6.1",
     "prop-types": "^15.6.2",
     "react": "^16.8.1",
     "react-burger-menu": "^2.3.0",
@@ -15,9 +12,7 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "^2.0.5",
     "redux": "^4.0.1",
-    "redux-saga": "^1.0.1",
-    "twitter": "^1.7.1",
-    "yawp": "^1.0.37"
+    "redux-saga": "^1.0.1"
   },
   "scripts": {
     "start": "concurrently \"sass --watch src/sass:src/css\" \"react-scripts start\"",

@@ -8,7 +8,6 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import * as firebase from 'firebase';
 
 import Home from './pages/Home';
 import Admin from './pages/Admin';
@@ -16,7 +15,7 @@ import User from './pages/User';
 import NotFound from './pages/NotFound';
 import registerServiceWorker from './registerServiceWorker';
 import store from './store';
-import { changeAuthState } from './actions/authenticationActions';
+import { verifyAuthState } from './actions/authenticationActions';
 
 import logo from './imgs/logo.png';
 import './css/index.css';
@@ -82,12 +81,7 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    if (!firebase.apps.length)
-      firebase.initializeApp(config.firebase);
-
-    firebase.auth().onAuthStateChanged(user => {
-      store.dispatch(changeAuthState(user));
-    });
+    store.dispatch(verifyAuthState());
   }
 
   render() {

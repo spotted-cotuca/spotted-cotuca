@@ -1,12 +1,3 @@
 {
-  "serverUrl": "https://newspottedctc.appspot.com/api",
-  "proxyUrl": "https://newspottedctcproxy.herokuapp.com/tweet",
-  "firebase": {
-    "apiKey": "AIzaSyDUm76LiGsYxwu7cg0yqDEElOveGXpYzss",
-    "authDomain": "newspottedctc.firebaseapp.com",
-    "databaseURL": "https://newspottedctc.firebaseio.com",
-    "projectId": "newspottedctc",
-    "storageBucket": "newspottedctc.appspot.com",
-    "messagingSenderId": "317055733278"
-  }
+  "serverUrl": "https://newspottedctc.appspot.com"
 }
