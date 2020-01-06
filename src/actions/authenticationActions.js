@@ -11,9 +11,9 @@ export const verifyAuthState = () => ({
   type: VERIFY_AUTH_STATE
 })
 
-export const loginUser = (email, password) => ({
+export const loginUser = (username, password) => ({
   type: LOGIN_REQUESTED,
-  email,
+  username,
   password
 });
 

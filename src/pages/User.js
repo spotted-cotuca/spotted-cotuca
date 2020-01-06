@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { NotificationManager } from 'react-notifications';
-import yawp from 'yawp';
 
 import Spinner from '../components/Spinner';
 
@@ -10,13 +9,9 @@ import '../css/User.css';
 class User extends Component {
   constructor(props) {
     super(props);
-    
-    
     this.state = {
       canSend: true
     }
-
-    yawp.config((c) => c.baseUrl(props.serverUrl));
   }
 
   sendSpot = () => {
@@ -44,26 +39,27 @@ class User extends Component {
         canSend: false
       });
 
-      yawp('/spots').create({ message: text }).then(() => {
+      fetch(`${this.props.serverUrl}/v1/spots`, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ message: text })
+      }).then(() => {
         textArea.value = '';
         let testText = text.toUpperCase();
-        if (removeQuotes)
+        if (removeQuotes) {
           this.createSuccessAlert('Pode deixar que nós já colocamos as aspas para você, elas foram removidas e sua mensagem enviada 😊');
-        else if (testText.includes('NA PD'))
+        } else if (testText.includes('NA PD')) {
           this.createSuccessAlert('Sua mensagem foi enviada, agora manda seu crush pagar a PD também!');
-        else if (testText.includes('NÃO ME QUER') || testText.includes('NÃO ME NOTA'))
+        } else if (testText.includes('NÃO ME QUER') || testText.includes('NÃO ME NOTA')) {
           this.createSuccessAlert('Sua mensagem foi enviada, E É CLARO QUE SEU CRUSH TE QUER!');
-        else
+        } else {
           this.createSuccessAlert('Sua mensagem foi enviada, agora é só esperar!');
+        }
 
-        this.setState({
-          canSend: true
-        });
-      }).catch(err => {
+        this.setState({ canSend: true });
+      }).catch(() => {
         this.createErrorMessage('Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão');
-        this.setState({
-          canSend: true
-        });
+        this.setState({ canSend: true });
       });
     }
   }

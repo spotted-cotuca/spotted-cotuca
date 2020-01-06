@@ -25,7 +25,7 @@ class SpotBox extends Component {
     if (!props.posted)
       this.footer = <AdminFooter approveSpot={props.approveSpot} rejectSpot={props.rejectSpot} />;
     else
-      this.footer = <UserFooter fbPostId={props.fbPostId} ttPostId={props.ttPostId} />;
+      this.footer = <UserFooter fbPostId={props.facebookPostId} ttPostId={props.twitterPostId} />;
   }
 
   render() {

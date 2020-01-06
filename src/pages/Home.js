@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import yawp from 'yawp';
 import { connect } from 'react-redux';
 import { NotificationManager } from 'react-notifications';
 import SpotBox from '../components/SpotBox';
@@ -15,7 +14,6 @@ class Home extends Component
   constructor(props) {
     super(props);
 
-    yawp.config(c => c.baseUrl(props.serverUrl));
     this.state = {
       spots: [],
       loaded: false,
@@ -28,46 +26,46 @@ class Home extends Component
   }
 
   selectSpots() {
-    yawp('/spots/approved').list(l => 
-      this.setState({
-        spots: l.map(
-          spot => 
+    fetch(`${this.props.serverUrl}/v1/spots/approved`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          spots: res.map(spot => 
             <SpotBox
               posted
-              deleteSpot={
-                () => this.deleteSpot(spot.id, spot.fbPostId, spot.ttPostId)
-              }
+              deleteSpot={ () => this.deleteSpot(spot.createdAt.split('T')[0], spot.id) }
               key={spot.id}
               {...spot}
-              date={new Date(spot.date)}
+              date={new Date(spot.createdAt)}
             />
-        ),
-        loaded: true
+          ),
+          loaded: true
+        })
       })
-    ).catch(e => 
-      this.setState({
-        loaded: true,
-        error: true
-      })
-    );
+      .catch(() => 
+        this.setState({
+          loaded: true,
+          error: true
+        })
+      );
   }
 
-  async deleteSpot(id, fbId, ttId) {
-    let deleted = await this.props.socialMediasHandler.deleteFromSocialMedias(fbId, ttId);
-    if (deleted.facebook && deleted.twitter) {
-      NotificationManager.success('Spot deletado com sucesso.', 'Aí sim!', 2000);
-      
-      fetch(this.props.serverUrl + id, {
-        method: 'DELETE',
-        headers: new Headers({
-          Authorization: 'Bearer ' + this.props.token
-        })
-      }).then(() => this.selectSpots());
+  async deleteSpot(date, id) {
+    const response = await fetch(`${this.props.serverUrl}/v1/spots/${date}/${id}`, {
+      method: 'DELETE',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.props.token
+      })
+    });
+
+    if (!response.ok) {
+      NotificationManager.error('Algo de errado aconteceu', 'Ah não...', 2000);
+      return;
     }
-    else if (!(deleted.twitter || deleted.facebook))
-      NotificationManager.error('Algo de errado aconteceu, o spot não foi deletado de nenhum lugar', 'Ah não...', 2000);
-    else
-      NotificationManager.error('Algo de errado aconteceu, mas o spot foi deletado do ' + (deleted.facebook ? 'Facebook.' : 'Twitter.'), 'Ah não...', 2000);
+
+    NotificationManager.success('Spot deletado com sucesso.', 'Aí sim!', 2000);
+    this.selectSpots();
   }
 
   render() {
@@ -105,10 +103,4 @@ class Home extends Component
   }
 }
 
-export default connect(
-  state => ({ 
-    token: state.authentication.token,
-    socialMediasHandler: state.authentication.socialMediasHandler 
-  }),
-  {}
-)(Home);
+export default connect(state => ({ token: state.authentication.token }), {})(Home);

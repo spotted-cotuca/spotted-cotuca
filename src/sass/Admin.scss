@@ -16,7 +16,7 @@
   input {
     margin-bottom: 20px;
 
-    &[type=email], &[type=password] {
+    &[type=text], &[type=password] {
       font-size: 1.25em;
       width: 100%;
       padding: 12px;

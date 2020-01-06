@@ -19,13 +19,13 @@ function* verifyAuthState() {
     yield put({ type: LOGIN_FAILED });
 }
 
-function* loginUser({ email, password }) {
+function* loginUser({ username, password }) {
   const response = yield fetch(`${config.serverUrl}/v1/sign-in`, {
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/json'
     }),
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ username, password })
   })
 
   if (!response.ok) {

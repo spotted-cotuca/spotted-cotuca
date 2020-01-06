@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { NotificationManager } from 'react-notifications';
-import yawp from 'yawp';
 import { connect } from 'react-redux';
 import { loginUser, logoutUser } from '../actions/authenticationActions';
 
@@ -15,8 +14,6 @@ class Admin extends Component {
 
   constructor(props) {
     super(props);
-
-    yawp.config(c => c.baseUrl(props.serverUrl));
     this.state = {
       spots: [],
       loaded: false
@@ -36,63 +33,74 @@ class Admin extends Component {
   }
 
   selectSpots(token) {
-    fetch(this.props.serverUrl + '/spots/pending', {
+    fetch(`${this.props.serverUrl}/v1/spots/pending`, {
       headers: new Headers({
         Authorization: 'Bearer ' + token
       })
     }).then(raw => raw.json())
       .then(response => {
         this.setState({
-          spots: response.reverse().map(spot => 
-            <SpotBox
+          spots: response.reverse().map(spot => {
+            const date = spot.createdAt.split('T')[0]
+            return <SpotBox
               key={spot.id}
-              approveSpot={() => this.approveSpot(spot.id, spot.message)}
-              rejectSpot={() => this.rejectSpot(spot.id)}
+              approveSpot={() => this.approveSpot(date, spot.id)}
+              rejectSpot={() => this.rejectSpot(date, spot.id)}
               {...spot}
-              date={new Date(spot.date)}
+              date={new Date(spot.createdAt)}
             />
-          ),
+          }),
           token: token,
           loaded: true
         });
+      })
+      .catch(() => {
+        NotificationManager.error('Algo de errado aconteceu ao listar os spots pendentes.', 'Ah não...', 2000);
+        this.setState({ loaded: true });
       });
   }
 
-  async approveSpot(id, spotMessage) {
-    let post = await this.props.socialMedias.postOnSocialMedias(id, spotMessage);
-
-    if (post.twitter && post.facebook) {
-      NotificationManager.success('Spot postado com sucesso.', 'Aí sim!', 2000);
-
-      fetch(this.props.serverUrl + id + '/approve', {
-        method: 'PUT',
-        headers: new Headers({
-          Authorization: 'Bearer ' + this.state.token
-        })
-      }).then(() => this.selectSpots(this.state.token));
-    } else if (!(post.twitter || post.facebook))
-      NotificationManager.error('Algo de errado aconteceu, o spot não foi postado em nenhum lugar', 'Ah não...', 2000);
-    else
-      NotificationManager.error('Algo de errado aconteceu, mas o spot foi postado no ' + (post.facebook ? 'Facebook.' : 'Twitter.'), 'Ah não...', 2000);
-  }
-
-  rejectSpot(id) {
-    fetch(this.props.serverUrl + id + '/reject', {
+  async approveSpot(date, id) {
+    const response = await fetch(`${this.props.serverUrl}/v1/spots/${date}/${id}/approve`, {
       method: 'PUT',
       headers: new Headers({
-        Authorization: 'Bearer ' + this.state.token
+        Authorization: 'Bearer ' + this.state.token,
+        'Content-Type': 'application/json'
       })
-    }).then(() => {
-      NotificationManager.success('Spot rejeitado com sucesso.', 'Aí sim!', 2000);
-      this.selectSpots(this.state.token);
+    })
+
+    if (!response.ok) {
+      NotificationManager.error('Algo de errado aconteceu ao aprovar spot.', 'Ah não...', 2000);
+      return;
+    }
+
+    NotificationManager.success('Spot postado com sucesso.', 'Aí sim!', 2000);
+    this.selectSpots(this.state.token);
+  }
+
+  async rejectSpot(date, id) {
+    const response = await fetch(`${this.props.serverUrl}/v1/spots/${date}/${id}/reject`, {
+      method: 'PUT',
+      headers: new Headers({
+        Authorization: 'Bearer ' + this.state.token,
+        'Content-Type': 'application/json'
+      })
     });
+
+    if (!response.ok) {
+      NotificationManager.error('Falha ao rejeitar spot.', 'Ah não...', 2000);
+      return;
+    }
+
+    NotificationManager.success('Spot rejeitado com sucesso.', 'Aí sim!', 2000);
+    this.selectSpots(this.state.token);
   }
 
   login = () => {
-    let email = document.getElementById("email").value,
-        pass  = document.getElementById("pass").value;
+    let username = document.getElementById("username").value,
+        password = document.getElementById("password").value;
     
-    this.props.loginUser(email, pass);
+    this.props.loginUser(username, password);
   }
 
   render() {
@@ -115,8 +123,8 @@ class Admin extends Component {
     else
       return (
         <div className="content admin centralize">
-          <input type="email" id="email" name="email" placeholder="Email"/>
-          <input type="password" id="pass" name="pass" placeholder="Senha"/>
+          <input type="text" id="username" name="username" placeholder="Usuário"/>
+          <input type="password" id="password" name="password" placeholder="Senha"/>
           <button className="btn" onClick={this.login} disabled={logging}>
             Entrar
             <Spinner active={logging} color="#FFF"/>
@@ -127,9 +135,6 @@ class Admin extends Component {
 }
 
 export default connect(
-  state => ({ 
-    auth: state.authentication,
-    socialMedias: state.authentication.socialMediasHandler
-  }),
+  state => ({ auth: state.authentication }),
   { loginUser, logoutUser }
 )(Admin);
