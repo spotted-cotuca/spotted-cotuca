@@ -22,33 +22,6 @@ import './css/index.css';
 
 const config = require('./config.json');
 
-class MenuWrap extends React.Component {
-  constructor(props)
-  {
-    super(props);
-    
-    this.state = {
-      hidden: false
-    };
-  }
-
-  show() {
-    this.setState({hidden : false});
-  }
-
-  render() {
-    let style;
-    if (this.state.hidden)
-      style = { display: 'none' };
-
-    return (
-      <div style={style} className={this.props.side}>
-        {this.props.children}
-      </div>
-    );
-  }
-}
-
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -57,26 +30,21 @@ class Main extends React.Component {
   }
 
   getMenu() {
+    let closeMenu = () => this.refs.menu.toggleMenu()
     const Menu = BurgerMenu['slide'];
     return (
-      <MenuWrap wait={ 20 }>
-        <Menu id={'slide'}>
-          <div>
-            <a href="./#/admin">
-              Administração
-            </a>
-          </div>
-          <div>
-            <a href="./#/send">
-              Enviar spots
-            </a>
-          </div>
-          <div>
-            <a href={ "https://www.facebook.com/spottedcotuca3" } target="blank"><i className="fa fa-facebook"/></a>
-            <a href={ "https://twitter.com/spottedcotuca3" } target="blank"><i className="fa fa-twitter"/></a>
-          </div>
-        </Menu>
-      </MenuWrap>
+      <Menu id={'slide'} ref="menu">
+        <div>
+          <a onClick={closeMenu} href="./#/admin">Administração</a>
+        </div>
+        <div>
+          <a onClick={closeMenu} href="./#/send">Enviar spots</a>
+        </div>
+        <div>
+          <a href={ "https://www.facebook.com/spottedcotuca3" } target="blank"><i className="fa fa-facebook"/></a>
+          <a href={ "https://twitter.com/spottedcotuca3" } target="blank"><i className="fa fa-twitter"/></a>
+        </div>
+      </Menu>
     );
   }
 
