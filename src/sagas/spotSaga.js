@@ -20,11 +20,16 @@ import store from '../store'
 const config = require('../config.json');
 
 function getToken() {
-  return store.getState().authentication.token
+  return store.getState().authentication.token;
+}
+
+function localDateString(dateTime) {
+  return dateTime.split('T')[0];
 }
 
 function* approveSpot({ creationDate, id }) {
-  const response = yield fetch(`${config.serverUrl}/v1/spots/${creationDate}/${id}/approve`, {
+  const date = localDateString(creationDate)
+  const response = yield fetch(`${config.serverUrl}/v1/spots/${date}/${id}/approve`, {
     method: 'PUT',
     headers: new Headers({
       Authorization: `Bearer ${getToken()}`,
@@ -42,7 +47,8 @@ function* approveSpot({ creationDate, id }) {
 }
 
 function* rejectSpot({ creationDate, id }) {
-  const response = yield fetch(`${config.serverUrl}/v1/spots/${creationDate}/${id}/reject`, {
+  const date = localDateString(creationDate)
+  const response = yield fetch(`${config.serverUrl}/v1/spots/${date}/${id}/reject`, {
     method: 'PUT',
     headers: new Headers({
       Authorization: `Bearer ${getToken()}`,
@@ -60,7 +66,22 @@ function* rejectSpot({ creationDate, id }) {
 }
 
 function* deleteSpot({ creationDate, id }) {
+  const date = localDateString(creationDate)
+  const response = yield fetch(`${config.serverUrl}/v1/spots/${date}/${id}`, {
+    method: 'DELETE',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getToken()}`,
+    })
+  });
 
+  if (!response.ok) {
+    NotificationManager.error('Algo de errado aconteceu', 'Ah não...', 2000);
+    return;
+  }
+
+  NotificationManager.success('Spot deletado com sucesso.', 'Aí sim!', 2000);
+  yield put ({ type: APPROVED_SPOTS_FETCH_REQUESTED })
 }
 
 function* sendSpot({ message }) {
@@ -68,7 +89,16 @@ function* sendSpot({ message }) {
 }
 
 function* fetchApproved() {
-  
+  const response = yield fetch(`${config.serverUrl}/v1/spots/approved`);
+
+  if (!response.ok) {
+    NotificationManager.error('Algo de errado aconteceu ao listar os spots.', 'Ah não...', 4000);
+    yield put({ type: APPROVED_SPOTS_FETCH_FAILED });
+    return;
+  }
+
+  const spots = yield response.json()
+  yield put({ type: APPROVED_SPOTS_FETCH_SUCCEEDED, spots });
 }
 
 function* fetchPending() {
@@ -79,6 +109,7 @@ function* fetchPending() {
   if (!response.ok) {
     NotificationManager.error('Algo de errado aconteceu ao listar os spots pendentes.', 'Ah não...', 2000);
     yield put({ type: PENDING_SPOTS_FETCH_FAILED });
+    return;
   }
 
   const spots = yield response.json()

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loginUser, logoutUser } from '../actions/authenticationActions';
-import { rejectSpot, fetchPendingSpots } from '../actions/spotActions';
+import { approveSpot, rejectSpot, fetchPendingSpots } from '../actions/spotActions';
 
 import SpotBox from '../components/SpotBox';
 import Spinner from '../components/Spinner';
@@ -10,10 +10,6 @@ import 'react-notifications/lib/notifications.css';
 import '../css/Admin.css';
 
 class Admin extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { logged } = this.props.auth;
     if (logged)
@@ -30,11 +26,10 @@ class Admin extends Component {
     if (!spots) return;
 
     return spots.map(spot => {
-      const date = spot.createdAt.split('T')[0]
       return <SpotBox
         key={spot.id}
-        approveSpot={() => this.approveSpot(date, spot.id)}
-        rejectSpot={() => this.props.rejectSpot(date, spot.id)}
+        approveSpot={() => this.props.approveSpot(spot.createdAt, spot.id)}
+        rejectSpot={() => this.props.rejectSpot(spot.createdAt, spot.id)}
         {...spot}
         date={new Date(spot.createdAt)}
       />
@@ -81,5 +76,5 @@ class Admin extends Component {
 
 export default connect(
   state => ({ auth: state.authentication, spots: state.spots }),
-  { loginUser, logoutUser, rejectSpot, fetchPendingSpots }
+  { loginUser, logoutUser, approveSpot, rejectSpot, fetchPendingSpots }
 )(Admin);

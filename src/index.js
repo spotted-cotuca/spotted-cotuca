@@ -20,8 +20,6 @@ import { verifyAuthState } from './actions/authenticationActions';
 import logo from './imgs/logo.png';
 import './css/index.css';
 
-const config = require('./config.json');
-
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -66,11 +64,11 @@ class Main extends React.Component {
           <div className="background" />
           <Router>
             <Switch>
-              <Route exact path="/" render={(props) => <Home {...props} serverUrl={config.serverUrl} />}/>
-              <Route path="/send" render={(props) => <User {...props} serverUrl={config.serverUrl} />}/>
-              <Route path="/admin" render={(props) => <Admin {...props} serverUrl={config.serverUrl} />}/>
-              <Route path="/api" component={null}/>
-              <Route path="*" component={NotFound}/>
+              <Route exact path="/" component={Home} />
+              <Route path="/send" component={User} />
+              <Route path="/admin" component={Admin} />
+              <Route path="/api" component={null} />
+              <Route path="*" component={NotFound} />
             </Switch>
           </Router>
         
