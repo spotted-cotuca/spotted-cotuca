@@ -4,7 +4,9 @@ import {
   APPROVE_SPOT,
   REJECT_SPOT,
   DELETE_SPOT,
-  SEND_SPOT,
+
+  SEND_SPOT_REQUESTED,
+  SEND_SPOT_FINISHED,
 
   APPROVED_SPOTS_FETCH_REQUESTED,
   APPROVED_SPOTS_FETCH_SUCCEEDED,
@@ -25,6 +27,14 @@ function getToken() {
 
 function localDateString(dateTime) {
   return dateTime.split('T')[0];
+}
+
+function createErrorMessage(message) {
+  NotificationManager.error(message, 'Ah não...', 4000);
+}
+
+function createSuccessAlert(message) {
+  NotificationManager.success(message, 'Aí sim!', 4000);
 }
 
 function* approveSpot({ creationDate, id }) {
@@ -84,8 +94,45 @@ function* deleteSpot({ creationDate, id }) {
   yield put ({ type: APPROVED_SPOTS_FETCH_REQUESTED })
 }
 
-function* sendSpot({ message }) {
+function* sendSpot({ textArea }) {
+  let text = textArea.value.trim();
+  let betweenQuotes = text.match(/^["“'](.|\n)*["”']$/);
+  let removeQuotes = betweenQuotes && text.match(/["“”']/g).length <= 2;
 
+  if (removeQuotes)
+    text = text.substring(1, text.length - 1);
+
+  text = text.trim();
+  if (text === '')
+    return createErrorMessage('Se você não escrever nada, não tem como o crush te notar!');
+  else if (text.length > 278)
+    return createErrorMessage('Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres 😢');
+
+  const response = yield fetch(`${config.serverUrl}/v1/spots`, {
+    method: 'POST',
+    headers: new Headers({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ message: text })
+  })
+
+  if (!response.ok) {
+    createErrorMessage('Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão');
+    yield put({ type: SEND_SPOT_FINISHED });
+    return;
+  }
+
+  textArea.value = '';
+  let testText = text.toUpperCase();
+  if (removeQuotes) {
+    createSuccessAlert('Pode deixar que nós já colocamos as aspas para você, elas foram removidas e sua mensagem enviada 😊');
+  } else if (testText.includes('NA PD')) {
+    createSuccessAlert('Sua mensagem foi enviada, agora manda seu crush pagar a PD também!');
+  } else if (testText.includes('NÃO ME QUER') || testText.includes('NÃO ME NOTA')) {
+    createSuccessAlert('Sua mensagem foi enviada, E É CLARO QUE SEU CRUSH TE QUER!');
+  } else {
+    createSuccessAlert('Sua mensagem foi enviada, agora é só esperar!');
+  }
+
+  yield put({ type: SEND_SPOT_FINISHED });
 }
 
 function* fetchApproved() {
@@ -120,7 +167,7 @@ const saga = [
   takeEvery(APPROVE_SPOT, approveSpot),
   takeEvery(REJECT_SPOT, rejectSpot),
   takeEvery(DELETE_SPOT, deleteSpot),
-  takeEvery(SEND_SPOT, sendSpot),
+  takeEvery(SEND_SPOT_REQUESTED, sendSpot),
 
   takeEvery(PENDING_SPOTS_FETCH_REQUESTED, fetchPending),
   takeEvery(APPROVED_SPOTS_FETCH_REQUESTED, fetchApproved)

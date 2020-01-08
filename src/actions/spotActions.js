@@ -1,7 +1,9 @@
 export const APPROVE_SPOT = 'APPROVE_SPOT';
 export const REJECT_SPOT = 'REJECT_SPOT';
 export const DELETE_SPOT = 'DELETE_SPOT';
-export const SEND_SPOT = 'SEND_SPOT';
+
+export const SEND_SPOT_REQUESTED = 'SEND_SPOT_REQUESTED';
+export const SEND_SPOT_FINISHED = 'SEND_SPOT_FINISHED';
 
 export const APPROVED_SPOTS_FETCH_REQUESTED = 'APPROVED_SPOTS_FETCH_REQUESTED';
 export const APPROVED_SPOTS_FETCH_SUCCEEDED = 'APPROVED_SPOTS_FETCH_SUCCEEDED';
@@ -29,9 +31,9 @@ export const deleteSpot = (creationDate, id) => ({
   id
 });
 
-export const sendSpot = (message) => ({
-  type: DELETE_SPOT,
-  message
+export const sendSpot = (textArea) => ({
+  type: SEND_SPOT_REQUESTED,
+  textArea
 });
 
 export const fetchApprovedSpots = () => ({ type: APPROVED_SPOTS_FETCH_REQUESTED });

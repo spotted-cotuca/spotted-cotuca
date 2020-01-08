@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { sendSpot } from '../actions/spotActions';
 import { NotificationManager } from 'react-notifications';
 
 import Spinner from '../components/Spinner';
@@ -7,69 +9,12 @@ import 'react-notifications/lib/notifications.css';
 import '../css/User.css';
 
 class User extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      canSend: true
-    }
-  }
-
   sendSpot = () => {
-    if (!this.state.canSend) {
-      this.createErrorMessage('Espera mais um pouquinho, o crush não vai fugir não!');
-      return;
+    if (!this.props.canSend) {
+      return NotificationManager.error('Espera mais um pouquinho, o crush não vai fugir não!', 'Ah não...', 4000);
     }
 
-    let textArea = document.getElementById("message"),
-        text = textArea.value.trim();
-
-    let betweenQuotes = text.match(/^["“'](.|\n)*["”']$/);
-    let removeQuotes = betweenQuotes && text.match(/["“”']/g).length <= 2;
-    if (removeQuotes)
-      text = text.substring(1, text.length - 1);
-
-    text = text.trim();
-    
-    if (text === '')
-      this.createErrorMessage('Se você não escrever nada, não tem como o crush te notar!');
-    else if (text.length > 278)
-      this.createErrorMessage('Somos integrados com o Twitter, logo, não podemos aceitar spots com mais de 280 caracteres 😢');
-    else {
-      this.setState({
-        canSend: false
-      });
-
-      fetch(`${this.props.serverUrl}/v1/spots`, {
-        method: 'POST',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ message: text })
-      }).then(() => {
-        textArea.value = '';
-        let testText = text.toUpperCase();
-        if (removeQuotes) {
-          this.createSuccessAlert('Pode deixar que nós já colocamos as aspas para você, elas foram removidas e sua mensagem enviada 😊');
-        } else if (testText.includes('NA PD')) {
-          this.createSuccessAlert('Sua mensagem foi enviada, agora manda seu crush pagar a PD também!');
-        } else if (testText.includes('NÃO ME QUER') || testText.includes('NÃO ME NOTA')) {
-          this.createSuccessAlert('Sua mensagem foi enviada, E É CLARO QUE SEU CRUSH TE QUER!');
-        } else {
-          this.createSuccessAlert('Sua mensagem foi enviada, agora é só esperar!');
-        }
-
-        this.setState({ canSend: true });
-      }).catch(() => {
-        this.createErrorMessage('Algo de errado ocorreu ao tentar enviar o spot, por favor, tente novamente e verifique sua conexão');
-        this.setState({ canSend: true });
-      });
-    }
-  }
-
-  createErrorMessage(message) {
-    NotificationManager.error(message, 'Ah não...', 4000);
-  }
-
-  createSuccessAlert(message) {
-    NotificationManager.success(message, 'Aí sim!', 4000);
+    this.props.sendSpot(document.getElementById("message"));
   }
 
   render() {
@@ -89,11 +34,11 @@ class User extends Component {
 
         <button className="btn" onClick={this.sendSpot}>
           Enviar Spot
-          <Spinner active={!this.state.canSend} color="#FFF"/>
+          <Spinner active={!this.props.canSend} color="#FFF"/>
         </button>
       </div>
     );
   }
 }
 
-export default User;
+export default connect(state => ({ canSend: state.spots.userCanSendSpot }), { sendSpot })(User);
