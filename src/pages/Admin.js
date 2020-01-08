@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { NotificationManager } from 'react-notifications';
 import { connect } from 'react-redux';
 import { loginUser, logoutUser } from '../actions/authenticationActions';
+import { rejectSpot, fetchPendingSpots } from '../actions/spotActions';
 
 import SpotBox from '../components/SpotBox';
 import Spinner from '../components/Spinner';
@@ -10,90 +10,35 @@ import 'react-notifications/lib/notifications.css';
 import '../css/Admin.css';
 
 class Admin extends Component {
-  socialMedias = null;
-
   constructor(props) {
     super(props);
-    this.state = {
-      spots: [],
-      loaded: false
-    };
   }
 
   componentDidMount() {
-    const { token } = this.props.auth;
-    if (token)
-      this.selectSpots(token);
+    const { logged } = this.props.auth;
+    if (logged)
+      this.props.fetchPendingSpots();
   }
 
   componentDidUpdate(prevProps) {
-    const { token } = this.props.auth;
-    if (token && !prevProps.auth.token)
-      this.selectSpots(token);
+    const { logged } = this.props.auth;
+    if (logged && !prevProps.auth.logged)
+      this.props.fetchPendingSpots();
   }
 
-  selectSpots(token) {
-    fetch(`${this.props.serverUrl}/v1/spots/pending`, {
-      headers: new Headers({
-        Authorization: 'Bearer ' + token
-      })
-    }).then(raw => raw.json())
-      .then(response => {
-        this.setState({
-          spots: response.reverse().map(spot => {
-            const date = spot.createdAt.split('T')[0]
-            return <SpotBox
-              key={spot.id}
-              approveSpot={() => this.approveSpot(date, spot.id)}
-              rejectSpot={() => this.rejectSpot(date, spot.id)}
-              {...spot}
-              date={new Date(spot.createdAt)}
-            />
-          }),
-          token: token,
-          loaded: true
-        });
-      })
-      .catch(() => {
-        NotificationManager.error('Algo de errado aconteceu ao listar os spots pendentes.', 'Ah não...', 2000);
-        this.setState({ loaded: true });
-      });
-  }
+  renderSpots(spots) {
+    if (!spots) return;
 
-  async approveSpot(date, id) {
-    const response = await fetch(`${this.props.serverUrl}/v1/spots/${date}/${id}/approve`, {
-      method: 'PUT',
-      headers: new Headers({
-        Authorization: 'Bearer ' + this.state.token,
-        'Content-Type': 'application/json'
-      })
+    return spots.map(spot => {
+      const date = spot.createdAt.split('T')[0]
+      return <SpotBox
+        key={spot.id}
+        approveSpot={() => this.approveSpot(date, spot.id)}
+        rejectSpot={() => this.props.rejectSpot(date, spot.id)}
+        {...spot}
+        date={new Date(spot.createdAt)}
+      />
     })
-
-    if (!response.ok) {
-      NotificationManager.error('Algo de errado aconteceu ao aprovar spot.', 'Ah não...', 2000);
-      return;
-    }
-
-    NotificationManager.success('Spot postado com sucesso.', 'Aí sim!', 2000);
-    this.selectSpots(this.state.token);
-  }
-
-  async rejectSpot(date, id) {
-    const response = await fetch(`${this.props.serverUrl}/v1/spots/${date}/${id}/reject`, {
-      method: 'PUT',
-      headers: new Headers({
-        Authorization: 'Bearer ' + this.state.token,
-        'Content-Type': 'application/json'
-      })
-    });
-
-    if (!response.ok) {
-      NotificationManager.error('Falha ao rejeitar spot.', 'Ah não...', 2000);
-      return;
-    }
-
-    NotificationManager.success('Spot rejeitado com sucesso.', 'Aí sim!', 2000);
-    this.selectSpots(this.state.token);
   }
 
   login = () => {
@@ -105,19 +50,19 @@ class Admin extends Component {
 
   render() {
     const { logged, logging } = this.props.auth;
-    const { logoutUser } = this.props;
+    const { pendingSpots, fetchingPending } = this.props.spots;
 
     if (logged)
       return (
         <div className="content admin">
           <div className="options">
-            <button className="btn" onClick={logoutUser}>
+            <button className="btn" onClick={this.props.logoutUser}>
               Logout
             </button>
           </div>
 
-          { !this.state.loaded && <Spinner /> }
-          { this.state.spots }
+          { fetchingPending && !pendingSpots && <Spinner /> }
+          { this.renderSpots(pendingSpots) }
         </div>
       );
     else
@@ -135,6 +80,6 @@ class Admin extends Component {
 }
 
 export default connect(
-  state => ({ auth: state.authentication }),
-  { loginUser, logoutUser }
+  state => ({ auth: state.authentication, spots: state.spots }),
+  { loginUser, logoutUser, rejectSpot, fetchPendingSpots }
 )(Admin);
