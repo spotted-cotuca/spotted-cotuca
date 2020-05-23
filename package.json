@@ -1,6 +1,6 @@
 {
   "name": "spotted-cotuca",
-  "version": "0.1.0",
+  "version": "1.22.4",
   "private": true,
   "dependencies": {
     "prop-types": "^15.6.2",
